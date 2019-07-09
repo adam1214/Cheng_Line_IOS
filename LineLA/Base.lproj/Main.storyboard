@@ -1308,10 +1308,10 @@
                                                         <rect key="frame" x="19" y="0.0" width="112.5" height="95"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kdr-eQ-R9r">
-                                                                <rect key="frame" x="47" y="35.5" width="18" height="24"/>
+                                                                <rect key="frame" x="31" y="22.5" width="50" height="50"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tia-vH-1rh">
-                                                                        <rect key="frame" x="1" y="1" width="16" height="22"/>
+                                                                        <rect key="frame" x="1" y="1" width="48" height="48"/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <state key="normal" image="ic_mic_off_48pt"/>
                                                                         <userDefinedRuntimeAttributes>
@@ -1348,13 +1348,13 @@
                                                         <rect key="frame" x="131.5" y="0.0" width="112.5" height="95"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I0T-gH-kdx">
-                                                                <rect key="frame" x="46" y="35.5" width="20" height="24"/>
+                                                                <rect key="frame" x="31" y="22.5" width="50" height="50"/>
                                                                 <subviews>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aFR-fP-sOo">
-                                                                        <rect key="frame" x="1" y="1" width="18" height="22"/>
+                                                                        <rect key="frame" x="1" y="1" width="48" height="48"/>
                                                                         <subviews>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CaI-TC-60p">
-                                                                                <rect key="frame" x="9" y="5" width="0.0" height="4"/>
+                                                                                <rect key="frame" x="9" y="5" width="30" height="30"/>
                                                                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                                                                 <userDefinedRuntimeAttributes>
                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -1363,7 +1363,7 @@
                                                                                 </userDefinedRuntimeAttributes>
                                                                             </view>
                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GEr-TA-yWK">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="18" height="22"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
                                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                 <state key="normal" image="ic_voice_chat_white_48pt"/>
                                                                                 <userDefinedRuntimeAttributes>
@@ -1418,10 +1418,10 @@
                                                         <rect key="frame" x="244" y="0.0" width="112.5" height="95"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BnC-jp-Srt">
-                                                                <rect key="frame" x="47" y="35.5" width="18" height="24"/>
+                                                                <rect key="frame" x="31" y="22.5" width="50" height="50"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WTe-Z6-0wH">
-                                                                        <rect key="frame" x="1" y="1" width="16" height="22"/>
+                                                                        <rect key="frame" x="1" y="1" width="48" height="48"/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <state key="normal" image="ic_volume_up_48pt"/>
                                                                         <userDefinedRuntimeAttributes>
@@ -1494,10 +1494,10 @@
                                                         <rect key="frame" x="19" y="0.0" width="112.5" height="95"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QQE-8R-gUW">
-                                                                <rect key="frame" x="47" y="35.5" width="18" height="24"/>
+                                                                <rect key="frame" x="31" y="22.5" width="50" height="50"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sIr-A5-WdC">
-                                                                        <rect key="frame" x="1" y="1" width="16" height="22"/>
+                                                                        <rect key="frame" x="1" y="1" width="48" height="48"/>
                                                                         <color key="backgroundColor" red="0.0" green="0.79199714467005078" blue="0.13511944254607353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <state key="normal" image="ic_call_white_48pt"/>
                                                                         <userDefinedRuntimeAttributes>
@@ -1534,10 +1534,10 @@
                                                         <rect key="frame" x="131.5" y="0.0" width="112.5" height="95"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8XI-05-5K3">
-                                                                <rect key="frame" x="47" y="35.5" width="18" height="24"/>
+                                                                <rect key="frame" x="31" y="22.5" width="50" height="50"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d3i-6q-lGR">
-                                                                        <rect key="frame" x="1" y="1" width="16" height="22"/>
+                                                                        <rect key="frame" x="1" y="1" width="48" height="48"/>
                                                                         <color key="backgroundColor" red="0.89395621827411165" green="0.058974843312610617" blue="0.067442347530674018" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <state key="normal" image="ic_call_end_white_48pt"/>
                                                                         <userDefinedRuntimeAttributes>
@@ -1578,10 +1578,10 @@
                                                         <rect key="frame" x="244" y="0.0" width="112.5" height="95"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IHn-hO-rOc">
-                                                                <rect key="frame" x="47" y="35.5" width="18" height="24"/>
+                                                                <rect key="frame" x="31" y="22.5" width="50" height="50"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0SP-lB-Dxg">
-                                                                        <rect key="frame" x="1" y="1" width="16" height="22"/>
+                                                                        <rect key="frame" x="1" y="1" width="48" height="48"/>
                                                                         <color key="backgroundColor" red="0.89395621830000005" green="0.058974843309999997" blue="0.067442347530000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <state key="normal" image="ic_call_end_white_48pt"/>
                                                                         <userDefinedRuntimeAttributes>
@@ -1766,7 +1766,7 @@
                                 <rect key="frame" x="0.0" y="59" width="375" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Vf9-9K-XCQ" id="QsB-cb-L5u">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Oob-NL-cpc">

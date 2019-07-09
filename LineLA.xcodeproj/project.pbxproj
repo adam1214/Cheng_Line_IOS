@@ -295,7 +295,7 @@
 				AFD21EE5214631FE00D1960B /* Frameworks */,
 				AFD21EE6214631FE00D1960B /* Resources */,
 				35671D1493F3257DEA0B17F2 /* [CP] Embed Pods Frameworks */,
-				47B913DEE4D2424775DEAF05 /* [CP] Copy Pods Resources */,
+				67D5FBE52473E682BE426BDB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -474,7 +474,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LineLA/Pods-LineLA-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		47B913DEE4D2424775DEAF05 /* [CP] Copy Pods Resources */ = {
+		67D5FBE52473E682BE426BDB /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (

@@ -229,6 +229,8 @@ typedef struct _LinphoneCoreVTable{
 	LinphoneCoreCbsEcCalibrationResultCb ec_calibration_result;
 	LinphoneCoreCbsEcCalibrationAudioInitCb ec_calibration_audio_init;
 	LinphoneCoreCbsEcCalibrationAudioUninitCb ec_calibration_audio_uninit;
+	LinphoneCoreCbsMessageReceivedCb message_sent;
+	LinphoneCoreCbsChatRoomReadCb chat_room_read;
 	void *user_data; /**<User data associated with the above callbacks */
 } LinphoneCoreVTable;
 
@@ -424,6 +426,34 @@ LINPHONE_PUBLIC void linphone_core_cbs_set_message_received(LinphoneCoreCbs *cbs
  * @return The callback.
  */
 LINPHONE_PUBLIC LinphoneCoreCbsMessageReceivedCb linphone_core_cbs_get_message_received(LinphoneCoreCbs *cbs);
+
+/**
+ * Set the #LinphoneCoreCbsMessageSentCb callback.
+ * @param[in] cbs A #LinphoneCoreCbs.
+ * @param[in] cb The callback.
+ */
+LINPHONE_PUBLIC void linphone_core_cbs_set_message_sent(LinphoneCoreCbs *cbs, LinphoneCoreCbsMessageSentCb cb);
+
+/**
+ * Get the #LinphoneCoreCbsMessageSentCb callback.
+ * @param[in] cbs A #LinphoneCoreCbs.
+ * @return The callback.
+ */
+LINPHONE_PUBLIC LinphoneCoreCbsMessageSentCb linphone_core_cbs_get_message_sent(LinphoneCoreCbs *cbs);
+
+/**
+ * Set the #LinphoneCoreCbsChatRoomReadCb callback.
+ * @param[in] cbs A #LinphoneCoreCbs.
+ * @param[in] cb The callback.
+ */
+LINPHONE_PUBLIC void linphone_core_cbs_set_chat_room_read(LinphoneCoreCbs *cbs, LinphoneCoreCbsChatRoomReadCb cb);
+
+/**
+ * Get the #LinphoneCoreCbsChatRoomReadCb callback.
+ * @param[in] cbs A #LinphoneCoreCbs.
+ * @return The callback.
+ */
+LINPHONE_PUBLIC LinphoneCoreCbsChatRoomReadCb linphone_core_cbs_get_chat_room_read(LinphoneCoreCbs *cbs);
 
 /**
  * Set the #LinphoneCoreCbsMessageReceivedUnableDecryptCb callback.
@@ -2179,6 +2209,12 @@ LINPHONE_PUBLIC const bctbx_list_t *linphone_core_get_proxy_config_list(const Li
 #define linphone_core_set_default_proxy(lc, config) linphone_core_set_default_proxy_config(lc, config)
 
 LINPHONE_PUBLIC void linphone_core_set_default_proxy_index(LinphoneCore *lc, int index);
+
+/**
+ * @param[in] refkey An	arbitrary reference key	associated to a	proxy configuration
+ * @return the proxy configuration for the given refkey, or NULL if none found
+ **/
+LINPHONE_PUBLIC LinphoneProxyConfig *linphone_core_get_proxy_config_by_refkey(LinphoneCore *lc, const char *refkey);
 
 /**
  * @return the default proxy configuration, that is the one used to determine the current identity.
@@ -4616,17 +4652,19 @@ LINPHONE_PUBLIC LinphoneStatus linphone_core_set_media_encryption(LinphoneCore *
 LINPHONE_PUBLIC LinphoneMediaEncryption linphone_core_get_media_encryption(LinphoneCore *lc);
 
 /**
- * Get behaviour when encryption parameters negociation fails on outgoing call.
+ * Check if the configured media encryption is mandatory or not.
  * @param[in] lc #LinphoneCore object.
- * @return TRUE means the call will fail; FALSE means an INVITE will be resent with encryption disabled.
+ * @return TRUE if media encryption is mandatory; FALSE otherwise.
  * @ingroup media_parameters
  */
 LINPHONE_PUBLIC bool_t linphone_core_is_media_encryption_mandatory(LinphoneCore *lc);
 
 /**
- * Define behaviour when encryption parameters negociation fails on outgoing call.
+ * Define whether the configured media encryption is mandatory, if it is and the negotation cannot result 
+ * in the desired media encryption then the call will fail. If not an INVITE will be resent with encryption
+ * disabled.
  * @param[in] lc #LinphoneCore object.
- * @param[in] m If set to TRUE call will fail; if set to FALSE will resend an INVITE with encryption disabled.
+ * @param[in] m TRUE to set it mandatory; FALSE otherwise.
  * @ingroup media_parameters
  */
 LINPHONE_PUBLIC void linphone_core_set_media_encryption_mandatory(LinphoneCore *lc, bool_t m);
@@ -5283,6 +5321,8 @@ LINPHONE_DEPRECATED LINPHONE_PUBLIC const char *linphone_core_get_chat_database_
  * Create a client-side group chat room. When calling this function the chat room is only created
  * at the client-side and is empty. You need to call linphone_chat_room_add_participants() to
  * create at the server side and add participants to it.
+ * Also, the created chat room will not be a one-to-one chat room even if linphone_chat_room_add_participants() is called with only one participant.
+ *
  * @param[in] lc A #LinphoneCore object
  * @param[in] subject The subject of the group chat room
  * @param[in] fallback Boolean value telling whether we should plan on being able to fallback to a basic chat room if the client-side group chat room creation fails
@@ -5294,6 +5334,8 @@ LINPHONE_PUBLIC LINPHONE_DEPRECATED LinphoneChatRoom * linphone_core_create_clie
  * Create a client-side group chat room. When calling this function the chat room is only created
  * at the client-side and is empty. You need to call linphone_chat_room_add_participants() to
  * create at the server side and add participants to it.
+ * Also, the created chat room will not be a one-to-one chat room even if linphone_chat_room_add_participants() is called with only one participant.
+ *
  * @param[in] lc A #LinphoneCore object
  * @param[in] subject The subject of the group chat room
  * @param[in] fallback Boolean value telling whether we should plan on being able to fallback to a basic chat room if the client-side group chat room creation fails
@@ -5319,7 +5361,6 @@ LINPHONE_PUBLIC LinphoneChatRoom *linphone_core_create_chat_room(LinphoneCore *l
  *
  * @param[in] lc A #LinphoneCore object
  * @param[in] params The chat room creation parameters #LinphoneChatRoomParams
- * @param[in] subject The subject of the group chat room
  * @param[in] participants \bctbx_list{LinphoneAddress} The initial list of participants of the chat room
  * @return The newly created chat room.
  */
@@ -5701,6 +5742,14 @@ LINPHONE_PUBLIC LINPHONE_DEPRECATED LinphoneFriend *linphone_core_get_friend_by_
  * @return The #LinphoneFriend object corresponding to the given address.
  */
 LINPHONE_PUBLIC LinphoneFriend *linphone_core_find_friend(const LinphoneCore *lc, const LinphoneAddress *addr);
+
+/**
+ * Search all #LinphoneFriend matching an address.
+ * @param[in] lc #LinphoneCore object.
+ * @param[in] addr The address to use to search the friends.
+ * @return \bctbx_list{LinphoneFriend} a list of #LinphoneFriend corresponding to the given address.
+ */
+LINPHONE_PUBLIC bctbx_list_t *linphone_core_find_friends(const LinphoneCore *lc, const LinphoneAddress *addr);
 
 /**
  * Search a #LinphoneFriend by its reference key.
