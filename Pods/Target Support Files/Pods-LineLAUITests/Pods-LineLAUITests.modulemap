@@ -1,0 +1,6 @@
+framework module Pods_LineLAUITests {
+  umbrella header "Pods-LineLAUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,81 @@
+
+/* Class = "UILabel"; text = "name"; ObjectID = "2Nn-jW-Vtb"; */
+"2Nn-jW-Vtb.text" = "name";
+
+/* Class = "UILabel"; text = "Member ID:"; ObjectID = "2kc-lW-kZN"; */
+"2kc-lW-kZN.text" = "Member ID:";
+
+/* Class = "UILabel"; text = "00:00"; ObjectID = "8oc-Ku-S62"; */
+"8oc-Ku-S62.text" = "00:00";
+
+/* Class = "UILabel"; text = "Profile Name"; ObjectID = "AXp-Ip-7tU"; */
+"AXp-Ip-7tU.text" = "Profile Name";
+
+/* Class = "UITextView"; text = "RightMsg"; ObjectID = "Al4-5O-VpQ"; */
+"Al4-5O-VpQ.text" = "RightMsg";
+
+/* Class = "UILabel"; text = "Chat name"; ObjectID = "Btq-p4-Bgi"; */
+"Btq-p4-Bgi.text" = "Chat name";
+
+/* Class = "UILabel"; text = "22:21"; ObjectID = "FXk-FD-H1T"; */
+"FXk-FD-H1T.text" = "22:21";
+
+/* Class = "UIViewController"; title = "Home"; ObjectID = "JKi-27-GML"; */
+"JKi-27-GML.title" = "Home";
+
+/* Class = "UILabel"; text = "15:02"; ObjectID = "Lma-ub-X9u"; */
+"Lma-ub-X9u.text" = "15:02";
+
+/* Class = "UILabel"; text = "Member Name:"; ObjectID = "Sfz-Oj-CGp"; */
+"Sfz-Oj-CGp.text" = "Member Name:";
+
+/* Class = "UILabel"; text = "msg..."; ObjectID = "UFq-d6-kik"; */
+"UFq-d6-kik.text" = "msg...";
+
+/* Class = "UIButton"; normalTitle = "back"; ObjectID = "Vgw-F7-TSi"; */
+"Vgw-F7-TSi.normalTitle" = "back";
+
+/* Class = "UIViewController"; title = "ScannerController"; ObjectID = "WoG-Ab-vtF"; */
+"WoG-Ab-vtF.title" = "ScannerController";
+
+/* Class = "UILabel"; text = "Sun, Dec 23"; ObjectID = "XNq-Er-i2z"; */
+"XNq-Er-i2z.text" = "Sun, Dec 23";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "YEX-Jd-2Ay"; */
+"YEX-Jd-2Ay.text" = "Title";
+
+/* Class = "UILabel"; text = "Friend"; ObjectID = "dg8-P0-JWx"; */
+"dg8-P0-JWx.text" = "Friend";
+
+/* Class = "UINavigationItem"; title = "Barcode Scanner"; ObjectID = "kRe-T5-crZ"; */
+"kRe-T5-crZ.title" = "Barcode Scanner";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "kkz-45-2or"; */
+"kkz-45-2or.text" = "Name";
+
+/* Class = "UITextView"; text = "LeftMsg"; ObjectID = "knw-8h-cGn"; */
+"knw-8h-cGn.text" = "LeftMsg";
+
+/* Class = "UIBarButtonItem"; title = "B"; ObjectID = "mKg-qZ-kpa"; */
+"mKg-qZ-kpa.title" = "B";
+
+/* Class = "UILabel"; text = "Chat"; ObjectID = "pqq-58-vxg"; */
+"pqq-58-vxg.text" = "Chat";
+
+/* Class = "UIButton"; normalTitle = "Confirm Login"; ObjectID = "rU2-Ga-BUE"; */
+"rU2-Ga-BUE.normalTitle" = "Confirm Login";
+
+/* Class = "UIButton"; normalTitle = "Exit"; ObjectID = "s8Y-oz-Qfp"; */
+"s8Y-oz-Qfp.normalTitle" = "Exit";
+
+/* Class = "UIButton"; normalTitle = "Login"; ObjectID = "tZn-cL-jex"; */
+"tZn-cL-jex.normalTitle" = "Login";
+
+/* Class = "UILabel"; text = "Group: type X"; ObjectID = "wIf-Tr-ZFB"; */
+"wIf-Tr-ZFB.text" = "Group: type X";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "xIk-7a-r2g"; */
+"xIk-7a-r2g.normalTitle" = "Cancel";
+
+/* Class = "UIButton"; normalTitle = "Back"; ObjectID = "z3i-RM-Vr8"; */
+"z3i-RM-Vr8.normalTitle" = "Back";

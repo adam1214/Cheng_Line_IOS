@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  LineLA
+
+  Created by uscclab on 2018/9/10.
+  Copyright © 2018 uscclab. All rights reserved.
+*/
+"OK" = "好";
+"Modify" = "提出异动";
+"ModifyMsg" = "我临时有事，无法参与该场拜访，请帮我取消，谢谢!";
+"Join" = "我会参加！";
+"gorup:typeA" = "群组:typeA";
+"gorup:typeB" = "群组:typeB";
+"gorup:typeC" = "群组:typeC";
+"friend" = "friend";

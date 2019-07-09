@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  LineLA
+
+  Created by uscclab on 2018/9/10.
+  Copyright © 2018 uscclab. All rights reserved.
+*/
+"OK" = "OK";
+"Modify" = "Modify";
+"ModifyMsg" = "I am temporarily unable to participate in the visit, please help me cancel, thank you!";
+"Join" = "Join";
+"gorup:typeA" = "gorup:typeA";
+"gorup:typeB" = "gorup:typeB";
+"gorup:typeC" = "gorup:typeC";
+"friend" = "friend";
