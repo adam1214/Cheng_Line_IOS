@@ -259,7 +259,7 @@ extension FriendTableViewController {
                 self.present(controller, animated: true, completion: nil)
             }
         }
-    }
+    }	
     
     func exitUI(){
         self.memberID = nil

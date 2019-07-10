@@ -75,10 +75,10 @@ extension ChatPageViewController {
     @IBAction func logout(_ sender: Any) {
         for i in 0..<(self.navigationController?.viewControllers.count)!{
             if let controller =  self.navigationController?.viewControllers[i] as? HomeController {
-                shared.clearAppInfo()
+//                shared.clearAppInfo()
                 controller.shared = shared
-                controller.accountInfo = shared.accountInfo
-                controller.loginInfo = shared.loginInfo
+//                controller.accountInfo = shared.accountInfo
+//                controller.loginInfo = shared.loginInfo
                 exitUI()
                 if let controller = self.tabBarController?.viewControllers?[0] as? FriendPageViewController{
                     controller.exitUI()

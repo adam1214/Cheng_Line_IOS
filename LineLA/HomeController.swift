@@ -35,25 +35,25 @@ extension HomeController {
         UIDevice.current.setValue(value, forKey: "orientation")
         
         // check login state
-        if !loginInfo.token {
-            if loginInfo.cardID != nil{
-                if let controller = storyboard?.instantiateViewController(withIdentifier: "ConfirmLoginController") as? ConfirmLoginController{
-                    controller.shared = shared
-                    exitUI()
-                    navigationController?.pushViewController(controller, animated: true)
-                }
-            }
-        } else {
-            // go to TabBarViewController.
-            if let controller = storyboard?.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController {
-//                controller.restorationIdentifier = "goHome"
-                if let controller = controller.viewControllers?.first as? FriendPageViewController{
-                    controller.shared = shared
-                }
-                exitUI()
-                navigationController?.pushViewController(controller, animated: true)
-            }
-        }
+//        if !loginInfo.token {
+//            if loginInfo.cardID != nil{
+//                if let controller = storyboard?.instantiateViewController(withIdentifier: "ConfirmLoginController") as? ConfirmLoginController{
+//                    controller.shared = shared
+//                    exitUI()
+//                    navigationController?.pushViewController(controller, animated: true)
+//                }
+//            }
+//        } else {
+//            // go to TabBarViewController.
+//            if let controller = storyboard?.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController {
+////                controller.restorationIdentifier = "goHome"
+//                if let controller = controller.viewControllers?.first as? FriendPageViewController{
+//                    controller.shared = shared
+//                }
+//                exitUI()
+//                navigationController?.pushViewController(controller, animated: true)
+//            }
+//        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -96,11 +96,19 @@ extension HomeController {
 // IBAction func
 extension HomeController {
     @IBAction func actionLogin(_ sender: Any) {
-        if let controller = storyboard?.instantiateViewController(withIdentifier: "ScannerController") as? ScannerController{
-            controller.shared = shared
-            exitUI()
-            navigationController?.pushViewController(controller, animated: true)
+        if let controller = storyboard?.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController {
+    //                controller.restorationIdentifier = "goHome"
+                    if let controller = controller.viewControllers?.first as? FriendPageViewController{
+                        controller.shared = shared
+                    }
+                    exitUI()
+                    navigationController?.pushViewController(controller, animated: true)
         }
+//        if let controller = storyboard?.instantiateViewController(withIdentifier: "ScannerController") as? ScannerController{
+//            controller.shared = shared
+//            exitUI()
+//            navigationController?.pushViewController(controller, animated: true)
+//        }
     }
     
     @IBAction func actionExit(_ sender: Any) {

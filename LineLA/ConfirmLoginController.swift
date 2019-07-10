@@ -62,7 +62,7 @@ extension ConfirmLoginController {
         initClosure()
         createGradientLayer()
         checkMemberID()
-        GlobalInfo.getProfile(memberID: memberID,activity: showProfile)
+//        GlobalInfo.getProfile(memberID: memberID,activity: showProfile)
         
         buttonShadow(button: buttonConfirmLogin)
         buttonShadow(button: buttonCancel)
@@ -155,7 +155,7 @@ extension ConfirmLoginController {
     @IBAction func actionCancel(_ sender: Any) {
         for i in 0..<(self.navigationController?.viewControllers.count)!{
             if let controller =  self.navigationController?.viewControllers[i] as? HomeController {
-                shared.clearAppInfo()
+//                shared.clearAppInfo()
                 controller.shared = shared
                 controller.loginInfo = shared.loginInfo
                 controller.accountInfo = shared.accountInfo

@@ -58,60 +58,60 @@ extension FriendPageViewController {
 // My func
 extension FriendPageViewController {
     func prepare() {
-        accountInfo = shared.accountInfo
-        imgViewAvatar.image = accountInfo.memberAvatar
-        labelMemberName.text = accountInfo.memberName
-        databaseManager = shared.databaseManager
-        linphoneManager = shared.linphoneManager
-        linphoneManager.login()
-        self.linphoneManager.theLinphone.controller = self
-        initClosure()
-        unReadNotification = MessageObserver(activity: isNotification, id: "Unread")
-        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(swiped))
-        swipeLeft.direction = UISwipeGestureRecognizer.Direction.left
-        self.view.addGestureRecognizer(swipeLeft)
+//        accountInfo = shared.accountInfo
+//        imgViewAvatar.image = accountInfo.memberAvatar
+//        labelMemberName.text = accountInfo.memberName
+//        databaseManager = shared.databaseManager
+//        linphoneManager = shared.linphoneManager
+//        linphoneManager.login()
+//        self.linphoneManager.theLinphone.controller = self
+//        initClosure()
+//        unReadNotification = MessageObserver(activity: isNotification, id: "Unread")
+//        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(swiped))
+//        swipeLeft.direction = UISwipeGestureRecognizer.Direction.left
+//        self.view.addGestureRecognizer(swipeLeft)
     }
     
     func initClosure(){
-        isNotification = { () -> () in
-            let memberID = self.unReadNotification.memberID!
-            if memberID != self.accountInfo.memberID {
-                let date = self.shared.dateUtil
-                let msgID = self.unReadNotification.msgID!
-                let memberName = self.unReadNotification.memberName!
-                let msg = self.unReadNotification.msg!
-                let topicID = self.unReadNotification.topicID!
-                self.accountInfo.unReadCount = self.accountInfo.unReadCount! + 1
-                let unReadCount = self.accountInfo.unReadCount!
-                
-                let content = UNMutableNotificationContent()
-                content.title = memberName
-                content.body = msg
-                content.badge = unReadCount as NSNumber
-                content.sound = UNNotificationSound.default
-                self.databaseManager.chatRoomTable.setTableName(topicID)
-                self.databaseManager.chatRoomTable.createTable()
-                
-                let msgTime = date.getMsgTime()
-                self.databaseManager.chatRoomTable.insertData(_uuid: msgID, _memberId: memberID, _memberName: memberName, _memberAvatar: "", _msg: msg, _msgTime: msgTime)
-                //            let imageURL = Bundle.main.url(forResource: "pic", withExtension: "jpg")
-                //            let attachment = try! UNNotificationAttachment(identifier: "", url: imageURL!, options: nil)
-                //            content.attachments = [attachment]
-                
-                //            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
-                let request = UNNotificationRequest(identifier: "notification1", content: content, trigger: nil)
-                UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
-            }
-        }
+//        isNotification = { () -> () in
+//            let memberID = self.unReadNotification.memberID!
+//            if memberID != self.accountInfo.memberID {
+//                let date = self.shared.dateUtil
+//                let msgID = self.unReadNotification.msgID!
+//                let memberName = self.unReadNotification.memberName!
+//                let msg = self.unReadNotification.msg!
+//                let topicID = self.unReadNotification.topicID!
+//                self.accountInfo.unReadCount = self.accountInfo.unReadCount! + 1
+//                let unReadCount = self.accountInfo.unReadCount!
+//
+//                let content = UNMutableNotificationContent()
+//                content.title = memberName
+//                content.body = msg
+//                content.badge = unReadCount as NSNumber
+//                content.sound = UNNotificationSound.default
+//                self.databaseManager.chatRoomTable.setTableName(topicID)
+//                self.databaseManager.chatRoomTable.createTable()
+//
+//                let msgTime = date.getMsgTime()
+//                self.databaseManager.chatRoomTable.insertData(_uuid: msgID, _memberId: memberID, _memberName: memberName, _memberAvatar: "", _msg: msg, _msgTime: msgTime)
+//                //            let imageURL = Bundle.main.url(forResource: "pic", withExtension: "jpg")
+//                //            let attachment = try! UNNotificationAttachment(identifier: "", url: imageURL!, options: nil)
+//                //            content.attachments = [attachment]
+//
+//                //            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
+//                let request = UNNotificationRequest(identifier: "notification1", content: content, trigger: nil)
+//                UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+//            }
+//        }
     }
     
     func exitUI() {
-        childFTVC?.tableViewData.FTVCData.removeAll()
-        childFTVC?.tableView.reloadData()
-        childFTVC?.exitUI()
-        childFTVC = nil
-        linphoneManager.logout()
-        linphoneManager = nil
+//        childFTVC?.tableViewData.FTVCData.removeAll()
+//        childFTVC?.tableView.reloadData()
+//        childFTVC?.exitUI()
+//        childFTVC = nil
+//        linphoneManager.logout()
+//        linphoneManager = nil
         accountInfo = nil
         shared = nil
         imgViewAvatar.image = nil
@@ -130,7 +130,7 @@ extension FriendPageViewController {
                 controller.viewControllers.removeAll()
                 let mainVC = UIStoryboard.init(name: "Main", bundle: nil)
                 if let childcontroller = mainVC.instantiateViewController(withIdentifier: "HomeController") as? HomeController {
-                    shared.clearAppInfo()
+//                    shared.clearAppInfo()
                     childcontroller.shared = shared
                     exitUI()
                     controller.viewControllers.append(childcontroller)
