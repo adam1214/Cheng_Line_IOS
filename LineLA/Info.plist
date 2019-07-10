@@ -54,10 +54,10 @@
 	<true/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Make calls</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Will take your camera</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Make calls</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Will take your photo Library</string>
 	<key>UIBackgroundModes</key>

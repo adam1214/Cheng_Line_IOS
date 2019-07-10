@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		073A1F45A4AD4FA1B905A847 /* Pods_LineLAUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030E7DF84963CCA4F61B9A7C /* Pods_LineLAUITests.framework */; };
 		5BBBDB1C21F46CCB00A07BA7 /* SQLiteConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBBDB1B21F46CCB00A07BA7 /* SQLiteConnect.swift */; };
-		8273F214C6A3CC605A073938 /* Pods_LineLA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF6486D6706714668E81E4F5 /* Pods_LineLA.framework */; };
+		8EAD2B3722D5845D00C2F4B7 /* Pods_LineLA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF6486D6706714668E81E4F5 /* Pods_LineLA.framework */; };
 		9EB88B881087C403EBC62192 /* Pods_LineLATests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 112EBB05E22D7CFEBBB27B99 /* Pods_LineLATests.framework */; };
 		AF3CA2D121998F99009D9A3B /* ChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3CA2D021998F99009D9A3B /* ChatRoomViewController.swift */; };
 		AF3CA2D32199F0CF009D9A3B /* MQTTManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3CA2D22199F0CF009D9A3B /* MQTTManager.swift */; };
@@ -147,7 +147,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8273F214C6A3CC605A073938 /* Pods_LineLA.framework in Frameworks */,
+				8EAD2B3722D5845D00C2F4B7 /* Pods_LineLA.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,6 +368,9 @@
 								enabled = 0;
 							};
 							com.apple.HomeKit = {
+								enabled = 0;
+							};
+							com.apple.Keychain = {
 								enabled = 0;
 							};
 						};
@@ -774,7 +777,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2HZL76C8HX;
+				DEVELOPMENT_TEAM = WYQAMSAMYF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/linphone-sdk/linphone-sdk/apple-darwin/Frameworks",
@@ -785,7 +788,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.uscclab.LineLA;
+				PRODUCT_BUNDLE_IDENTIFIER = com.uscclab.LineLA12345;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "LineLA/LineLA-bridging-header.h";
@@ -802,7 +805,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2HZL76C8HX;
+				DEVELOPMENT_TEAM = WYQAMSAMYF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/linphone-sdk/linphone-sdk/apple-darwin/Frameworks",
@@ -813,7 +816,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.uscclab.LineLA;
+				PRODUCT_BUNDLE_IDENTIFIER = com.uscclab.LineLA12345;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "LineLA/LineLA-bridging-header.h";
