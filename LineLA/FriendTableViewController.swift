@@ -200,66 +200,66 @@ extension FriendTableViewController {
     }
     
     func initClosure(){
-        updataAppInfo = {(_ responseData: Data) -> () in
-            // parse the result as JSON, since that's what the API provides
-            do {
-                for i in 0..<self.tableViewData.FTVCData.count {
-                    self.tableViewData.FTVCData[i].ProfileInfos.removeAll()
-                }
-                
-                // get jsonAry from responseData [[]]
-                guard let jsonAry = try JSONSerialization.jsonObject(with: responseData, options: []) as? [[String:String]] else { return } // print("Could not get array from Data")
-                
-                for index in 0..<jsonAry.count { // get jsonObject from jsonAry.
-                    let jsonObject = jsonAry[index]
-                    
-                    guard let profileName = jsonObject["name"] else { return } //print("Could not get name from JSON")
-                    guard let section = Int(jsonObject["section"]!) else { return } // print("Could not get section from JSON")
-                    guard let chatRoomID = jsonObject["chatRoomID"] else { return } // print("Could not get chatRoomID from JSON")
-                    guard let data = Data(base64Encoded: jsonObject["avatar"]!) else { return } // print("Could not get avater from JSON")
-                    var phoneNb = ""
-                    if let phoneNumber = jsonObject["friendID"] { phoneNb = phoneNumber } //print("Could not get friendID from JSPN")
-                    guard let memberID = self.memberID else { return }
-                    
-                    var topicName = ""
-                    switch chatRoomID{
-                    case "group_3":
-                        topicName = "group_3/\(memberID)"
-                    case "group_5":
-                        topicName = "recommend/\(memberID)"
-                    case "group_6":
-                        topicName = "support/\(memberID)"
-                    default:
-                        topicName = chatRoomID
-                    }
-                    
-                    let avatar = UIImage(data: data,scale:1.0)
-                    var profile:ProfileInfo
-                        
-                    profile = ProfileInfo(profileName: profileName,  section: section, chatRoomID: topicName, avatar: avatar, phoneNb: phoneNb)
-                    
-                    self.tableViewData.FTVCData[section].ProfileInfos.append(profile)
-                    let FTVCDatacount = self.tableViewData.FTVCData.count
-                    let ProfileInfoscount = self.tableViewData.FTVCData[FTVCDatacount-1].ProfileInfos.count
-                    self.indexPaths.append(IndexPath(row: ProfileInfoscount, section: FTVCDatacount-1))
-                    if !(self.mqttManager.topicList.contains(topicName: topicName)) { self.mqttManager.topicList.append(topicName: topicName) }
-                    
-                }
-                self.mqttManager.setupMQTT()
-            } catch  {
-                print("error trying to convert data to JSON")
-                return
-            }
-        }
-        gotoCallController = { (_ profile:ProfileInfo) -> () in
-            if let controller = self.storyboard?.instantiateViewController(withIdentifier: "CallViewController") as? CallViewController {
-                controller.shared = self.shared
-                controller.profile = profile
-                controller.isCallOut = true
-                self.present(controller, animated: true, completion: nil)
-            }
-        }
-    }	
+//        updataAppInfo = {(_ responseData: Data) -> () in
+//            // parse the result as JSON, since that's what the API provides
+//            do {
+//                for i in 0..<self.tableViewData.FTVCData.count {
+//                    self.tableViewData.FTVCData[i].ProfileInfos.removeAll()
+//                }
+//
+//                // get jsonAry from responseData [[]]
+//                guard let jsonAry = try JSONSerialization.jsonObject(with: responseData, options: []) as? [[String:String]] else { return } // print("Could not get array from Data")
+//
+//                for index in 0..<jsonAry.count { // get jsonObject from jsonAry.
+//                    let jsonObject = jsonAry[index]
+//
+//                    guard let profileName = jsonObject["name"] else { return } //print("Could not get name from JSON")
+//                    guard let section = Int(jsonObject["section"]!) else { return } // print("Could not get section from JSON")
+//                    guard let chatRoomID = jsonObject["chatRoomID"] else { return } // print("Could not get chatRoomID from JSON")
+//                    guard let data = Data(base64Encoded: jsonObject["avatar"]!) else { return } // print("Could not get avater from JSON")
+//                    var phoneNb = ""
+//                    if let phoneNumber = jsonObject["friendID"] { phoneNb = phoneNumber } //print("Could not get friendID from JSPN")
+//                    guard let memberID = self.memberID else { return }
+//
+//                    var topicName = ""
+//                    switch chatRoomID{
+//                    case "group_3":
+//                        topicName = "group_3/\(memberID)"
+//                    case "group_5":
+//                        topicName = "recommend/\(memberID)"
+//                    case "group_6":
+//                        topicName = "support/\(memberID)"
+//                    default:
+//                        topicName = chatRoomID
+//                    }
+//
+//                    let avatar = UIImage(data: data,scale:1.0)
+//                    var profile:ProfileInfo
+//
+//                    profile = ProfileInfo(profileName: profileName,  section: section, chatRoomID: topicName, avatar: avatar, phoneNb: phoneNb)
+//
+//                    self.tableViewData.FTVCData[section].ProfileInfos.append(profile)
+//                    let FTVCDatacount = self.tableViewData.FTVCData.count
+//                    let ProfileInfoscount = self.tableViewData.FTVCData[FTVCDatacount-1].ProfileInfos.count
+//                    self.indexPaths.append(IndexPath(row: ProfileInfoscount, section: FTVCDatacount-1))
+//                    if !(self.mqttManager.topicList.contains(topicName: topicName)) { self.mqttManager.topicList.append(topicName: topicName) }
+//
+//                }
+//                self.mqttManager.setupMQTT()
+//            } catch  {
+//                print("error trying to convert data to JSON")
+//                return
+//            }
+//        }
+//        gotoCallController = { (_ profile:ProfileInfo) -> () in
+//            if let controller = self.storyboard?.instantiateViewController(withIdentifier: "CallViewController") as? CallViewController {
+//                controller.shared = self.shared
+//                controller.profile = profile
+//                controller.isCallOut = true
+//                self.present(controller, animated: true, completion: nil)
+//            }
+//        }
+    }
     
     func exitUI(){
         self.memberID = nil

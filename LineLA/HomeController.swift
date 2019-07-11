@@ -75,6 +75,7 @@ extension HomeController {
         loginInfo = shared.loginInfo
         buttonShadow(button: buttonLogin)
         buttonShadow(button: buttonExit)
+        shared.mqttManager.setupMQTT()
     }
     
     func buttonShadow(button: UIButton!) {  // button 陰影
@@ -96,19 +97,19 @@ extension HomeController {
 // IBAction func
 extension HomeController {
     @IBAction func actionLogin(_ sender: Any) {
-        if let controller = storyboard?.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController {
+//        if let controller = storyboard?.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController {
     //                controller.restorationIdentifier = "goHome"
-                    if let controller = controller.viewControllers?.first as? FriendPageViewController{
-                        controller.shared = shared
-                    }
-                    exitUI()
-                    navigationController?.pushViewController(controller, animated: true)
-        }
-//        if let controller = storyboard?.instantiateViewController(withIdentifier: "ScannerController") as? ScannerController{
-//            controller.shared = shared
-//            exitUI()
-//            navigationController?.pushViewController(controller, animated: true)
+//                    if let controller = controller.viewControllers?.first as? FriendPageViewController{
+//                        controller.shared = shared
+//                    }
+//                    exitUI()
+//                    navigationController?.pushViewController(controller, animated: true)
 //        }
+        if let controller = storyboard?.instantiateViewController(withIdentifier: "ScannerController") as? ScannerController{
+            controller.shared = shared
+            exitUI()
+            navigationController?.pushViewController(controller, animated: true)
+        }
     }
     
     @IBAction func actionExit(_ sender: Any) {

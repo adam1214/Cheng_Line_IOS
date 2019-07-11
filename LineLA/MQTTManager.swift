@@ -9,47 +9,12 @@
 import Foundation
 import CocoaMQTT
 
-struct TopicList{
-    private var topics: [String] = [String]()
-}
-
-extension TopicList {
-
-    mutating func append(topicName: String) {
-        topics.append(topicName)
-    }
-
-    mutating func getTopic(index: Int) -> String {
-        return topics[index]
-    }
-
-    mutating func count() -> Int {
-        return topics.count
-    }
-
-    mutating func getTopics() -> [String] {
-        return topics
-    }
-
-    mutating func setTopic(index: Int, topicName: String) {
-        topics[index] = topicName
-    }
-
-    mutating func contains(topicName: String) -> Bool {
-        return topics.contains(topicName)
-    }
-
-    mutating func removeAll() {
-        topics.removeAll()
-    }
-}
-
 // Member attribute
 class MQTTManager: NSObject{
-    let USERNAME = "LineLA"
-    let PASSWORD = "LineLA"
+    let USERNAME = "ChengLine"
+    let PASSWORD = "ChengLine"
+    var clientID: String!
     var mqtt: CocoaMQTT!
-    var topicList: TopicList!
     var curtopic: String!
     
     private static var mqttManager: MQTTManager = {
@@ -58,22 +23,37 @@ class MQTTManager: NSObject{
     
     private override init(){
         super.init()
-        self.topicList = TopicList()
         self.curtopic = ""
         
-        let clientID = "CocoaMQTT-" + String(ProcessInfo().processIdentifier)
-        mqtt = CocoaMQTT(clientID: clientID, host: "140.116.82.34", port: 1883)
+        clientID = "CocoaMQTT-" + String(ProcessInfo().processIdentifier)
+        mqtt = CocoaMQTT(clientID: clientID, host: "140.116.82.52", port: 1883)
         
         mqtt.username = USERNAME
         mqtt.password = PASSWORD
         
         mqtt.keepAlive = 60
         mqtt.delegate = self
+        
     }
 
-    
     class func shared() -> MQTTManager {
         return mqttManager
+    }
+    
+    func subTopicLogin(){
+        mqtt.subscribe("IDF/Login/\(clientID!)/Re", qos: CocoaMQTTQOS.qos2)
+    }
+    
+    func subTopicMain(){
+        
+    }
+    
+    func unsubTopicLogin(){
+        mqtt.unsubscribe("IDF/Login/\(clientID!)/Re")
+    }
+    
+    func unsubTopicMain(){
+        
     }
 }
 
@@ -98,12 +78,8 @@ extension MQTTManager: CocoaMQTTDelegate {
 //        print("ack: \(ack)")
         
         if ack == .accept {
-            if (topicList.count() > 0) {
-                for topic in topicList.getTopics() {
-                    mqtt.subscribe(topic,qos: CocoaMQTTQOS.qos2)
-                }
-            }
-            //            mqtt.subscribe("chat/room/animals/client/+", qos: CocoaMQTTQOS.qos1)
+            print("connect accept")
+            subTopicLogin()
             //
             //            let chatViewController = storyboard?.instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController
             //            chatViewController?.mqtt = mqtt
@@ -116,7 +92,7 @@ extension MQTTManager: CocoaMQTTDelegate {
     }
     
     func mqtt(_ mqtt: CocoaMQTT, didPublishMessage message: CocoaMQTTMessage, id: UInt16) {
-//        print("message: \(String(describing: message.string?.description)), id: \(id)")
+        print("publish message: \(String(describing: message.string?.description)), id: \(id)")
     }
     
     func mqtt(_ mqtt: CocoaMQTT, didPublishAck id: UInt16) {
@@ -124,22 +100,23 @@ extension MQTTManager: CocoaMQTTDelegate {
     }
     
     func mqtt(_ mqtt: CocoaMQTT, didReceiveMessage message: CocoaMQTTMessage, id: UInt16 ) {
-//        print("message: \(String(describing: message.string?.description)), id: \(id)")
-//        print("topic: \(message.topic)")
-        guard let temp = message.string else { return }
-        let strary:[String] = temp.components(separatedBy: ";")
-        let msgID = strary[0]
-        let memberID = strary[1]
-        let memberName = strary[2]
-        let msg = strary[3]
-        let notificationName = Notification.Name(rawValue: "\(message.topic)")
-        NotificationCenter.default.post(name: notificationName, object: self,
-                                        userInfo: ["topicID": message.topic,"msgID": msgID, "memberID": memberID, "memberName": memberName, "msg": msg])
-        
-        if( message.topic != curtopic){ // Unread notification.
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Unread"), object: self,
-                                            userInfo: ["topicID": message.topic,"msgID": msgID, "memberID": memberID, "memberName": memberName, "msg": msg])
-        }
+//        print("recv message: \(String(describing: message.string?.description)), id: \(id)")
+//        print("recv topic: \(message.topic)")
+          print("XDDDD")
+//        guard let temp = message.string else { return }
+//        let strary:[String] = temp.components(separatedBy: ";")
+//        let msgID = strary[0]
+//        let memberID = strary[1]
+//        let memberName = strary[2]
+//        let msg = strary[3]
+//        let notificationName = Notification.Name(rawValue: "\(message.topic)")
+//        NotificationCenter.default.post(name: notificationName, object: self,
+//                                        userInfo: ["topicID": message.topic,"msgID": msgID, "memberID": memberID, "memberName": memberName, "msg": msg])
+//
+//        if( message.topic != curtopic){ // Unread notification.
+//            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Unread"), object: self,
+//                                            userInfo: ["topicID": message.topic,"msgID": msgID, "memberID": memberID, "memberName": memberName, "msg": msg])
+//        }
         
         
         //        let name = NSNotification.Name(rawValue: "MQTTMessageNotification" + animal!)
@@ -147,7 +124,7 @@ extension MQTTManager: CocoaMQTTDelegate {
     }
     
     func mqtt(_ mqtt: CocoaMQTT, didSubscribeTopic topic: String) {
-//        print("topic: \(topic)")
+        print("subscribe topic: \(topic)")
     }
     
     func mqtt(_ mqtt: CocoaMQTT, didUnsubscribeTopic topic: String) {
@@ -189,7 +166,6 @@ extension MQTTManager {
         */
     }
     func stopMQTT(){
-        self.topicList.removeAll()
         mqtt.disconnect()
     }
 }

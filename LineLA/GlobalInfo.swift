@@ -197,10 +197,6 @@ class GlobalInfo: NSObject {
 
 // My func
 extension GlobalInfo{
-//    func prepare() {
-//        topiclist = topicList()
-//
-//    }
     private static func setupAccountInfo() -> AccountInfo {
         let memberName = UserDefaults.AccountInfo.string(forKey: .memberName)
         let memberID = UserDefaults.AccountInfo.string(forKey: .memberID)
@@ -248,51 +244,55 @@ extension GlobalInfo{
 extension GlobalInfo{
     // Download data from server by HTTP protocol. (URLSession)
     static func getProfile(memberID: String?,activity: @escaping (_ responseData: Data)->()) {  // get profile.
-        if let memberID = memberID {
-            let scheme = "http://140.116.82.34/communicate/GetUserProfile.php?memberID=\(memberID)"
-            let url:URL! = URL(string: scheme)
-            // make the request
-            let task = URLSession.shared.dataTask(with: url) {
-                (data, response, error) in
-                // check for any errors
-                guard error == nil else {
-                    print("error calling GET on /todos/1")
-                    print(error!)
-                    return
-                }
-                // make sure we got data
-                guard let responseData = data else {
-                    print("Error: did not receive data")
-                    return
-                }
-                activity(responseData)
-            }
-            task.resume()
-        }
+//        if let memberID = memberID {
+//            let scheme = "http://140.116.82.34/communicate/GetUserProfile.php?memberID=\(memberID)"
+//            let url:URL! = URL(string: scheme)
+//            // make the request
+//            let task = URLSession.shared.dataTask(with: url) {
+//                (data, response, error) in
+//                // check for any errors
+//                guard error == nil else {
+//                    print("error calling GET on /todos/1")
+//                    print(error!)
+//                    return
+//                }
+//                // make sure we got data
+//                guard let responseData = data else {
+//                    print("Error: did not receive data")
+//                    return
+//                }
+//                activity(responseData)
+//            }
+//            task.resume()
+//        }
     }
     
     // Download data from server by HTTP protocol. (URLSession)
     static func getRelation(memberID: String?,activity: @escaping (_ responseData: Data)->()) {  // get Relation Data.
-        if let memberID = memberID{
-            let scheme = "http://140.116.82.34/communicate/GetRelationData.php?memberID=\(memberID)"
-            let url:URL! = URL(string: scheme)
-            // make the request
-            let task = URLSession.shared.dataTask(with: url) {
-                (data, response, error) in
-                // check for any errors
-                guard error == nil else {
-                    print("error calling GET on /todos/1")
-                    print(error!)
-                    return
-                }
-                // make sure we got data
-                guard let responseData = data else {
-                    print("Error: did not receive data")
-                    return
-                }
-                activity(responseData)
-            }
-            task.resume()
-        }
+//        if let memberID = memberID{
+//            let scheme = "http://140.116.82.34/communicate/GetRelationData.php?memberID=\(memberID)"
+//            let url:URL! = URL(string: scheme)
+//            // make the request
+//            let task = URLSession.shared.dataTask(with: url) {
+//                (data, response, error) in
+//                // check for any errors
+//                guard error == nil else {
+//                    print("error calling GET on /todos/1")
+//                    print(error!)
+//                    return
+//                }
+//                // make sure we got data
+//                guard let responseData = data else {
+//                    print("Error: did not receive data")
+//                    return
+//                }
+//                activity(responseData)
+//            }
+//            task.resume()
+//        }
+    }
+    
+    static func login(memberID: String?) -> Bool{
+        return true
     }
 }

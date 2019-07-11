@@ -135,8 +135,12 @@ extension ScannerController {
     
     func backToHome() {
         let barcode = self.scannerObserver.barcode;
+        print(barcode!)
         loginInfo.cardID = barcode
         loginInfo.token = false
+        shared.mqttManager.mqtt.publish("IDF/Login/\(shared.mqttManager.clientID!)", withString: String(barcode!))
+//        print("\(shared.mqttManager.clientID!)")
+//        print(shared.mqttManager.clientID!)
         for i in 0..<(self.navigationController?.viewControllers.count)!{
             if let controller =  self.navigationController?.viewControllers[i] as? HomeController {
                 controller.shared = shared
