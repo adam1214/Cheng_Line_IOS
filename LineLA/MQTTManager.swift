@@ -93,6 +93,8 @@ extension MQTTManager: CocoaMQTTDelegate {
     
     func mqtt(_ mqtt: CocoaMQTT, didPublishMessage message: CocoaMQTTMessage, id: UInt16) {
         print("publish message: \(String(describing: message.string?.description)), id: \(id)")
+        print("send topic \(message.topic)")
+        print("send msg \(String((message.string!)))")
     }
     
     func mqtt(_ mqtt: CocoaMQTT, didPublishAck id: UInt16) {
@@ -101,7 +103,7 @@ extension MQTTManager: CocoaMQTTDelegate {
     
     func mqtt(_ mqtt: CocoaMQTT, didReceiveMessage message: CocoaMQTTMessage, id: UInt16 ) {
 //        print("recv message: \(String(describing: message.string?.description)), id: \(id)")
-//        print("recv topic: \(message.topic)")
+          print("recv topic: \(String((message.string!)))")
           print("XDDDD")
 //        guard let temp = message.string else { return }
 //        let strary:[String] = temp.components(separatedBy: ";")
