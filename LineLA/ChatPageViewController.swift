@@ -92,13 +92,14 @@ extension ChatPageViewController {
                 controller.viewControllers.removeAll()
                 let mainVC = UIStoryboard.init(name: "Main", bundle: nil)
                 if let childcontroller = mainVC.instantiateViewController(withIdentifier: "HomeController") as? HomeController {
-//                  shared.clearAppInfo()
+                    shared.clearAppInfo()
                     childcontroller.shared = shared
                     exitUI()
                     controller.viewControllers.append(childcontroller)
                 }
             }
         }
+        print("chat logout")
     }
     
     @objc  func swiped(_ gesture: UISwipeGestureRecognizer) {

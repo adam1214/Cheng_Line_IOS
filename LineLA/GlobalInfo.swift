@@ -291,8 +291,4 @@ extension GlobalInfo{
 //            task.resume()
 //        }
     }
-    
-    static func login(memberID: String?) -> Bool{
-        return true
-    }
 }

@@ -110,6 +110,8 @@ extension MQTTManager: CocoaMQTTDelegate {
 //                        print("Login success")
                     let notificationName = Notification.Name("NotifiacationLogin")
                     NotificationCenter.default.post(name: notificationName, object: nil)
+                    UserDefaults.LoginInfo.set(value: true, forKey: .token)
+                    UserDefaults.LoginInfo.set(value: msg_splitLine[1], forKey: .cardID)
                   }else{
                         print("Login fail")
                   }

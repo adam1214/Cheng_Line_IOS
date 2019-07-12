@@ -77,6 +77,7 @@ extension AppDelegate{
         let shared = GlobalInfo.shared()
         if shared.loginInfo.token {
             if let TabBarVC = mainVC.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController {
+                print("duplicated login")
                 if let childcontroller = TabBarVC.viewControllers?.first as? FriendPageViewController{
                     childcontroller.shared = shared
                 }

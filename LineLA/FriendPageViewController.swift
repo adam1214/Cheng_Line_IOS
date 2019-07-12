@@ -28,6 +28,10 @@ extension FriendPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action:  #selector(swiped))
+        swipeLeft.direction = UISwipeGestureRecognizer.Direction.left
+        self.view.addGestureRecognizer(swipeLeft)
         prepare()
     }
     
@@ -130,13 +134,14 @@ extension FriendPageViewController {
                 controller.viewControllers.removeAll()
                 let mainVC = UIStoryboard.init(name: "Main", bundle: nil)
                 if let childcontroller = mainVC.instantiateViewController(withIdentifier: "HomeController") as? HomeController {
-//                    shared.clearAppInfo()
+                    shared.clearAppInfo()
                     childcontroller.shared = shared
                     exitUI()
                     controller.viewControllers.append(childcontroller)
                 }
             }
         }
+        print("friend logout")
     }
     
     @IBAction func addFriendBtnClick(_ sender: Any) {

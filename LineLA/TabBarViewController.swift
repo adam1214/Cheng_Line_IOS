@@ -9,7 +9,7 @@
 import UIKit
 
 // Member attribute
-class TabBarViewController: UITabBarController {
+class TabBarViewController: UITabBarController, UITabBarControllerDelegate {
 }
 
 // Override func
@@ -17,6 +17,7 @@ extension TabBarViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        self.delegate = self
     }
     
     // 選轉
@@ -38,6 +39,9 @@ extension TabBarViewController {
      // Pass the selected object to the new view controller.
      }
      */
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        // event onclick
+    }
 }
 
 //

@@ -75,16 +75,16 @@ extension HomeController {
         let value = UIInterfaceOrientation.portrait.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
         
-        if let nav = self.navigationController {
-            let isPopping = !nav.viewControllers.contains(self)
-            if isPopping {
-                print("Pop Home Controller")
-            } else {
-                // on nav, not popping off (pushing past, being presented over, etc.)
-            }
-        } else {
-            // not on nav at all
-        }
+//        if let nav = self.navigationController {
+//            let isPopping = !nav.viewControllers.contains(self)
+//            if isPopping {
+//                print("Pop Home Controller")
+//            } else {
+//                // on nav, not popping off (pushing past, being presented over, etc.)
+//            }
+//        } else {
+//            // not on nav at all
+//        }
     }
     
     override func didReceiveMemoryWarning() {
