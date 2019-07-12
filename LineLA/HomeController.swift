@@ -15,6 +15,19 @@ class HomeController: UIViewController {
     var loginInfo: LoginInfo!
     @IBOutlet weak var buttonLogin: UIButton!
     @IBOutlet weak var buttonExit: UIButton!
+    
+    @objc func youGotMessage(noti: Notification){
+        print("Got notification")
+          if let controller = storyboard?.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController {
+              controller.restorationIdentifier = "goHome"
+              if let controller = controller.viewControllers?.first as? FriendPageViewController{
+                    controller.shared = shared
+              }
+              exitUI()
+              self.navigationController?.popViewController(animated: true)
+              self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
 }
 
 // Override func
@@ -23,6 +36,8 @@ extension HomeController {
         super.viewDidLoad()
         prepare()
         // Do any additional setup after loading the view, typically from a nib.
+        let notificationName = Notification.Name("NotifiacationLogin")
+        NotificationCenter.default.addObserver(self, selector: #selector(youGotMessage(noti:)), name: notificationName, object: nil)
     }
     
     // 選轉
@@ -46,7 +61,7 @@ extension HomeController {
 //        } else {
 //            // go to TabBarViewController.
 //            if let controller = storyboard?.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController {
-////                controller.restorationIdentifier = "goHome"
+//                controller.restorationIdentifier = "goHome"
 //                if let controller = controller.viewControllers?.first as? FriendPageViewController{
 //                    controller.shared = shared
 //                }
@@ -59,6 +74,17 @@ extension HomeController {
     override func viewWillDisappear(_ animated: Bool) {
         let value = UIInterfaceOrientation.portrait.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
+        
+        if let nav = self.navigationController {
+            let isPopping = !nav.viewControllers.contains(self)
+            if isPopping {
+                print("Pop Home Controller")
+            } else {
+                // on nav, not popping off (pushing past, being presented over, etc.)
+            }
+        } else {
+            // not on nav at all
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -70,12 +96,14 @@ extension HomeController {
 // My func
 extension HomeController {
     func prepare() {
-//        shared = GlobalInfo.shared()
+        print("prepare Homectrl")
+        shared = GlobalInfo.shared()
         accountInfo = shared.accountInfo
         loginInfo = shared.loginInfo
         buttonShadow(button: buttonLogin)
         buttonShadow(button: buttonExit)
         shared.mqttManager.setupMQTT()
+        
     }
     
     func buttonShadow(button: UIButton!) {  // button 陰影
@@ -98,7 +126,7 @@ extension HomeController {
 extension HomeController {
     @IBAction func actionLogin(_ sender: Any) {
 //        if let controller = storyboard?.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController {
-    //                controller.restorationIdentifier = "goHome"
+//                    controller.restorationIdentifier = "goHome"
 //                    if let controller = controller.viewControllers?.first as? FriendPageViewController{
 //                        controller.shared = shared
 //                    }
@@ -107,7 +135,6 @@ extension HomeController {
 //        }
         if let controller = storyboard?.instantiateViewController(withIdentifier: "ScannerController") as? ScannerController{
             controller.shared = shared
-            exitUI()
             navigationController?.pushViewController(controller, animated: true)
         }
     }

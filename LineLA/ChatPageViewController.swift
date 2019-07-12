@@ -73,18 +73,30 @@ extension ChatPageViewController {
 // IBAction func
 extension ChatPageViewController {
     @IBAction func logout(_ sender: Any) {
-        for i in 0..<(self.navigationController?.viewControllers.count)!{
-            if let controller =  self.navigationController?.viewControllers[i] as? HomeController {
+//        for i in 0..<(self.navigationController?.viewControllers.count)!{
+//            if let controller =  self.navigationController?.viewControllers[i] as? HomeController {
 //                shared.clearAppInfo()
-                controller.shared = shared
+//                controller.shared = shared
 //                controller.accountInfo = shared.accountInfo
 //                controller.loginInfo = shared.loginInfo
-                exitUI()
-                if let controller = self.tabBarController?.viewControllers?[0] as? FriendPageViewController{
-                    controller.exitUI()
+//                exitUI()
+//                if let controller = self.tabBarController?.viewControllers?[0] as? FriendPageViewController{
+//                    controller.exitUI()
+//                }
+//                self.navigationController?.popToViewController(controller, animated: true)
+//                break
+//            }
+//        }
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            if let controller = appDelegate.window?.rootViewController as? NavRootController {
+                controller.viewControllers.removeAll()
+                let mainVC = UIStoryboard.init(name: "Main", bundle: nil)
+                if let childcontroller = mainVC.instantiateViewController(withIdentifier: "HomeController") as? HomeController {
+//                  shared.clearAppInfo()
+                    childcontroller.shared = shared
+                    exitUI()
+                    controller.viewControllers.append(childcontroller)
                 }
-                self.navigationController?.popToViewController(controller, animated: true)
-                break
             }
         }
     }

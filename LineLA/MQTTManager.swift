@@ -25,7 +25,7 @@ class MQTTManager: NSObject{
         super.init()
         self.curtopic = ""
         
-        clientID = "CocoaMQTT-" + String(ProcessInfo().processIdentifier)
+        clientID = "CocoaMQTT-" + String(UUID().uuidString)
         mqtt = CocoaMQTT(clientID: clientID, host: "140.116.82.52", port: 1883)
         
         mqtt.username = USERNAME
@@ -80,10 +80,6 @@ extension MQTTManager: CocoaMQTTDelegate {
         if ack == .accept {
             print("connect accept")
             subTopicLogin()
-            //
-            //            let chatViewController = storyboard?.instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController
-            //            chatViewController?.mqtt = mqtt
-            //            navigationController!.pushViewController(chatViewController!, animated: true)
         }
     }
     
@@ -92,8 +88,8 @@ extension MQTTManager: CocoaMQTTDelegate {
     }
     
     func mqtt(_ mqtt: CocoaMQTT, didPublishMessage message: CocoaMQTTMessage, id: UInt16) {
-        print("publish message: \(String(describing: message.string?.description)), id: \(id)")
-        print("send topic \(message.topic)")
+//        print("publish message: \(String(describing: message.string?.description)), id: \(id)")
+//        print("send topic \(message.topic)")
         print("send msg \(String((message.string!)))")
     }
     
@@ -103,8 +99,23 @@ extension MQTTManager: CocoaMQTTDelegate {
     
     func mqtt(_ mqtt: CocoaMQTT, didReceiveMessage message: CocoaMQTTMessage, id: UInt16 ) {
 //        print("recv message: \(String(describing: message.string?.description)), id: \(id)")
-          print("recv topic: \(String((message.string!)))")
-          print("XDDDD")
+          let msg = String(message.string!)
+          let topic = String(message.topic)
+          let idf = topic.split(separator: "/")
+          print("recv msg: \(msg)")
+          switch idf[1] {
+              case "Login":
+                  let msg_splitLine = msg.split(separator: ",")
+                  if msg_splitLine[0] == "True"{
+//                        print("Login success")
+                    let notificationName = Notification.Name("NotifiacationLogin")
+                    NotificationCenter.default.post(name: notificationName, object: nil)
+                  }else{
+                        print("Login fail")
+                  }
+              default:
+                  print("ERROR")
+          }
 //        guard let temp = message.string else { return }
 //        let strary:[String] = temp.components(separatedBy: ";")
 //        let msgID = strary[0]
@@ -138,7 +149,7 @@ extension MQTTManager: CocoaMQTTDelegate {
     }
     
     func mqttDidReceivePong(_ mqtt: CocoaMQTT) {
-        print("mqttDidReceivePong")
+//        print("mqttDidReceivePong")
     }
     
     func mqttDidDisconnect(_ mqtt: CocoaMQTT, withError err: Error?) {

@@ -173,7 +173,7 @@ extension FriendTableViewController {
         self.indexPaths = [IndexPath]()
         initTableViewData()
         initClosure()
-        GlobalInfo.getRelation(memberID: memberID, activity: updataAppInfo)
+//        GlobalInfo.getRelation(memberID: memberID, activity: updataAppInfo)
         
         
         sleep(3)
