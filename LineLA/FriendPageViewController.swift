@@ -21,6 +21,18 @@ class FriendPageViewController: UIViewController {
     @IBOutlet weak var profileView: UIView! // unused TODO: profile information...
     @IBOutlet weak var imgViewAvatar: UIImageView!
     @IBOutlet weak var labelMemberName: UILabel!
+    
+    @objc func youGotMessage(noti: Notification){
+//        print("Got notification")
+//        print((noti.userInfo?["name"])!)
+        let str = (noti.userInfo?["name"])! as? String ?? ""
+        if str == "TabChat"{
+            print(str)
+            if let controller = self.tabBarController?.viewControllers?[1] as? ChatPageViewController{
+                controller.shared = shared
+            }
+        }
+    }
 }
 
 // Override func
@@ -32,6 +44,10 @@ extension FriendPageViewController {
         let swipeLeft = UISwipeGestureRecognizer(target: self, action:  #selector(swiped))
         swipeLeft.direction = UISwipeGestureRecognizer.Direction.left
         self.view.addGestureRecognizer(swipeLeft)
+        
+        let notificationName = Notification.Name("NotifiacationTabClick")
+        NotificationCenter.default.addObserver(self, selector: #selector(youGotMessage(noti:)), name: notificationName, object: nil)
+        
         prepare()
     }
     

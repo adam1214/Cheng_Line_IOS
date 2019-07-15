@@ -16,6 +16,18 @@ class ChatPageViewController: UIViewController {
     var imgAvatar: UIImage?
     var memberName: String?
     var memberID: String?
+    
+    @objc func youGotMessage(noti: Notification){
+//        print("Got notification")
+//        print((noti.userInfo?["name"])!)
+        let str = (noti.userInfo?["name"])! as? String ?? ""
+        if str == "TabFriend"{
+            print(str)
+            if let controller = self.tabBarController?.viewControllers?[0] as? FriendPageViewController{
+                controller.shared = shared
+            }
+        }
+    }
 }
 
 // Override func
@@ -28,6 +40,9 @@ extension ChatPageViewController {
         swipeRight.direction = UISwipeGestureRecognizer.Direction.right
         self.view.addGestureRecognizer(swipeRight)
         // Do any additional setup after loading the view.
+        
+        let notificationName = Notification.Name("NotifiacationTabClick")
+        NotificationCenter.default.addObserver(self, selector: #selector(youGotMessage(noti:)), name: notificationName, object: nil)
     }
     
     override func didReceiveMemoryWarning() {

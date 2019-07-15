@@ -41,6 +41,16 @@ extension TabBarViewController {
      */
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         // event onclick
+        let notificationName = Notification.Name("NotifiacationTabClick")
+        if item.tag == 0 {
+//             print("Click TabFriend")
+             let nameDict:[String: String] = ["name": "TabFriend"]
+             NotificationCenter.default.post(name: notificationName, object: nil, userInfo: nameDict)
+        }else if item.tag == 1{
+//             print("Click TabChat")
+             let nameDict:[String: String] = ["name": "TabChat"]
+             NotificationCenter.default.post(name: notificationName, object: nil, userInfo: nameDict)
+        }
     }
 }
 
