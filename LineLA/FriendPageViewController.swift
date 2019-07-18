@@ -33,6 +33,12 @@ class FriendPageViewController: UIViewController {
             }
         }
     }
+    
+    @objc func msgFromMQTT(noti: Notification){
+        let name = (noti.userInfo?["name"])! as? String ?? ""
+        labelMemberName.text = name
+        print("ChangeName: \(name)")
+    }
 }
 
 // Override func
@@ -46,8 +52,10 @@ extension FriendPageViewController {
         self.view.addGestureRecognizer(swipeLeft)
         
         let notificationName = Notification.Name("NotifiacationTabClick")
+        let notificationNameMQTT = Notification.Name("NotificationMQTT")
+        print("register")
         NotificationCenter.default.addObserver(self, selector: #selector(youGotMessage(noti:)), name: notificationName, object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(msgFromMQTT(noti:)), name: notificationNameMQTT, object: nil)
         prepare()
     }
     
@@ -78,6 +86,7 @@ extension FriendPageViewController {
 // My func
 extension FriendPageViewController {
     func prepare() {
+          shared.mqttManager.mqtt.publish("IDF/GetUserData/\(shared.mqttManager.clientID!)", withString: "")
 //        accountInfo = shared.accountInfo
 //        imgViewAvatar.image = accountInfo.memberAvatar
 //        labelMemberName.text = accountInfo.memberName
@@ -126,10 +135,10 @@ extension FriendPageViewController {
     }
     
     func exitUI() {
-//        childFTVC?.tableViewData.FTVCData.removeAll()
-//        childFTVC?.tableView.reloadData()
-//        childFTVC?.exitUI()
-//        childFTVC = nil
+        childFTVC?.tableViewData.FTVCData.removeAll()
+        childFTVC?.tableView.reloadData()
+        childFTVC?.exitUI()
+        childFTVC = nil
 //        linphoneManager.logout()
 //        linphoneManager = nil
         accountInfo = nil

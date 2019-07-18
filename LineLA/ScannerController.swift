@@ -150,7 +150,7 @@ extension ScannerController {
         print(barcode!)
         loginInfo.cardID = barcode
         loginInfo.token = false
-        shared.mqttManager.mqtt.publish("IDF/Login/\(shared.mqttManager.clientID!)", withString: String(barcode!))
+        shared.mqttManager.mqtt.publish("IDF/Login/\(shared.mqttManager.uuID!)", withString: String(barcode!))
 //        print("\(shared.mqttManager.clientID!)")
 //        print(shared.mqttManager.clientID!)
         for i in 0..<(self.navigationController?.viewControllers.count)!{

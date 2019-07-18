@@ -13,6 +13,7 @@ import CocoaMQTT
 class MQTTManager: NSObject{
     let USERNAME = "ChengLine"
     let PASSWORD = "ChengLine"
+    var uuID: String! // UUID
     var clientID: String!
     var mqtt: CocoaMQTT!
     var curtopic: String!
@@ -26,8 +27,8 @@ class MQTTManager: NSObject{
         super.init()
         self.curtopic = ""
         
-        clientID = "CocoaMQTT-" + String(UUID().uuidString)
-        mqtt = CocoaMQTT(clientID: clientID, host: "140.116.82.52", port: 1883)
+        uuID = "CocoaMQTT-" + String(UUID().uuidString)
+        mqtt = CocoaMQTT(clientID: uuID, host: "140.116.82.52", port: 1883)
         
         mqtt.username = USERNAME
         mqtt.password = PASSWORD
@@ -42,22 +43,21 @@ class MQTTManager: NSObject{
     }
     
     func subTopicLogin(){
-        mqtt.subscribe("IDF/Login/\(clientID!)/Re", qos: CocoaMQTTQOS.qos2)
+        mqtt.subscribe("IDF/Login/\(uuID!)/Re", qos: CocoaMQTTQOS.qos2)
     }
     
     func subTopicMain(){
-        let user = UserDefaults.LoginInfo.string(forKey: .cardID)
-        mqtt.subscribe("IDF/+/\(user!)/Re", qos: CocoaMQTTQOS.qos2)
-        mqtt.subscribe("IDF/SendImg/\(user!)/+/+/+/Re", qos: CocoaMQTTQOS.qos2)
-        mqtt.subscribe("IDF/RecordImgBack/\(user!)/+/Re", qos: CocoaMQTTQOS.qos2);
+        mqtt.subscribe("IDF/+/\(clientID!)/Re", qos: CocoaMQTTQOS.qos2)
+        mqtt.subscribe("IDF/SendImg/\(clientID!)/+/+/+/Re", qos: CocoaMQTTQOS.qos2)
+        mqtt.subscribe("IDF/RecordImgBack/\(clientID!)/+/Re", qos: CocoaMQTTQOS.qos2);
     }
     
     func unsubTopicLogin(){
-        mqtt.unsubscribe("IDF/Login/\(clientID!)/Re")
+        mqtt.unsubscribe("IDF/Login/\(uuID!)/Re")
     }
     
     func unsubTopicMain(){
-        
+
     }
     
 }
@@ -86,8 +86,9 @@ extension MQTTManager: CocoaMQTTDelegate {
             print("connect accept")
             if timing == 0{
                 subTopicLogin()
-            }else if timing == 1{
+            }else if timing == 1{ //duplicate login
                 subTopicMain()
+                mqtt.publish("IDF/GetUserData/\(clientID!)", withString: "")
             }
         }
     }
@@ -98,8 +99,8 @@ extension MQTTManager: CocoaMQTTDelegate {
     
     func mqtt(_ mqtt: CocoaMQTT, didPublishMessage message: CocoaMQTTMessage, id: UInt16) {
 //        print("publish message: \(String(describing: message.string?.description)), id: \(id)")
-//        print("send topic \(message.topic)")
-        print("send msg \(String((message.string!)))")
+          print("send topic: \(message.topic)\tsend msg: \(String((message.string!)))")
+//        print("send msg \(String((message.string!)))")
     }
     
     func mqtt(_ mqtt: CocoaMQTT, didPublishAck id: UInt16) {
@@ -108,23 +109,35 @@ extension MQTTManager: CocoaMQTTDelegate {
     
     func mqtt(_ mqtt: CocoaMQTT, didReceiveMessage message: CocoaMQTTMessage, id: UInt16 ) {
 //        print("recv message: \(String(describing: message.string?.description)), id: \(id)")
-          let msg = String(message.string!)
+//          let msg = String(message.string!)
           let topic = String(message.topic)
           let idf = topic.split(separator: "/")
-          print("recv msg: \(msg)")
+//          print("recv msg: \(msg)")
           switch idf[1] {
               case "Login":
+                  let msg = String(message.string!)
                   let msg_splitLine = msg.split(separator: ",")
                   if msg_splitLine[0] == "True"{
 //                        print("Login success")
+                    clientID = String(msg_splitLine[1])
+                    subTopicMain()
                     let notificationName = Notification.Name("NotifiacationLogin")
                     NotificationCenter.default.post(name: notificationName, object: nil)
                     UserDefaults.LoginInfo.set(value: true, forKey: .token)
                     UserDefaults.LoginInfo.set(value: msg_splitLine[1], forKey: .cardID)
-                    subTopicMain()
                   }else{
                         print("Login fail")
                   }
+              case "GetUserData":
+                  let msg = String(message.string!)
+                  let notificationNameMQTT = Notification.Name("NotificationMQTT")
+                  let name = String(msg.split(separator :"\r")[0])
+                  print("name:\(name)")
+                  let nameDict:[String: String] = ["name": name]
+                  NotificationCenter.default.post(name: notificationNameMQTT, object: nil, userInfo: nameDict)
+                  mqtt.publish("IDF/GetUserIcon/\(clientID!)", withString: String(""))
+              case "GetUserIcon":
+                print("Hello")
               default:
                   print("ERROR")
           }

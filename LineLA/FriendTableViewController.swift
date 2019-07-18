@@ -180,8 +180,6 @@ extension FriendTableViewController {
         DispatchQueue.main.async {
             self.tableViewData.FTVCData[0].open = true
             self.tableViewData.FTVCData[1].open = true
-            self.tableViewData.FTVCData[2].open = true
-            self.tableViewData.FTVCData[3].open = true
             self.tableView.reloadData()
         }
     }
@@ -193,10 +191,8 @@ extension FriendTableViewController {
     }
     
     func initTableViewData() {
-        tableViewData.FTVCData.append(TypeInfo(typeLabelText: "\(NSLocalizedString("gorup:typeA",comment: ""))"))
-        tableViewData.FTVCData.append(TypeInfo(typeLabelText: "\(NSLocalizedString("gorup:typeB",comment: ""))"))
-        tableViewData.FTVCData.append(TypeInfo(typeLabelText: "\(NSLocalizedString("gorup:typeC",comment: ""))"))
-        tableViewData.FTVCData.append(TypeInfo(typeLabelText: "\(NSLocalizedString("friend",comment: ""))"))
+        tableViewData.FTVCData.append(TypeInfo(typeLabelText: "\(NSLocalizedString("群組",comment: ""))"))
+        tableViewData.FTVCData.append(TypeInfo(typeLabelText: "\(NSLocalizedString("好友",comment: ""))"))
     }
     
     func initClosure(){
