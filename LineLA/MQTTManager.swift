@@ -16,6 +16,7 @@ class MQTTManager: NSObject{
     var clientID: String!
     var mqtt: CocoaMQTT!
     var curtopic: String!
+    var timing: Int!
     
     private static var mqttManager: MQTTManager = {
         return MQTTManager()
@@ -45,7 +46,10 @@ class MQTTManager: NSObject{
     }
     
     func subTopicMain(){
-        
+        let user = UserDefaults.LoginInfo.string(forKey: .cardID)
+        mqtt.subscribe("IDF/+/\(user!)/Re", qos: CocoaMQTTQOS.qos2)
+        mqtt.subscribe("IDF/SendImg/\(user!)/+/+/+/Re", qos: CocoaMQTTQOS.qos2)
+        mqtt.subscribe("IDF/RecordImgBack/\(user!)/+/Re", qos: CocoaMQTTQOS.qos2);
     }
     
     func unsubTopicLogin(){
@@ -55,6 +59,7 @@ class MQTTManager: NSObject{
     func unsubTopicMain(){
         
     }
+    
 }
 
 // MQTTManager: CocoaMQTTDelegate
@@ -79,7 +84,11 @@ extension MQTTManager: CocoaMQTTDelegate {
         
         if ack == .accept {
             print("connect accept")
-            subTopicLogin()
+            if timing == 0{
+                subTopicLogin()
+            }else if timing == 1{
+                subTopicMain()
+            }
         }
     }
     
@@ -112,6 +121,7 @@ extension MQTTManager: CocoaMQTTDelegate {
                     NotificationCenter.default.post(name: notificationName, object: nil)
                     UserDefaults.LoginInfo.set(value: true, forKey: .token)
                     UserDefaults.LoginInfo.set(value: msg_splitLine[1], forKey: .cardID)
+                    subTopicMain()
                   }else{
                         print("Login fail")
                   }
@@ -167,8 +177,10 @@ extension MQTTManager: CocoaMQTTDelegate {
 // My func
 extension MQTTManager {
     
-    func setupMQTT(){
+    func setupMQTT(num: Int){
+        timing = num
         mqtt.connect()
+        
         /*
         mqtt.didReceiveMessage = { mqtt, message, id in
             //處理接收過來的資料

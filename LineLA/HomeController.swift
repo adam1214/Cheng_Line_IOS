@@ -102,7 +102,7 @@ extension HomeController {
         loginInfo = shared.loginInfo
         buttonShadow(button: buttonLogin)
         buttonShadow(button: buttonExit)
-        shared.mqttManager.setupMQTT()
+        shared.mqttManager.setupMQTT(num: 0)
         
     }
     

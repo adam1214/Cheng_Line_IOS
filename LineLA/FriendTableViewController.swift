@@ -200,8 +200,8 @@ extension FriendTableViewController {
     }
     
     func initClosure(){
-//        updataAppInfo = {(_ responseData: Data) -> () in
-//            // parse the result as JSON, since that's what the API provides
+        updataAppInfo = {(_ responseData: Data) -> () in
+            // parse the result as JSON, since that's what the API provides
 //            do {
 //                for i in 0..<self.tableViewData.FTVCData.count {
 //                    self.tableViewData.FTVCData[i].ProfileInfos.removeAll()
@@ -250,15 +250,15 @@ extension FriendTableViewController {
 //                print("error trying to convert data to JSON")
 //                return
 //            }
-//        }
-//        gotoCallController = { (_ profile:ProfileInfo) -> () in
-//            if let controller = self.storyboard?.instantiateViewController(withIdentifier: "CallViewController") as? CallViewController {
-//                controller.shared = self.shared
-//                controller.profile = profile
-//                controller.isCallOut = true
-//                self.present(controller, animated: true, completion: nil)
-//            }
-//        }
+        }
+        gotoCallController = { (_ profile:ProfileInfo) -> () in
+            if let controller = self.storyboard?.instantiateViewController(withIdentifier: "CallViewController") as? CallViewController {
+                controller.shared = self.shared
+                controller.profile = profile
+                controller.isCallOut = true
+                self.present(controller, animated: true, completion: nil)
+            }
+        }
     }
     
     func exitUI(){
