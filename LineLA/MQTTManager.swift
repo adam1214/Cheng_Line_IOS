@@ -132,12 +132,16 @@ extension MQTTManager: CocoaMQTTDelegate {
                   let msg = String(message.string!)
                   let notificationNameMQTT = Notification.Name("NotificationMQTT")
                   let name = String(msg.split(separator :"\r")[0])
-                  print("name:\(name)")
+//                  print("name:\(name)")
                   let nameDict:[String: String] = ["name": name]
                   NotificationCenter.default.post(name: notificationNameMQTT, object: nil, userInfo: nameDict)
                   mqtt.publish("IDF/GetUserIcon/\(clientID!)", withString: String(""))
               case "GetUserIcon":
-                print("Hello")
+                let bytes : [UInt8] = message.payload
+                let data = NSData(bytes: bytes, length: bytes.count)
+                let iconDict:[String: NSData] = ["icon": data]
+                let notificationNameMQTT = Notification.Name("NotificationMQTT")
+                NotificationCenter.default.post(name: notificationNameMQTT, object: nil, userInfo: iconDict)
               default:
                   print("ERROR")
           }

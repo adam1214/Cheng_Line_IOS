@@ -35,9 +35,20 @@ class FriendPageViewController: UIViewController {
     }
     
     @objc func msgFromMQTT(noti: Notification){
-        let name = (noti.userInfo?["name"])! as? String ?? ""
-        labelMemberName.text = name
-        print("ChangeName: \(name)")
+        if let name = (noti.userInfo?["name"]) as? String? ?? ""{
+            labelMemberName.text = name
+            print("ChangeName: \(name)")
+        }else if let icon = (noti.userInfo?["icon"]) as? NSData?{
+            let image = UIImage(data: icon! as Data)
+            imgViewAvatar.image = image
+            imgViewAvatar.layer.borderWidth = 1
+            imgViewAvatar.layer.borderColor =  UIColor.black.cgColor
+            imgViewAvatar.image?.withAlignmentRectInsets((UIEdgeInsets(top: -1, left: -1, bottom: -1, right: -1)))
+            imgViewAvatar.layer.cornerRadius = imgViewAvatar.frame.height/2
+            imgViewAvatar.clipsToBounds = true
+
+
+        }
     }
 }
 
@@ -53,7 +64,6 @@ extension FriendPageViewController {
         
         let notificationName = Notification.Name("NotifiacationTabClick")
         let notificationNameMQTT = Notification.Name("NotificationMQTT")
-        print("register")
         NotificationCenter.default.addObserver(self, selector: #selector(youGotMessage(noti:)), name: notificationName, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(msgFromMQTT(noti:)), name: notificationNameMQTT, object: nil)
         prepare()

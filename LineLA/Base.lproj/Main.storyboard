@@ -1768,7 +1768,7 @@
                                 <rect key="frame" x="0.0" y="59" width="375" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Vf9-9K-XCQ" id="QsB-cb-L5u">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Oob-NL-cpc">
@@ -1966,10 +1966,10 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s73-Oq-mCW">
-                                                        <rect key="frame" x="0.0" y="0.0" width="112.5" height="79.5"/>
+                                                        <rect key="frame" x="0.0" y="6" width="112.5" height="67.5"/>
                                                         <subviews>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6rS-jd-7Uw">
-                                                                <rect key="frame" x="33" y="0.0" width="79.5" height="79.5"/>
+                                                                <rect key="frame" x="45" y="0.0" width="67.5" height="67.5"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" secondItem="6rS-jd-7Uw" secondAttribute="height" multiplier="1:1" id="Gfb-5N-m79"/>
                                                                 </constraints>
@@ -1978,21 +1978,22 @@
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstItem="6rS-jd-7Uw" firstAttribute="centerY" secondItem="s73-Oq-mCW" secondAttribute="centerY" id="9gl-OM-w2e"/>
-                                                            <constraint firstItem="6rS-jd-7Uw" firstAttribute="top" secondItem="s73-Oq-mCW" secondAttribute="top" id="AGa-rc-UCC"/>
+                                                            <constraint firstItem="6rS-jd-7Uw" firstAttribute="top" secondItem="s73-Oq-mCW" secondAttribute="top" multiplier="1.5" id="AGa-rc-UCC"/>
                                                             <constraint firstAttribute="trailing" secondItem="6rS-jd-7Uw" secondAttribute="trailing" id="F5b-bn-a6J"/>
                                                             <constraint firstAttribute="bottom" secondItem="6rS-jd-7Uw" secondAttribute="bottom" id="Kus-MZ-Gzn"/>
                                                         </constraints>
+                                                        <edgeInsets key="layoutMargins" top="19" left="15" bottom="8" right="8"/>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fmE-rD-TCU">
-                                                        <rect key="frame" x="112.5" y="0.0" width="56.5" height="79.5"/>
+                                                        <rect key="frame" x="112.5" y="6" width="56.5" height="67.5"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Db5-ba-0bK">
-                                                        <rect key="frame" x="169" y="0.0" width="206" height="79.5"/>
+                                                        <rect key="frame" x="169" y="6" width="206" height="67.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kkz-45-2or">
-                                                                <rect key="frame" x="0.0" y="0.0" width="206" height="79.5"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="206" height="67.5"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
@@ -2010,9 +2011,10 @@
                                                     <constraint firstItem="fmE-rD-TCU" firstAttribute="width" secondItem="y7J-Iz-vu4" secondAttribute="width" multiplier="0.15" id="1J9-sH-OdI"/>
                                                     <constraint firstItem="s73-Oq-mCW" firstAttribute="width" secondItem="y7J-Iz-vu4" secondAttribute="width" multiplier="0.3" id="a1Y-fC-kRK"/>
                                                 </constraints>
+                                                <edgeInsets key="layoutMargins" top="6" left="0.0" bottom="6" right="0.0"/>
                                             </stackView>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.99989169836044312" green="1" blue="0.99988096952438354" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="y7J-Iz-vu4" secondAttribute="trailing" id="5xJ-lC-ln0"/>
                                             <constraint firstItem="y7J-Iz-vu4" firstAttribute="leading" secondItem="DOg-yv-9IP" secondAttribute="leading" id="Flq-Fe-dck"/>
@@ -2070,7 +2072,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WnQ-0x-QA0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2103" y="32"/>
+            <point key="canvasLocation" x="2101.5999999999999" y="31.934032983508249"/>
         </scene>
         <!--Chat Page View Controller-->
         <scene sceneID="Clo-64-pgw">

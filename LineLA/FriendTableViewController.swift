@@ -218,7 +218,7 @@ extension FriendTableViewController {
 //                    guard let memberID = self.memberID else { return }
 //
 //                    var topicName = ""
-//                    switch chatRoomID{
+//                    switch chatRoomID{	
 //                    case "group_3":
 //                        topicName = "group_3/\(memberID)"
 //                    case "group_5":
