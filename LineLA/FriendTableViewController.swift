@@ -173,6 +173,11 @@ extension FriendTableViewController {
         self.indexPaths = [IndexPath]()
         initTableViewData()
         initClosure()
+        let profile = ProfileInfo(profileName: "test",  section: 0, chatRoomID: "topicName", avatar: UIImage(named: "image"), phoneNb: "87878787")
+        self.tableViewData.FTVCData[0].ProfileInfos.append(profile)
+        let FTVCDatacount = self.tableViewData.FTVCData.count
+        let ProfileInfoscount = self.tableViewData.FTVCData[FTVCDatacount-1].ProfileInfos.count
+        self.indexPaths.append(IndexPath(row: ProfileInfoscount, section: FTVCDatacount-1))
 //        GlobalInfo.getRelation(memberID: memberID, activity: updataAppInfo)
         
         
@@ -198,7 +203,7 @@ extension FriendTableViewController {
     func initClosure(){
         updataAppInfo = {(_ responseData: Data) -> () in
             // parse the result as JSON, since that's what the API provides
-//            do {
+            do {
 //                for i in 0..<self.tableViewData.FTVCData.count {
 //                    self.tableViewData.FTVCData[i].ProfileInfos.removeAll()
 //                }
@@ -218,7 +223,7 @@ extension FriendTableViewController {
 //                    guard let memberID = self.memberID else { return }
 //
 //                    var topicName = ""
-//                    switch chatRoomID{	
+//                    switch chatRoomID{
 //                    case "group_3":
 //                        topicName = "group_3/\(memberID)"
 //                    case "group_5":
@@ -235,6 +240,8 @@ extension FriendTableViewController {
 //                    profile = ProfileInfo(profileName: profileName,  section: section, chatRoomID: topicName, avatar: avatar, phoneNb: phoneNb)
 //
 //                    self.tableViewData.FTVCData[section].ProfileInfos.append(profile)
+//                      let profile = ProfileInfo(profileName: "test",  section: 0, chatRoomID: "topicName", avatar: UIImage(), phoneNb: "87878787")
+//                      self.tableViewData.FTVCData[0].ProfileInfos.append(profile)
 //                    let FTVCDatacount = self.tableViewData.FTVCData.count
 //                    let ProfileInfoscount = self.tableViewData.FTVCData[FTVCDatacount-1].ProfileInfos.count
 //                    self.indexPaths.append(IndexPath(row: ProfileInfoscount, section: FTVCDatacount-1))
@@ -245,7 +252,7 @@ extension FriendTableViewController {
 //            } catch  {
 //                print("error trying to convert data to JSON")
 //                return
-//            }
+            }
         }
         gotoCallController = { (_ profile:ProfileInfo) -> () in
             if let controller = self.storyboard?.instantiateViewController(withIdentifier: "CallViewController") as? CallViewController {

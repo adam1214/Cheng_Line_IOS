@@ -112,6 +112,8 @@ extension MQTTManager: CocoaMQTTDelegate {
 //          let msg = String(message.string!)
           let topic = String(message.topic)
           let idf = topic.split(separator: "/")
+          let notificationNameMQTT = Notification.Name("NotificationMQTT")
+
 //          print("recv msg: \(msg)")
           switch idf[1] {
               case "Login":
@@ -142,6 +144,13 @@ extension MQTTManager: CocoaMQTTDelegate {
                 let iconDict:[String: NSData] = ["icon": data]
                 let notificationNameMQTT = Notification.Name("NotificationMQTT")
                 NotificationCenter.default.post(name: notificationNameMQTT, object: nil, userInfo: iconDict)
+              case "Initialize":
+                let msg = String(message.string!)
+                let initDic:[String: String] = ["init": msg]
+                NotificationCenter.default.post(name: notificationNameMQTT, object: nil, userInfo: initDic)
+                
+//                print("Init:")
+                print(msg)
               default:
                   print("ERROR")
           }

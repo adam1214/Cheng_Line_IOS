@@ -9,6 +9,28 @@
 import Foundation
 import UIKit
 
+class RoomInfo {
+    var code: String
+    var roomName: String
+    var type: String
+    var rMsg: String
+    var rMsgDate: String
+    var icon: UIImage
+    
+    init(code: String, roomName: String, type: String, rMsg: String, rMsgDate: String){
+        self.code = code
+        self.roomName = roomName
+        self.type = type
+        self.rMsg = rMsg
+        self.rMsgDate = rMsgDate
+        self.icon = UIImage(named: "image")!
+    }
+    
+    func setIcon(img: UIImage){
+        self.icon = img
+    }
+}
+
 struct AccountInfo {
     var memberName: String? {
         get { return UserDefaults.AccountInfo.string(forKey: .memberName) }
@@ -169,6 +191,8 @@ class GlobalInfo: NSObject {
     var linphoneManager: LinphoneManager
     var dateUtil: DateUtil
     var unReadcout: Int
+    var roomlist: [RoomInfo]
+    var aliasMap: [String: String]
     
     private static var sharedGlobal: GlobalInfo = {
         let accountInfo = setupAccountInfo()
@@ -180,6 +204,8 @@ class GlobalInfo: NSObject {
     private init(_ accountInfo: AccountInfo, _ loginInfo: LoginInfo/*, _ setting: SettingInfo*/) {
         self.accountInfo = accountInfo
         self.loginInfo = loginInfo
+        self.roomlist = [RoomInfo]()
+        self.aliasMap = [String: String]()
 //        self.setting = setting
         mqttManager = MQTTManager.shared()
         databaseManager = DatabaseManager.shared()
