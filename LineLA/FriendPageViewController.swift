@@ -42,7 +42,7 @@ class FriendPageViewController: UIViewController {
         }else if let init_msg = (noti.userInfo?["init"]) as? String? ?? ""{
             let init_msg_splitLine = init_msg.components(separatedBy: "\r")
             for room in init_msg_splitLine{
-//                print(room)
+                print(room)
                 let code = String(room.split(separator: "\t")[0])
                 let roomName = String(room.split(separator: "\t")[1])
                 let type = String(room.split(separator: "\t")[3])
@@ -55,11 +55,33 @@ class FriendPageViewController: UIViewController {
                     for member in member_list{
                         if member != UserDefaults.LoginInfo.string(forKey: .cardID){
                             shared.aliasMap.updateValue(roomName, forKey: member)
+//                            print("Member:\(member)")
                         }
                     }
                 }
                 shared.roomlist.append(roomInfo)
             }
+            let roomlist = shared.roomlist
+            for room in roomlist{
+                if(room.type == "F"){
+                    let profile = ProfileInfo(profileName: room.roomName, section: 1, chatRoomID: room.code, avatar: UIImage(named: "image"), phoneNb: "1234")
+                    shared.mTVCDataManager.FTVCData[1].ProfileInfos.append(profile)
+                    //                        self.tableViewData.FTVCData[1].ProfileInfos.append(profile)
+                }
+                else if(room.type == "G"){
+                    let profile = ProfileInfo(profileName: room.roomName, section: 0, chatRoomID: room.code, avatar: UIImage(named: "image"), phoneNb: "1234")
+                    shared.mTVCDataManager.FTVCData[0].ProfileInfos.append(profile)
+                    //                        self.tableViewData.FTVCData[0].ProfileInfos.append(profile)
+                }
+                else{
+                    break
+                }
+            }
+            let FTVCDatacount = shared.mTVCDataManager.FTVCData.count
+            let ProfileInfoscount = shared.mTVCDataManager.FTVCData[FTVCDatacount-1].ProfileInfos.count
+            self.childFTVC?.indexPaths.append(IndexPath(row: ProfileInfoscount, section: FTVCDatacount-1))
+            self.childFTVC?.tableView.reloadData()
+            
         }else if let icon = (noti.userInfo?["icon"]) as? NSData?{
 //            print("CCCCCC")
             let image = UIImage(data: icon! as Data)
@@ -69,6 +91,7 @@ class FriendPageViewController: UIViewController {
             imgViewAvatar.image?.withAlignmentRectInsets((UIEdgeInsets(top: -1, left: -1, bottom: -1, right: -1)))
             imgViewAvatar.layer.cornerRadius = imgViewAvatar.frame.height/2
             imgViewAvatar.clipsToBounds = true
+            print("ID: \(shared.mqttManager.clientID!)")
             shared.mqttManager.mqtt.publish("IDF/Initialize/\(shared.mqttManager.clientID!)", withString: "")
         }
     }

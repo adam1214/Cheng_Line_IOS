@@ -173,8 +173,23 @@ extension FriendTableViewController {
         self.indexPaths = [IndexPath]()
         initTableViewData()
         initClosure()
-        let profile = ProfileInfo(profileName: "test",  section: 0, chatRoomID: "topicName", avatar: UIImage(named: "image"), phoneNb: "87878787")
-        self.tableViewData.FTVCData[0].ProfileInfos.append(profile)
+//        let roomlist = shared.roomlist
+//        for room in roomlist{
+//            if(room.type == "F"){
+//                let profile = ProfileInfo(profileName: room.roomName, section: 1, chatRoomID: "Idontknow", avatar: UIImage(named: "image"), phoneNb: "1234")
+//                self.tableViewData.FTVCData[1].ProfileInfos.append(profile)
+//            }
+//            else if(room.type == "G"){
+//                let profile = ProfileInfo(profileName: room.roomName, section: 0, chatRoomID: "Idontknow", avatar: UIImage(named: "image"), phoneNb: "1234")
+//                self.tableViewData.FTVCData[0].ProfileInfos.append(profile)
+//            }
+//            else{
+//                break
+//            }
+//        }
+        
+//        let profile = ProfileInfo(profileName: "test",  section: 0, chatRoomID: "topicName", avatar: UIImage(named: "image"), phoneNb: "87878787")
+//        self.tableViewData.FTVCData[0].ProfileInfos.append(profile)
         let FTVCDatacount = self.tableViewData.FTVCData.count
         let ProfileInfoscount = self.tableViewData.FTVCData[FTVCDatacount-1].ProfileInfos.count
         self.indexPaths.append(IndexPath(row: ProfileInfoscount, section: FTVCDatacount-1))

@@ -115,6 +115,7 @@ extension MQTTManager: CocoaMQTTDelegate {
           let notificationNameMQTT = Notification.Name("NotificationMQTT")
 
 //          print("recv msg: \(msg)")
+//        print("IDf : \(idf)")
           switch idf[1] {
               case "Login":
                   let msg = String(message.string!)
@@ -148,9 +149,8 @@ extension MQTTManager: CocoaMQTTDelegate {
                 let msg = String(message.string!)
                 let initDic:[String: String] = ["init": msg]
                 NotificationCenter.default.post(name: notificationNameMQTT, object: nil, userInfo: initDic)
-                
 //                print("Init:")
-                print(msg)
+//                print(msg)
               default:
                   print("ERROR")
           }
