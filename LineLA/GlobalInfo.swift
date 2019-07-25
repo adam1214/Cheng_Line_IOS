@@ -11,14 +11,16 @@ import UIKit
 
 class RoomInfo {
     var code: String
+    var ID :String
     var roomName: String
     var type: String
     var rMsg: String
     var rMsgDate: String
     var icon: UIImage
     
-    init(code: String, roomName: String, type: String, rMsg: String, rMsgDate: String){
+    init(code: String,ID:String,roomName: String, type: String, rMsg: String, rMsgDate: String){
         self.code = code
+        self.ID = ID
         self.roomName = roomName
         self.type = type
         self.rMsg = rMsg
@@ -258,11 +260,14 @@ extension GlobalInfo{
         UserDefaults.AccountInfo.removeObject(forKey: .memberAvatarPath)
         UserDefaults.LoginInfo.set(value: false, forKey: .token)
         UserDefaults.LoginInfo.removeObject(forKey: .cardID)
+        
     }
     
     func clearAppInfo() {
         self.clearGlobalInfo()
-        self.mqttManager.stopMQTT()
+//        self.mqttManager.stopMQTT()
+        self.roomlist.removeAll()
+        self.aliasMap.removeAll()
     }
 }
 

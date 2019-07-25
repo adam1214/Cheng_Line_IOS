@@ -44,8 +44,6 @@ extension TabBarViewController {
         let notificationName = Notification.Name("NotifiacationTabClick")
         if item.tag == 0 {
 //             print("Click TabFriend")
-             let testname = Notification.Name("NotificationMQTT")
-            NotificationCenter.default.post(name: testname, object: nil)
              let nameDict:[String: String] = ["name": "TabFriend"]
              NotificationCenter.default.post(name: notificationName, object: nil, userInfo: nameDict)
         }else if item.tag == 1{

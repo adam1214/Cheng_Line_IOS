@@ -22,10 +22,14 @@ class HomeController: UIViewController {
               controller.restorationIdentifier = "goHome"
               if let controller = controller.viewControllers?.first as? FriendPageViewController{
                     controller.shared = shared
+                
               }
+              shared.mqttManager.stopMQTT()
               exitUI()
               self.navigationController?.popViewController(animated: true)
               self.navigationController?.pushViewController(controller, animated: true)
+            
+
         }
     }
 }
@@ -102,8 +106,12 @@ extension HomeController {
         loginInfo = shared.loginInfo
         buttonShadow(button: buttonLogin)
         buttonShadow(button: buttonExit)
-        shared.mqttManager.setupMQTT(num: 0)
-        
+        if shared.mqttManager.checkConnectState() == false {
+            shared.mqttManager.setupMQTT(num: 0)
+        }else{
+            shared.mqttManager.subTopicLogin()
+            shared.mqttManager.timing = 1
+        }
     }
     
     func buttonShadow(button: UIButton!) {  // button 陰影

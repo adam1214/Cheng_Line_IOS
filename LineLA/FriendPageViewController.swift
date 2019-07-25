@@ -42,23 +42,28 @@ class FriendPageViewController: UIViewController {
         }else if let init_msg = (noti.userInfo?["init"]) as? String? ?? ""{
             let init_msg_splitLine = init_msg.components(separatedBy: "\r")
             for room in init_msg_splitLine{
-                print(room)
+//                print(room)
                 let code = String(room.split(separator: "\t")[0])
                 let roomName = String(room.split(separator: "\t")[1])
                 let type = String(room.split(separator: "\t")[3])
                 let rMsg = String(room.split(separator: "\t")[4])
                 let rMsgdate = String(room.split(separator: "\t")[5])
-                let roomInfo = RoomInfo(code: code, roomName: roomName, type: type, rMsg: rMsg, rMsgDate: rMsgdate)
+                var memberID : String = ""
                 if type == "F"{
                     let member_str = String(room.split(separator: "\t")[2])
                     let member_list = member_str.components(separatedBy: "-")
                     for member in member_list{
                         if member != UserDefaults.LoginInfo.string(forKey: .cardID){
                             shared.aliasMap.updateValue(roomName, forKey: member)
+                            memberID = member
 //                            print("Member:\(member)")
                         }
                     }
                 }
+                else{
+                    memberID = ""
+                }
+                let roomInfo = RoomInfo(code: code,ID: memberID ,roomName: roomName, type: type, rMsg: rMsg, rMsgDate: rMsgdate)
                 shared.roomlist.append(roomInfo)
             }
             let roomlist = shared.roomlist
@@ -66,7 +71,10 @@ class FriendPageViewController: UIViewController {
                 if(room.type == "F"){
                     let profile = ProfileInfo(profileName: room.roomName, section: 1, chatRoomID: room.code, avatar: UIImage(named: "image"), phoneNb: "1234")
                     shared.mTVCDataManager.FTVCData[1].ProfileInfos.append(profile)
-                    //                        self.tableViewData.FTVCData[1].ProfileInfos.append(profile)
+                    let tachiba : String = "0"
+                    let action : String = "Init"
+                    let MSG : String = "\(action):\(room.ID)"
+                    shared.mqttManager.mqtt.publish("IDF/FriendIcon/\(shared.mqttManager.clientID!)", withString: MSG)
                 }
                 else if(room.type == "G"){
                     let profile = ProfileInfo(profileName: room.roomName, section: 0, chatRoomID: room.code, avatar: UIImage(named: "image"), phoneNb: "1234")
@@ -83,17 +91,35 @@ class FriendPageViewController: UIViewController {
             self.childFTVC?.tableView.reloadData()
             
         }else if let icon = (noti.userInfo?["icon"]) as? NSData?{
-//            print("CCCCCC")
+            if(icon == nil){
+                print("null")
+            }
             let image = UIImage(data: icon! as Data)
             imgViewAvatar.image = image
             imgViewAvatar.layer.borderWidth = 1
             imgViewAvatar.layer.borderColor =  UIColor.black.cgColor
-            imgViewAvatar.image?.withAlignmentRectInsets((UIEdgeInsets(top: -1, left: -1, bottom: -1, right: -1)))
             imgViewAvatar.layer.cornerRadius = imgViewAvatar.frame.height/2
             imgViewAvatar.clipsToBounds = true
             print("ID: \(shared.mqttManager.clientID!)")
             shared.mqttManager.mqtt.publish("IDF/Initialize/\(shared.mqttManager.clientID!)", withString: "")
         }
+    }
+    @objc func fIconMessage(noti: Notification){
+        let studentID = (noti.userInfo?["ficon"]) as? String? ?? ""
+        for index in 1...shared.roomlist.count{
+            if shared.roomlist[index-1].ID == studentID{
+                shared.mTVCDataManager.FTVCData[1].ProfileInfos[index-1].avatar = shared.roomlist[index-1].icon
+            }
+        }
+//        if(room.type == "F"){
+//            let profile = ProfileInfo(profileName: room.roomName, section: 1, chatRoomID: room.code, avatar: UIImage(named: "image"), phoneNb: "1234")
+//            shared.mTVCDataManager.FTVCData[1].ProfileInfos.append(profile)
+//            let tachiba : String = "0"
+//            let action : String = "Init"
+//            let MSG : String = "\(action):\(room.ID)"
+//            shared.mqttManager.mqtt.publish("IDF/FriendIcon/\(shared.mqttManager.clientID!)", withString: MSG)
+//        }
+        self.childFTVC?.tableView.reloadData()
     }
 }
 
@@ -109,8 +135,10 @@ extension FriendPageViewController {
         
         let notificationName = Notification.Name("NotifiacationTabClick")
         let notificationNameMQTT = Notification.Name("NotificationMQTT")
+        let notificationFIcon = Notification.Name("NotificationFIcon")
         NotificationCenter.default.addObserver(self, selector: #selector(youGotMessage(noti:)), name: notificationName, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(msgFromMQTT(noti:)), name: notificationNameMQTT, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(fIconMessage(noti:)), name: notificationFIcon, object: nil)
         prepare()
     }
     
@@ -141,6 +169,7 @@ extension FriendPageViewController {
 // My func
 extension FriendPageViewController {
     func prepare() {
+          shared.mqttManager.setupMQTT(num: 1)
 //        accountInfo = shared.accountInfo
 //        imgViewAvatar.image = accountInfo.memberAvatar
 //        labelMemberName.text = accountInfo.memberName

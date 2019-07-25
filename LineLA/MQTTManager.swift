@@ -49,7 +49,8 @@ class MQTTManager: NSObject{
     func subTopicMain(){
         mqtt.subscribe("IDF/+/\(clientID!)/Re", qos: CocoaMQTTQOS.qos2)
         mqtt.subscribe("IDF/SendImg/\(clientID!)/+/+/+/Re", qos: CocoaMQTTQOS.qos2)
-        mqtt.subscribe("IDF/RecordImgBack/\(clientID!)/+/Re", qos: CocoaMQTTQOS.qos2);
+        mqtt.subscribe("IDF/RecordImgBack/\(clientID!)/+/Re", qos: CocoaMQTTQOS.qos2)
+//        mqtt.subscribe("IDF/FriendIcon/\(clientID!)/+/Re",qos:CocoaMQTTQOS.qos2)
     }
     
     func unsubTopicLogin(){
@@ -113,11 +114,12 @@ extension MQTTManager: CocoaMQTTDelegate {
           let topic = String(message.topic)
           let idf = topic.split(separator: "/")
           let notificationNameMQTT = Notification.Name("NotificationMQTT")
-
+        print("IDF:\(idf[1])")
 //          print("recv msg: \(msg)")
 //        print("IDf : \(idf)")
           switch idf[1] {
               case "Login":
+                  print("hello I'm here")
                   let msg = String(message.string!)
                   let msg_splitLine = msg.split(separator: ",")
                   if msg_splitLine[0] == "True"{
@@ -149,10 +151,23 @@ extension MQTTManager: CocoaMQTTDelegate {
                 let msg = String(message.string!)
                 let initDic:[String: String] = ["init": msg]
                 NotificationCenter.default.post(name: notificationNameMQTT, object: nil, userInfo: initDic)
-//                print("Init:")
-//                print(msg)
+
               default:
-                  print("ERROR")
+                if(idf[1].contains("FriendIcon")){
+                    let FID = String(idf[1].split(separator: ":")[1])
+                    if(idf[1].contains("Init")){
+                        print("FID: \(FID)")
+                        let bytes : [UInt8] = message.payload
+                        let data = NSData(bytes: bytes, length: bytes.count)
+                        let FiconDict:[String: String] = ["ficon": FID]
+                        for room in GlobalInfo.shared().roomlist{
+                            room.setIcon(img: UIImage(data:data as Data)!)
+                        }
+                        
+                        let notificationFIcon = Notification.Name("NotificationFIcon")
+                        NotificationCenter.default.post(name: notificationFIcon, object: nil, userInfo: FiconDict)
+                    }
+                }
           }
 //        guard let temp = message.string else { return }
 //        let strary:[String] = temp.components(separatedBy: ";")
@@ -193,10 +208,10 @@ extension MQTTManager: CocoaMQTTDelegate {
     func mqttDidDisconnect(_ mqtt: CocoaMQTT, withError err: Error?) {
 //                print("\(err.description)")
         print("mqttDidDisconnect")
-        DispatchQueue.main.async {
-            print("mqttDidDisconnect")
-            self.mqtt.connect()
-        }
+//        DispatchQueue.main.async {
+//            print("mqttDidDisconnect")
+//            self.mqtt.connect()
+//        }
     }
 }
 
@@ -220,5 +235,13 @@ extension MQTTManager {
     }
     func stopMQTT(){
         mqtt.disconnect()
+    }
+    
+    func checkConnectState() -> Bool{
+        if (mqtt.connState == CocoaMQTTConnState.connected){
+            return true
+        }else{
+            return false
+        }
     }
 }
