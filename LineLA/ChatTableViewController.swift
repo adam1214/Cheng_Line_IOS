@@ -15,6 +15,9 @@ class ChatTableViewController: UITableViewController {
     var memberID: String?
     var imgAvatar: UIImage?
     var memberName: String?
+    var tableViewData: TVCDataManager!
+    var chatList = [RoomInfo]()
+    
 //    var tableViewData: [TypeTableViewCell]!
 }
 
@@ -31,6 +34,12 @@ extension ChatTableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateChatList()
+        tableView.reloadData()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -38,42 +47,27 @@ extension ChatTableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
+//    override func numberOfSections(in tableView: UITableView) -> Int {
+//        // #warning Incomplete implementation, return the number of sections
+//        return 0
+//    }
 
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-//        if tableViewData[section].open == false{
-//            return tableViewData[section].sectionData.count + 1
-//        }
-//        else {
-//            return 1
-//        }
-//    }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return chatList.count
+    }
     
-//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        // Configure the cell...
-////        var dataIndex = indexPath.row - 1
-//        if indexPath.row == 0 {
-//            guard let cell:TypeTableViewCell = tableView.dequeueReusableCell(withIdentifier: "classLabel") as? TypeTableViewCell else {
-//                return UITableViewCell()
-//            }
-//            if let data = tableViewData {
-//                cell.flag.image = data[indexPath.section].flag.image
-//                cell.typeLabel.text = data[indexPath.section].typeLabel.text
-//            }
-//            return cell
-//        } else {
-//            guard let cell = tableView.dequeueReusableCell(withIdentifier: "classLabel") else {
-//                return UITableViewCell()
-//            }
-//            return cell
-//        }
-//    }
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // Configure the cell...
+//        var dataIndex = indexPath.row - 1
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "chatItem") as? ChatTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.roomInfo = chatList[indexPath.row]
+            cell.updateUI()
+            return cell
+    }
     
-//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        if indexPath.row == 0 {
 //            if tableViewData[indexPath.section].open == true{
 //                tableViewData[indexPath.section].open = false
@@ -86,7 +80,7 @@ extension ChatTableViewController {
 //            }
 //
 //        }
-//    }
+    }
 
     /*
     // Override to support conditional editing of the table view.
@@ -147,5 +141,10 @@ extension ChatTableViewController {
 //        if let memberID = appDeleagte.memberID {
 //            self.memberName = memberID
 //        }
+    }
+    
+    func updateChatList(){
+        chatList = GlobalInfo.shared().roomlist
+        print("count:\(chatList.count)")
     }
 }

@@ -64,6 +64,7 @@ class FriendPageViewController: UIViewController {
                     memberID = ""
                 }
                 let roomInfo = RoomInfo(code: code,ID: memberID ,roomName: roomName, type: type, rMsg: rMsg, rMsgDate: rMsgdate)
+                roomInfo.setIcon(img: UIImage(named: "image")!)
                 shared.roomlist.append(roomInfo)
             }
             let roomlist = shared.roomlist
@@ -105,12 +106,6 @@ class FriendPageViewController: UIViewController {
         }
     }
     @objc func fIconMessage(noti: Notification){
-        let studentID = (noti.userInfo?["ficon"]) as? String? ?? ""
-        for index in 1...shared.roomlist.count{
-            if shared.roomlist[index-1].ID == studentID{
-                shared.mTVCDataManager.FTVCData[1].ProfileInfos[index-1].avatar = shared.roomlist[index-1].icon
-            }
-        }
 //        if(room.type == "F"){
 //            let profile = ProfileInfo(profileName: room.roomName, section: 1, chatRoomID: room.code, avatar: UIImage(named: "image"), phoneNb: "1234")
 //            shared.mTVCDataManager.FTVCData[1].ProfileInfos.append(profile)
@@ -119,6 +114,12 @@ class FriendPageViewController: UIViewController {
 //            let MSG : String = "\(action):\(room.ID)"
 //            shared.mqttManager.mqtt.publish("IDF/FriendIcon/\(shared.mqttManager.clientID!)", withString: MSG)
 //        }
+        let studentID = (noti.userInfo?["ficon"]) as? String? ?? ""
+        for index in 1...shared.roomlist.count{
+            if shared.roomlist[index-1].ID == studentID{
+                shared.mTVCDataManager.FTVCData[1].ProfileInfos[index-1].avatar = shared.roomlist[index-1].icon
+            }
+        }
         self.childFTVC?.tableView.reloadData()
     }
 }

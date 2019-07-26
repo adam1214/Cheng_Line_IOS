@@ -15,6 +15,8 @@ class ChatTableViewCell: UITableViewCell {
     @IBOutlet weak var imgAvatar: UIImageView!
     @IBOutlet weak var chatName: UILabel!
     @IBOutlet weak var displayMsg: UILabel!
+    
+    var roomInfo: RoomInfo!
 }
 
 // Override func
@@ -28,5 +30,13 @@ extension ChatTableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+}
+
+extension ChatTableViewCell{
+    func updateUI(){
+        imgAvatar.image = roomInfo.icon.toCircle()
+        chatName.text = roomInfo.roomName
+        displayMsg.text = roomInfo.rMsg
     }
 }

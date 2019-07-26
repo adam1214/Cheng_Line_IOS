@@ -161,9 +161,11 @@ extension MQTTManager: CocoaMQTTDelegate {
                         let data = NSData(bytes: bytes, length: bytes.count)
                         let FiconDict:[String: String] = ["ficon": FID]
                         for room in GlobalInfo.shared().roomlist{
-                            room.setIcon(img: UIImage(data:data as Data)!)
+                            if FID == room.ID{
+                                room.setIcon(img: UIImage(data:data as Data)!)
+                                break
+                            }
                         }
-                        
                         let notificationFIcon = Notification.Name("NotificationFIcon")
                         NotificationCenter.default.post(name: notificationFIcon, object: nil, userInfo: FiconDict)
                     }
