@@ -47,8 +47,9 @@ class FriendPageViewController: UIViewController {
                 let roomName = String(room.split(separator: "\t")[1])
                 let type = String(room.split(separator: "\t")[3])
                 let rMsg = String(room.split(separator: "\t")[4])
-                let rMsgdate = String(room.split(separator: "\t")[5])
+                var rMsgdate = String(room.split(separator: "\t")[5])
                 var memberID : String = ""
+//                print("DATE:\(rMsgdate)")
                 if type == "F"{
                     let member_str = String(room.split(separator: "\t")[2])
                     let member_list = member_str.components(separatedBy: "-")
@@ -63,6 +64,11 @@ class FriendPageViewController: UIViewController {
                 else{
                     memberID = ""
                 }
+                
+                if rMsgdate == "XXXX-XX-XX XX:XX"{
+                    rMsgdate = "1970-00-00 00:00"
+                }
+                
                 let roomInfo = RoomInfo(code: code,ID: memberID ,roomName: roomName, type: type, rMsg: rMsg, rMsgDate: rMsgdate)
                 roomInfo.setIcon(img: UIImage(named: "default_group")!)
                 shared.roomlist.append(roomInfo)

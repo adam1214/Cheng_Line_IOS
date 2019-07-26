@@ -144,6 +144,7 @@ extension ChatTableViewController {
     }
     
     func updateChatList(){
+        GlobalInfo.shared().roomlist.sort(by: {$0.rMsgDate > $1.rMsgDate})
         chatList = GlobalInfo.shared().roomlist
         print("count:\(chatList.count)")
     }

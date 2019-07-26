@@ -15,6 +15,8 @@ class ChatTableViewCell: UITableViewCell {
     @IBOutlet weak var imgAvatar: UIImageView!
     @IBOutlet weak var chatName: UILabel!
     @IBOutlet weak var displayMsg: UILabel!
+    @IBOutlet weak var displayDate: UILabel!
+    
     
     var roomInfo: RoomInfo!
 }
@@ -37,6 +39,35 @@ extension ChatTableViewCell{
     func updateUI(){
         imgAvatar.image = roomInfo.icon.toCircle()
         chatName.text = roomInfo.roomName
-        displayMsg.text = roomInfo.rMsg
+        
+        if roomInfo.rMsg == "No History"{
+            displayMsg.text = ""
+        }else{
+            displayMsg.text = roomInfo.rMsg
+        }
+        
+        if roomInfo.rMsgDate == "1970-00-00 00:00"{
+            displayDate.text = ""
+        }else{
+            let dateFormatter:DateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let today_str = dateFormatter.string(from: Date())
+            let timeInterval: TimeInterval = -(24*60*60)
+            let yesterday = Date().addingTimeInterval(timeInterval)
+            let yesterday_str = dateFormatter.string(from: yesterday)
+            
+            let dateSplit = String(roomInfo.rMsgDate.split(separator: " ")[0])
+            let timeSplit = String(roomInfo.rMsgDate.split(separator: " ")[1])
+
+            if(yesterday_str == dateSplit){
+                displayDate.text = "昨天"
+            }else if(today_str == dateSplit){
+                let splitLine = timeSplit.split(separator: ":")
+                displayDate.text = String(splitLine[0] + ":" + splitLine[1])
+            }else{
+                let splitLine = dateSplit.split(separator: "-")
+                displayDate.text = String(splitLine[1] + "/" + splitLine[2])
+            }
+        }
     }
 }

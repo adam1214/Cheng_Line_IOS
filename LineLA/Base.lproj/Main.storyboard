@@ -424,13 +424,6 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="separatorColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IuM-lW-FOa">
-                            <rect key="frame" x="0.0" y="98" width="375" height="44"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="chatItem" id="yof-52-UdQ" customClass="ChatTableViewCell" customModule="LineLA" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="70"/>
@@ -440,40 +433,51 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FuA-DT-NfR">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69.5"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MhI-58-44e">
-                                                    <rect key="frame" x="0.0" y="0.0" width="19" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="19" height="69.5"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </view>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cN2-bh-02C">
-                                                    <rect key="frame" x="19" y="0.0" width="43.5" height="43.5"/>
+                                                    <rect key="frame" x="19" y="0.0" width="69.5" height="69.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="cN2-bh-02C" secondAttribute="height" multiplier="1:1" id="d72-bQ-Ygf"/>
                                                     </constraints>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PS4-No-fRp">
-                                                    <rect key="frame" x="62.5" y="0.0" width="18.5" height="43.5"/>
+                                                    <rect key="frame" x="88.5" y="0.0" width="18.5" height="69.5"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8aM-kE-xcK">
-                                                    <rect key="frame" x="81" y="0.0" width="294" height="43.5"/>
+                                                    <rect key="frame" x="107" y="0.0" width="268" height="69.5"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="GFO-bK-S3e">
-                                                            <rect key="frame" x="0.0" y="0.0" width="294" height="43.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="268" height="69.5"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Chat name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Btq-p4-Bgi">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="294" height="24"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="268" height="49"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="msg..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UFq-d6-kik">
-                                                                    <rect key="frame" x="0.0" y="24" width="294" height="19.5"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5MW-Le-Jom">
+                                                                    <rect key="frame" x="0.0" y="49" width="268" height="20.5"/>
+                                                                    <subviews>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="msg..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UFq-d6-kik">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="226" height="20.5"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hvL-yB-yaw">
+                                                                            <rect key="frame" x="226" y="0.0" width="42" height="20.5"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <nil key="textColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                </stackView>
                                                             </subviews>
                                                         </stackView>
                                                     </subviews>
@@ -502,6 +506,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="chatName" destination="Btq-p4-Bgi" id="2e7-1E-UQk"/>
+                                    <outlet property="displayDate" destination="hvL-yB-yaw" id="PdS-Ew-Nca"/>
                                     <outlet property="displayMsg" destination="UFq-d6-kik" id="Zki-Kf-4M7"/>
                                     <outlet property="imgAvatar" destination="cN2-bh-02C" id="mSg-ag-YaY"/>
                                 </connections>
@@ -2144,7 +2149,7 @@
                                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v4f-3C-ouv">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="558"/>
                                                 <connections>
-                                                    <segue destination="Leg-LY-GOc" kind="embed" id="QfR-sI-51z"/>
+                                                    <segue destination="Leg-LY-GOc" kind="embed" id="dS7-5g-FYd"/>
                                                 </connections>
                                             </containerView>
                                         </subviews>
