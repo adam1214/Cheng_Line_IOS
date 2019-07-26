@@ -64,13 +64,13 @@ class FriendPageViewController: UIViewController {
                     memberID = ""
                 }
                 let roomInfo = RoomInfo(code: code,ID: memberID ,roomName: roomName, type: type, rMsg: rMsg, rMsgDate: rMsgdate)
-                roomInfo.setIcon(img: UIImage(named: "image")!)
+                roomInfo.setIcon(img: UIImage(named: "default_group")!)
                 shared.roomlist.append(roomInfo)
             }
             let roomlist = shared.roomlist
             for room in roomlist{
                 if(room.type == "F"){
-                    let profile = ProfileInfo(profileName: room.roomName, section: 1, chatRoomID: room.code, avatar: UIImage(named: "image"), phoneNb: "1234")
+                    let profile = ProfileInfo(profileName: room.roomName, section: 1, chatRoomID: room.code, avatar: UIImage(named: "default_group"), phoneNb: "1234")
                     shared.mTVCDataManager.FTVCData[1].ProfileInfos.append(profile)
                     let tachiba : String = "0"
                     let action : String = "Init"
@@ -78,7 +78,7 @@ class FriendPageViewController: UIViewController {
                     shared.mqttManager.mqtt.publish("IDF/FriendIcon/\(shared.mqttManager.clientID!)", withString: MSG)
                 }
                 else if(room.type == "G"){
-                    let profile = ProfileInfo(profileName: room.roomName, section: 0, chatRoomID: room.code, avatar: UIImage(named: "image"), phoneNb: "1234")
+                    let profile = ProfileInfo(profileName: room.roomName, section: 0, chatRoomID: room.code, avatar: UIImage(named: "default_group"), phoneNb: "1234")
                     shared.mTVCDataManager.FTVCData[0].ProfileInfos.append(profile)
                     //                        self.tableViewData.FTVCData[0].ProfileInfos.append(profile)
                 }

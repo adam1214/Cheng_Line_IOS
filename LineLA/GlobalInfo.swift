@@ -25,7 +25,7 @@ class RoomInfo {
         self.type = type
         self.rMsg = rMsg
         self.rMsgDate = rMsgDate
-        self.icon = UIImage(named: "image")!
+        self.icon = UIImage(named: "default_group")!
     }
     
     func setIcon(img: UIImage){
