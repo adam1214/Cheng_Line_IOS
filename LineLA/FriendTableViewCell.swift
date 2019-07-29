@@ -21,7 +21,6 @@ struct ProfileInfo {
 class FriendTableViewCell: UITableViewCell {
     @IBOutlet weak var imgAvatar: UIImageView!
     @IBOutlet weak var profileName: UILabel!
-    @IBOutlet weak var buttomPhone: UIButton!
     var phoneNb: String?
     var profile: ProfileInfo!
     var present: ((_ profile:ProfileInfo) -> ())!
@@ -48,11 +47,9 @@ extension FriendTableViewCell {
     func updateUI(_ active: @escaping (_ profile:ProfileInfo)->()) {
         imgAvatar.image = profile.avatar.toCircle()
         profileName.text = profile.profileName
-        self.buttomPhone.isHidden = true
         if let section = profile.section {
             if section == 3 {
                 self.phoneNb = profile.phoneNb
-                self.buttomPhone.isHidden = false
                 self.present = active
             }
         }
