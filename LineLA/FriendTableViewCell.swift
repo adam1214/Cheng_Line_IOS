@@ -20,7 +20,7 @@ struct ProfileInfo {
 // Member attribute
 class FriendTableViewCell: UITableViewCell {
     @IBOutlet weak var imgAvatar: UIImageView!
-    @IBOutlet weak var profileName: UILabel!
+    @IBOutlet weak var profileName: UILabel!	
     var phoneNb: String?
     var profile: ProfileInfo!
     var present: ((_ profile:ProfileInfo) -> ())!
