@@ -27,7 +27,7 @@ class FriendPageViewController: UIViewController {
 //        print((noti.userInfo?["name"])!)
         let str = (noti.userInfo?["name"])! as? String ?? ""
         if str == "TabChat"{
-            print(str)
+//            print(str)
             if let controller = self.tabBarController?.viewControllers?[1] as? ChatPageViewController{
                 controller.shared = shared
             }

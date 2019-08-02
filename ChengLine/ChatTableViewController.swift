@@ -80,6 +80,15 @@ extension ChatTableViewController {
 //            }
 //
 //        }
+//        let profile = tableViewData.FTVCData[indexPath.section].ProfileInfos[dataIndex]//.profile!
+        if let controller = storyboard?.instantiateViewController(withIdentifier: "ChatRoomViewController") as? ChatRoomViewController{   // this is go to fried chatroom.
+            controller.shared = GlobalInfo.shared()
+            controller.roomInfo = GlobalInfo.shared().roomlist[indexPath.row]
+            //                if let parentController = self.parent as? FriendTableViewController {
+            //                    parentController.exitUI()
+            //                }
+            navigationController?.pushViewController(controller, animated: true)
+        }
     }
 
     /*

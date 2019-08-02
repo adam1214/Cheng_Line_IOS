@@ -14,10 +14,9 @@ import SQLite
 class ChatRoomTableViewController: UITableViewController {
     var shared: GlobalInfo!
     var mqttManager: MQTTManager!
-    var cRInfo: ChatRoomInfo!
+    var roomInfo: RoomInfo!
     var tableViewData: TVCDataManager!
     var messageObserver: MessageObserver!
-    var databasemanager: DatabaseManager!
     var indexPaths: [IndexPath]!
     var loadMsgbottom: Int!
     var loadMsgtop: Int!
@@ -44,7 +43,7 @@ extension ChatRoomTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.refreshControl?.attributedTitle = NSAttributedString(string: "更新中...")
+        self.refreshControl?.attributedTitle = NSAttributedString(string: " 中...")
 //        if isFirstLoad {
 //            DispatchQueue.main.async {
 //
@@ -80,26 +79,26 @@ extension ChatRoomTableViewController {
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let height = scrollView.bounds.height
-        let contentOffsetY = scrollView.contentOffset.y
-        let bottomOffset = scrollView.contentSize.height - contentOffsetY
-        
-        if contentOffsetY == 0 {
-            if isLoadOver {
-                if loadMsgbottom > 0 {
-                    print("ok")
-                }
-            }
-        }
-        
-        if bottomOffset <= height {
-            // 在最底部
+//        let height = scrollView.bounds.height
+//        let contentOffsetY = scrollView.contentOffset.y
+//        let bottomOffset = scrollView.contentSize.height - contentOffsetY
+//
+//        if contentOffsetY == 0 {
+//            if isLoadOver {
+//                if loadMsgbottom > 0 {
+//                    print("ok")
+//                }
+//            }
+//        }
+//
+//        if bottomOffset <= height {
+//            // 在最底部
 //            print("在最底部")
-            self.currentInsInBottom = true
-        } else {
+//            self.currentInsInBottom = true
+//        } else {
 //            print("不在了")
-            self.currentInsInBottom = false
-        }
+//            self.currentInsInBottom = false
+//        }
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath){
@@ -121,36 +120,36 @@ extension ChatRoomTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        return cell
         // Configure the cell...
 //        print("indexPath.row: \(indexPath.row)")
-        if indexPath.row == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DateCell") as? ChatRoomDataTableViewCell else {
-                return UITableViewCell()
-            }
-            cell.dateCell = tableViewData.CRTVCData[indexPath.section]
-            cell.updateUI()
-            return cell
-        } else  {
-            let dataIndex = indexPath.row - 1
-            let ID = tableViewData.CRTVCData[indexPath.section].mChatMsgCells[dataIndex].ID
-            if ID == self.cRInfo.memberID {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: "RightMsgCell") as? ChatRightMessageTableViewCell else {
-                    return UITableViewCell()
-                }
-                cell.chatMsgCell = tableViewData.CRTVCData[indexPath.section].mChatMsgCells[dataIndex]
-                cell.updateUI(imageViewClick)
-                return cell
-            } else {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: "LeftMsgCell") as? ChatLeftMessageTableViewCell else {
-                    return UITableViewCell()
-                }
-                cell.chatMsgCell = tableViewData.CRTVCData[indexPath.section].mChatMsgCells[dataIndex]
-                cell.updateUI(present: imageViewClick, replyOK: replyOK, replyModify: replyModify, replyParticipate: replyParticipate)
-                return cell
-            }
-        }
+//        if indexPath.row == 0 {
+//            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DateCell") as? ChatRoomDataTableViewCell else {
+//                return UITableViewCell()
+//            }
+//            cell.dateCell = tableViewData.CRTVCData[indexPath.section]
+//            cell.updateUI()
+//            return cell
+//        } else  {
+//            let dataIndex = indexPath.row - 1
+//            let ID = tableViewData.CRTVCData[indexPath.section].mChatMsgCells[dataIndex].ID
+//            if ID == self.cRInfo.memberID {
+//                guard let cell = tableView.dequeueReusableCell(withIdentifier: "RightMsgCell") as? ChatRightMessageTableViewCell else {
+//                    return UITableViewCell()
+//                }
+//                cell.chatMsgCell = tableViewData.CRTVCData[indexPath.section].mChatMsgCells[dataIndex]
+//                cell.updateUI(imageViewClick)
+//                return cell
+//            } else {
+//                guard let cell = tableView.dequeueReusableCell(withIdentifier: "LeftMsgCell") as? ChatLeftMessageTableViewCell else {
+//                    return UITableViewCell()
+//                }
+//                cell.chatMsgCell = tableViewData.CRTVCData[indexPath.section].mChatMsgCells[dataIndex]
+//                cell.updateUI(present: imageViewClick, replyOK: replyOK, replyModify: replyModify, replyParticipate: replyParticipate)
+//                return cell
+//            }
+//        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -211,16 +210,13 @@ extension ChatRoomTableViewController {
 //        tableView.keyboardDismissMode = .interactive
         mqttManager = shared.mqttManager
         tableViewData = shared.mTVCDataManager
-        databasemanager = shared.databaseManager
-        databasemanager.chatRoomTable.setTableName(cRInfo.targetID!)
-        databasemanager.chatRoomTable.createTable()
         self.isLoadOver = true
         self.indexPaths = [IndexPath]()
         initTableViewData()
         initClosure()
         self.refreshControl = UIRefreshControl()
         self.refreshControl?.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
-        self.messageObserver = MessageObserver(activity: showMsg, id: cRInfo.targetID)
+//        self.messageObserver = MessageObserver(activity: showMsg, id: cRInfo.targetID)
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         
         
@@ -234,28 +230,28 @@ extension ChatRoomTableViewController {
     }
     
     func initTableViewData(){
-        let Arr = self.databasemanager.chatRoomTable.readData()
-        self.loadMsgtop = Arr.count
-        self.loadMsgbottom = loadMsgtop - 50
-        if self.loadMsgbottom <= 0 {
-            self.loadMsgbottom = 1
-        }
-        if self.loadMsgtop <= 1 {
-            self.isLoadOver = false
-        }
-        if self.isLoadOver {
-            let rowDataArr = Arr[self.loadMsgbottom..<self.loadMsgtop]
-            for row in rowDataArr {
-                var avatar: UIImage
-                if row.memberId == self.cRInfo.targetID { avatar = self.cRInfo.memberAvatar! }
-                else { avatar = self.cRInfo.targetAvatar! }
-                let chatMsgCell = ChatMsgCellInfo(msgID: row.uuid, avatar: avatar, ID: row.memberId, name: row.memberName, msg: row.msg, msgTime: row.msgTime)
-                self.addMsg(chatMsgCell: chatMsgCell)
-            }
-            self.loadMsgtop = self.loadMsgbottom
-            self.loadMsgbottom = self.loadMsgtop - 50
-            self.MsgIndex = self.tableViewData.CRTVCData[self.tableViewData.CRTVCData.count - 1].mChatMsgCells.count
-        }
+//        let Arr = self.databasemanager.chatRoomTable.readData()
+//        self.loadMsgtop = Arr.count
+//        self.loadMsgbottom = loadMsgtop - 50
+//        if self.loadMsgbottom <= 0 {
+//            self.loadMsgbottom = 1
+//        }
+//        if self.loadMsgtop <= 1 {
+//            self.isLoadOver = false
+//        }
+//        if self.isLoadOver {
+//            let rowDataArr = Arr[self.loadMsgbottom..<self.loadMsgtop]
+//            for row in rowDataArr {
+//                var avatar: UIImage
+//                if row.memberId == self.cRInfo.targetID { avatar = self.cRInfo.memberAvatar! }
+//                else { avatar = self.cRInfo.targetAvatar! }
+//                let chatMsgCell = ChatMsgCellInfo(msgID: row.uuid, avatar: avatar, ID: row.memberId, name: row.memberName, msg: row.msg, msgTime: row.msgTime)
+//                self.addMsg(chatMsgCell: chatMsgCell)
+//            }
+//            self.loadMsgtop = self.loadMsgbottom
+//            self.loadMsgbottom = self.loadMsgtop - 50
+//            self.MsgIndex = self.tableViewData.CRTVCData[self.tableViewData.CRTVCData.count - 1].mChatMsgCells.count
+//        }
     }
     
     func addMsg(chatMsgCell:ChatMsgCellInfo) {
@@ -273,147 +269,147 @@ extension ChatRoomTableViewController {
     }
     
     func updata() {
-        if self.loadMsgbottom <= 0 {
-            self.loadMsgbottom = 1
-        }
-        if self.loadMsgtop <= 1 {
-            self.isLoadOver = false
-        }
-        if self.isLoadOver {
-            let Arr = self.databasemanager.chatRoomTable.readData()
-            let rowDataArr = Arr[self.loadMsgbottom..<self.loadMsgtop].reversed()
-            for row in rowDataArr {
-                let date = self.shared.dateUtil
-                var avatar: UIImage
-                if row.memberId == self.cRInfo.targetID { avatar = self.cRInfo.memberAvatar! }
-                else { avatar = self.cRInfo.targetAvatar! }
-                let chatMsgCell = ChatMsgCellInfo(msgID: row.uuid, avatar: avatar, ID: row.memberId, name: row.memberName, msg: row.msg, msgTime: row.msgTime)
-                let nextdate = date.getLocalDate(date: chatMsgCell.msgTime)
-                if self.tableViewData.CRTVCData[0].date != nextdate {
-                    self.tableViewData.CRTVCData.insert(DateCellInfo(date: date.getLocalDate(date: chatMsgCell.msgTime)), at: 0)
-                }
-                self.tableViewData.CRTVCData[0].mChatMsgCells.insert(chatMsgCell, at:0)
-            }
-            self.tableView.reloadData()
-            self.loadMsgtop = self.loadMsgbottom
-            self.loadMsgbottom = self.loadMsgtop - 50
-            self.MsgIndex = self.tableViewData.CRTVCData[self.tableViewData.CRTVCData.count - 1].mChatMsgCells.count
-        }
+//        if self.loadMsgbottom <= 0 {
+//            self.loadMsgbottom = 1
+//        }
+//        if self.loadMsgtop <= 1 {
+//            self.isLoadOver = false
+//        }
+//        if self.isLoadOver {
+//            let Arr = self.databasemanager.chatRoomTable.readData()
+//            let rowDataArr = Arr[self.loadMsgbottom..<self.loadMsgtop].reversed()
+//            for row in rowDataArr {
+//                let date = self.shared.dateUtil
+//                var avatar: UIImage
+//                if row.memberId == self.cRInfo.targetID { avatar = self.cRInfo.memberAvatar! }
+//                else { avatar = self.cRInfo.targetAvatar! }
+//                let chatMsgCell = ChatMsgCellInfo(msgID: row.uuid, avatar: avatar, ID: row.memberId, name: row.memberName, msg: row.msg, msgTime: row.msgTime)
+//                let nextdate = date.getLocalDate(date: chatMsgCell.msgTime)
+//                if self.tableViewData.CRTVCData[0].date != nextdate {
+//                    self.tableViewData.CRTVCData.insert(DateCellInfo(date: date.getLocalDate(date: chatMsgCell.msgTime)), at: 0)
+//                }
+//                self.tableViewData.CRTVCData[0].mChatMsgCells.insert(chatMsgCell, at:0)
+//            }
+//            self.tableView.reloadData()
+//            self.loadMsgtop = self.loadMsgbottom
+//            self.loadMsgbottom = self.loadMsgtop - 50
+//            self.MsgIndex = self.tableViewData.CRTVCData[self.tableViewData.CRTVCData.count - 1].mChatMsgCells.count
+//        }
         
     }
     
     func initClosure(){
-        showMsg = {() -> () in
-            let date = self.shared.dateUtil
-            let msgID = self.messageObserver.msgID
-            let avatar = self.cRInfo.targetAvatar
-            let ID = self.messageObserver.memberID
-            let name = self.messageObserver.memberName //cRinfo.targetName
-            let msg = self.messageObserver.msg
-            let msgTime = date.getMsgTime()
-            let chatMsgCell = ChatMsgCellInfo(msgID: msgID, avatar: avatar, ID: ID, name: name, msg: msg, msgTime: msgTime)
-            self.databasemanager.chatRoomTable.insertData(_uuid: msgID!, _memberId: ID!, _memberName: name!, _memberAvatar: "", _msg: msg!, _msgTime: msgTime)
-            self.addMsg(chatMsgCell: chatMsgCell)
-            let CRTVCDatacount = self.tableViewData.CRTVCData.count
-            let mChatMsgCellscount = self.tableViewData.CRTVCData[CRTVCDatacount-1].mChatMsgCells.count
-            self.indexPaths.append(IndexPath(row: mChatMsgCellscount, section: CRTVCDatacount-1))
-            if mChatMsgCellscount == 1 {
-                self.tableView.reloadData()
-                self.indexPaths.removeAll()
-                let indexPath = IndexPath(row: mChatMsgCellscount, section: CRTVCDatacount-1)
-                if ID == self.shared.accountInfo.memberID || self.currentInsInBottom {
-                    self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
-                    self.currentInsInBottom = true
-                }
-            }
-            if #available(iOS 11, *) {
-                DispatchQueue.main.async {
-                    if self.indexPaths.count > 0{
-                        self.tableView.beginUpdates()
-                        self.tableView.insertRows(at: self.indexPaths, with: .none)
-                        self.indexPaths.removeAll()
-                        self.tableView.endUpdates()
-                        let indexPath = IndexPath(row: mChatMsgCellscount, section: CRTVCDatacount-1)
-                        if ID == self.shared.accountInfo.memberID || self.currentInsInBottom {
-                            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
-                            self.currentInsInBottom = true
-                        }
-                    }
-                }
-            } else{
-                self.tableView.beginUpdates()
-                self.tableView.insertRows(at: self.indexPaths, with: .none)
-                self.indexPaths.removeAll()
-                self.tableView.endUpdates()
-                let indexPath = IndexPath(row: mChatMsgCellscount, section: CRTVCDatacount-1)
-                if ID == self.shared.accountInfo.memberID || self.currentInsInBottom {
-                    self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
-                    self.currentInsInBottom = true
-                }
-            }
-        }
-        
-        imageViewClick = {(_ img: UIImage) -> () in
-            //      cell.isPresent = false
-            if let controller = self.storyboard?.instantiateViewController(withIdentifier: "ShowImageViewController") as? ShowImageViewController {
-                controller.image = img
-                self.present(controller, animated: true, completion: nil)
-            }
-        }
-            
-        replyOK = { (_ _uuid: String, _ old_memberName: String) -> () in
-            let uuid = UUID().uuidString
-            let instruction = "replyOK 0"
-            let msg = "\(uuid);\(self.cRInfo.memberID!);\(instruction);\(NSLocalizedString("OK",comment: ""))"
-            self.mqttManager.mqtt.publish(self.cRInfo.targetID!, withString: msg)
-            self.databasemanager.chatRoomTable.upDate(_uuid: _uuid, old_memberName: old_memberName, new_memberName: "\(instruction)")
-            let CRTVCDatacount = self.tableViewData.CRTVCData.count
-            for i in 0..<CRTVCDatacount {
-                let mChatMsgCellscount = self.tableViewData.CRTVCData[i].mChatMsgCells.count
-                for j in 0..<mChatMsgCellscount {
-                    if self.tableViewData.CRTVCData[i].mChatMsgCells[j].msgID == _uuid {
-                        self.tableViewData.CRTVCData[i].mChatMsgCells[j].name = "\(instruction)"
-                        break;
-                    }
-                }
-            }
-        }
-        
-        replyModify = { (_ _uuid: String, _ old_memberName: String) -> () in
-            let uuid = UUID().uuidString
-            let instruction = "replyModify 0"
-            let msg = "\(uuid);\(self.cRInfo.memberID!);\(instruction);\(NSLocalizedString("ModifyMsg",comment: ""))"
-            self.mqttManager.mqtt.publish(self.cRInfo.targetID!, withString: msg)
-            self.databasemanager.chatRoomTable.upDate(_uuid: _uuid, old_memberName: old_memberName, new_memberName: "\(instruction)")
-            let CRTVCDatacount = self.tableViewData.CRTVCData.count
-            for i in 0..<CRTVCDatacount {
-                let mChatMsgCellscount = self.tableViewData.CRTVCData[i].mChatMsgCells.count
-                for j in 0..<mChatMsgCellscount {
-                    if self.tableViewData.CRTVCData[i].mChatMsgCells[j].msgID == _uuid {
-                        self.tableViewData.CRTVCData[i].mChatMsgCells[j].name = "\(instruction)"
-                        break;
-                    }
-                }
-            }
-        }
-        
-        replyParticipate = { (_ date: String, _ _uuid: String, _ old_memberName: String) -> () in
-            let uuid = UUID().uuidString
-            let instruction = "replyParticipate \(date)"
-            let msg = "\(uuid);\(self.cRInfo.memberID!);\(instruction);\(NSLocalizedString("Join",comment: ""))"
-            self.mqttManager.mqtt.publish(self.cRInfo.targetID!, withString: msg)
-            self.databasemanager.chatRoomTable.upDate(_uuid: _uuid, old_memberName: old_memberName, new_memberName: "\(instruction)")
-            let CRTVCDatacount = self.tableViewData.CRTVCData.count
-            for i in 0..<CRTVCDatacount {
-                let mChatMsgCellscount = self.tableViewData.CRTVCData[i].mChatMsgCells.count
-                for j in 0..<mChatMsgCellscount {
-                    if self.tableViewData.CRTVCData[i].mChatMsgCells[j].msgID == _uuid {
-                        self.tableViewData.CRTVCData[i].mChatMsgCells[j].name = "\(instruction)"
-                        break;
-                    }
-                }
-            }
-        }
+//        showMsg = {() -> () in
+//            let date = self.shared.dateUtil
+//            let msgID = self.messageObserver.msgID
+//            let avatar = self.cRInfo.targetAvatar
+//            let ID = self.messageObserver.memberID
+//            let name = self.messageObserver.memberName //cRinfo.targetName
+//            let msg = self.messageObserver.msg
+//            let msgTime = date.getMsgTime()
+//            let chatMsgCell = ChatMsgCellInfo(msgID: msgID, avatar: avatar, ID: ID, name: name, msg: msg, msgTime: msgTime)
+//            self.databasemanager.chatRoomTable.insertData(_uuid: msgID!, _memberId: ID!, _memberName: name!, _memberAvatar: "", _msg: msg!, _msgTime: msgTime)
+//            self.addMsg(chatMsgCell: chatMsgCell)
+//            let CRTVCDatacount = self.tableViewData.CRTVCData.count
+//            let mChatMsgCellscount = self.tableViewData.CRTVCData[CRTVCDatacount-1].mChatMsgCells.count
+//            self.indexPaths.append(IndexPath(row: mChatMsgCellscount, section: CRTVCDatacount-1))
+//            if mChatMsgCellscount == 1 {
+//                self.tableView.reloadData()
+//                self.indexPaths.removeAll()
+//                let indexPath = IndexPath(row: mChatMsgCellscount, section: CRTVCDatacount-1)
+//                if ID == self.shared.accountInfo.memberID || self.currentInsInBottom {
+//                    self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+//                    self.currentInsInBottom = true
+//                }
+//            }
+//            if #available(iOS 11, *) {
+//                DispatchQueue.main.async {
+//                    if self.indexPaths.count > 0{
+//                        self.tableView.beginUpdates()
+//                        self.tableView.insertRows(at: self.indexPaths, with: .none)
+//                        self.indexPaths.removeAll()
+//                        self.tableView.endUpdates()
+//                        let indexPath = IndexPath(row: mChatMsgCellscount, section: CRTVCDatacount-1)
+//                        if ID == self.shared.accountInfo.memberID || self.currentInsInBottom {
+//                            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+//                            self.currentInsInBottom = true
+//                        }
+//                    }
+//                }
+//            } else{
+//                self.tableView.beginUpdates()
+//                self.tableView.insertRows(at: self.indexPaths, with: .none)
+//                self.indexPaths.removeAll()
+//                self.tableView.endUpdates()
+//                let indexPath = IndexPath(row: mChatMsgCellscount, section: CRTVCDatacount-1)
+//                if ID == self.shared.accountInfo.memberID || self.currentInsInBottom {
+//                    self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+//                    self.currentInsInBottom = true
+//                }
+//            }
+//        }
+//
+//        imageViewClick = {(_ img: UIImage) -> () in
+//            //      cell.isPresent = false
+//            if let controller = self.storyboard?.instantiateViewController(withIdentifier: "ShowImageViewController") as? ShowImageViewController {
+//                controller.image = img
+//                self.present(controller, animated: true, completion: nil)
+//            }
+//        }
+//
+//        replyOK = { (_ _uuid: String, _ old_memberName: String) -> () in
+//            let uuid = UUID().uuidString
+//            let instruction = "replyOK 0"
+//            let msg = "\(uuid);\(self.cRInfo.memberID!);\(instruction);\(NSLocalizedString("OK",comment: ""))"
+//            self.mqttManager.mqtt.publish(self.cRInfo.targetID!, withString: msg)
+//            self.databasemanager.chatRoomTable.upDate(_uuid: _uuid, old_memberName: old_memberName, new_memberName: "\(instruction)")
+//            let CRTVCDatacount = self.tableViewData.CRTVCData.count
+//            for i in 0..<CRTVCDatacount {
+//                let mChatMsgCellscount = self.tableViewData.CRTVCData[i].mChatMsgCells.count
+//                for j in 0..<mChatMsgCellscount {
+//                    if self.tableViewData.CRTVCData[i].mChatMsgCells[j].msgID == _uuid {
+//                        self.tableViewData.CRTVCData[i].mChatMsgCells[j].name = "\(instruction)"
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//
+//        replyModify = { (_ _uuid: String, _ old_memberName: String) -> () in
+//            let uuid = UUID().uuidString
+//            let instruction = "replyModify 0"
+//            let msg = "\(uuid);\(self.cRInfo.memberID!);\(instruction);\(NSLocalizedString("ModifyMsg",comment: ""))"
+//            self.mqttManager.mqtt.publish(self.cRInfo.targetID!, withString: msg)
+//            self.databasemanager.chatRoomTable.upDate(_uuid: _uuid, old_memberName: old_memberName, new_memberName: "\(instruction)")
+//            let CRTVCDatacount = self.tableViewData.CRTVCData.count
+//            for i in 0..<CRTVCDatacount {
+//                let mChatMsgCellscount = self.tableViewData.CRTVCData[i].mChatMsgCells.count
+//                for j in 0..<mChatMsgCellscount {
+//                    if self.tableViewData.CRTVCData[i].mChatMsgCells[j].msgID == _uuid {
+//                        self.tableViewData.CRTVCData[i].mChatMsgCells[j].name = "\(instruction)"
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//
+//        replyParticipate = { (_ date: String, _ _uuid: String, _ old_memberName: String) -> () in
+//            let uuid = UUID().uuidString
+//            let instruction = "replyParticipate \(date)"
+//            let msg = "\(uuid);\(self.cRInfo.memberID!);\(instruction);\(NSLocalizedString("Join",comment: ""))"
+//            self.mqttManager.mqtt.publish(self.cRInfo.targetID!, withString: msg)
+//            self.databasemanager.chatRoomTable.upDate(_uuid: _uuid, old_memberName: old_memberName, new_memberName: "\(instruction)")
+//            let CRTVCDatacount = self.tableViewData.CRTVCData.count
+//            for i in 0..<CRTVCDatacount {
+//                let mChatMsgCellscount = self.tableViewData.CRTVCData[i].mChatMsgCells.count
+//                for j in 0..<mChatMsgCellscount {
+//                    if self.tableViewData.CRTVCData[i].mChatMsgCells[j].msgID == _uuid {
+//                        self.tableViewData.CRTVCData[i].mChatMsgCells[j].name = "\(instruction)"
+//                        break;
+//                    }
+//                }
+//            }
+//        }
     }
     
     func exitUI() {
@@ -421,7 +417,7 @@ extension ChatRoomTableViewController {
             cd.mChatMsgCells.removeAll()
         }
         tableViewData.CRTVCData.removeAll()
-        cRInfo = nil
+        roomInfo = nil
         showMsg = nil
         endEditing = nil
         messageObserver = nil

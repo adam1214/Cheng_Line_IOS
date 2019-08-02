@@ -16,7 +16,6 @@ class MQTTManager: NSObject{
     var uuID: String! // UUID
     var clientID: String!
     var mqtt: CocoaMQTT!
-    var curtopic: String!
     var timing: Int!
     
     private static var mqttManager: MQTTManager = {
@@ -25,7 +24,6 @@ class MQTTManager: NSObject{
     
     private override init(){
         super.init()
-        self.curtopic = ""
         
         uuID = "CocoaMQTT-" + String(UUID().uuidString)
         mqtt = CocoaMQTT(clientID: uuID, host: "140.116.82.52", port: 1883)

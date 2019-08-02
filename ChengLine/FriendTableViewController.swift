@@ -104,9 +104,13 @@ extension FriendTableViewController {
             let dataIndex = indexPath.row - 1
             let profile = tableViewData.FTVCData[indexPath.section].ProfileInfos[dataIndex]//.profile!
             if let controller = storyboard?.instantiateViewController(withIdentifier: "ChatRoomViewController") as? ChatRoomViewController{   // this is go to fried chatroom.
-                mqttManager.curtopic = profile.chatRoomID
                 controller.shared = shared
-                controller.cRInfo = ChatRoomInfo(memberAvatar: accountInfo.memberAvatar, memberName: accountInfo.memberName, memberID: accountInfo.memberID, targetAvatar: profile.avatar, targetName: profile.profileName, targetID: profile.chatRoomID, chatRoomTitle: profile.profileName, type: profile.section)
+                for room in shared.roomlist{
+                    if profile.profileName == room.roomName{
+                        controller.roomInfo = room
+                        break
+                    }
+                }
 //                if let parentController = self.parent as? FriendTableViewController {
 //                    parentController.exitUI()
 //                }

@@ -17,7 +17,7 @@ struct ChatRoomInfo {
     var targetName: String?
     var targetID: String?
     var chatRoomTitle: String?
-    var type: Int?
+//    var type: Int?
 }
 
 // Member attribute
@@ -32,7 +32,7 @@ class ChatRoomViewController: UIViewController {
     var accountInfo: AccountInfo!
     var messageObserver: MessageObserver!
     var mqttManager: MQTTManager!
-    var cRInfo: ChatRoomInfo!
+    var roomInfo: RoomInfo!
     var showMsg: (() -> ())!
     var keyboardObserver: KeyboardObserver!
     var setKeyboard: ((_ height: CGFloat) -> ())!
@@ -77,7 +77,7 @@ extension ChatRoomViewController {
         if segue.identifier == "EmbedChatList" {
             let controller = segue.destination as! ChatRoomTableViewController
             controller.shared = shared
-            controller.cRInfo = cRInfo
+            controller.roomInfo = roomInfo
             controller.endEditing = { () -> () in
                 self.view.endEditing(true)
                 self.keyboardHeight = 0
@@ -117,14 +117,14 @@ extension ChatRoomViewController: UITextViewDelegate {
     func prepare() {
         accountInfo = shared.accountInfo
         mqttManager = shared.mqttManager
-        labTitle.text = cRInfo.chatRoomTitle
+        labTitle.text = roomInfo.roomName
         textMsg.delegate = self
         gap = 20
         textMsgMaxHight = 77
         keyboardHeight = 0
         initClosure()
         deviceOrientationObserver = DeviceOrientationObserver(activity: setdeviceOrientation)
-        self.messageObserver = MessageObserver(activity: showMsg, id: cRInfo.targetID!)
+//        self.messageObserver = MessageObserver(activity: showMsg, id: cRInfo.targetID!)
         self.keyboardObserver = KeyboardObserver(activity: setKeyboard)
         self.bgView.backgroundColor = UIColor(patternImage: UIImage(named: "bg_chatroom")!.imageFill(targetSize: self.view.bounds.size))
         // set textMsgView layout
@@ -139,24 +139,24 @@ extension ChatRoomViewController: UITextViewDelegate {
         
         self.curorientation = .portrait
         
-        switch self.cRInfo.type {
-        case 1: //type B
-            self.viewContainerView.translatesAutoresizingMaskIntoConstraints = false
-            let viewContainerViewBotton = self.viewContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0)
-            viewContainerViewBotton.isActive = true
-            self.textMsgView.isHidden = true
-            break
-        case 2: //type C
-            self.viewContainerView.translatesAutoresizingMaskIntoConstraints = false
-            let viewContainerViewBotton = self.viewContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0)
-            viewContainerViewBotton.isActive = true
-            self.textMsgView.isHidden = true
-            break
-        default: //type A //type friend
-            self.textMsgView.isHidden = false
-            break
-        }
-        
+//        switch self.cRInfo.type {
+//        case 1: //type B
+//            self.viewContainerView.translatesAutoresizingMaskIntoConstraints = false
+//            let viewContainerViewBotton = self.viewContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0)
+//            viewContainerViewBotton.isActive = true
+//            self.textMsgView.isHidden = true
+//            break
+//        case 2: //type C
+//            self.viewContainerView.translatesAutoresizingMaskIntoConstraints = false
+//            let viewContainerViewBotton = self.viewContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0)
+//            viewContainerViewBotton.isActive = true
+//            self.textMsgView.isHidden = true
+//            break
+//        default: //type A //type friend
+//            self.textMsgView.isHidden = false
+//            break
+//        }
+        print("RoomName: \(roomInfo.roomName)")
     }
     
     func initClosure() {
@@ -322,9 +322,8 @@ extension ChatRoomViewController: UITextViewDelegate {
         setdeviceOrientation = nil
         textMsgViewBotton = nil
         ViewContainerViewTop = nil
-        cRInfo = nil
+        roomInfo = nil
         accountInfo = nil
-        mqttManager.curtopic = ""
         mqttManager = nil
         shared = nil
         showMsg = nil
@@ -345,18 +344,18 @@ extension ChatRoomViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func sendMsg(_ sender: Any) {
-        let message = textMsg.text!
-        if message.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines) != "" {
-            let uuid = UUID().uuidString
-            let msg = "\(uuid);\(cRInfo.memberID!);\(cRInfo.memberName!);\(message)"
-            mqttManager.mqtt.publish(cRInfo.targetID!, withString: msg)
-            textMsg.text = ""
-            textMsg.isScrollEnabled = false
-            self.childCRTVC?.currentInsInBottom = true
-            self.textViewDidChange(self.textMsg)
-        }
-    }
+//    @IBAction func sendMsg(_ sender: Any) {
+//        let message = textMsg.text!
+//        if message.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines) != "" {
+//            let uuid = UUID().uuidString
+//            let msg = "\(uuid);\(cRInfo.memberID!);\(cRInfo.memberName!);\(message)"
+//            mqttManager.mqtt.publish(cRInfo.targetID!, withString: msg)
+//            textMsg.text = ""
+//            textMsg.isScrollEnabled = false
+//            self.childCRTVC?.currentInsInBottom = true
+//            self.textViewDidChange(self.textMsg)
+//        }
+//    }
     
     @IBAction func uploadBtnAction(_ sender: UIButton) {
         // 建立一個 UIImagePickerController 的實體
@@ -424,16 +423,16 @@ extension ChatRoomViewController: UIImagePickerControllerDelegate, UINavigationC
 //        }
 //
 //        dismiss(animated: true, completion: nil)
-        self.dismiss(animated: true, completion: {
-            var img:UIImage? = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
-            if picker.allowsEditing {
-                img = info[UIImagePickerController.InfoKey.editedImage] as? UIImage
-            }
-            let uuid = UUID().uuidString
-            let imgData = img?.pngData()
-            let message = imgData?.base64EncodedString()
-            let msg = "\(uuid);\(self.cRInfo.memberID!);\(self.cRInfo.memberName!) showPicture;" + message!
-            self.mqttManager.mqtt.publish(self.cRInfo.targetID!, withString: msg)
-        })
+//        self.dismiss(animated: true, completion: {
+//            var img:UIImage? = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
+//            if picker.allowsEditing {
+//                img = info[UIImagePickerController.InfoKey.editedImage] as? UIImage
+//            }
+//            let uuid = UUID().uuidString
+//            let imgData = img?.pngData()
+//            let message = imgData?.base64EncodedString()
+//            let msg = "\(uuid);\(self.cRInfo.memberID!);\(self.cRInfo.memberName!) showPicture;" + message!
+//            self.mqttManager.mqtt.publish(self.cRInfo.targetID!, withString: msg)
+//        })
     }
 }

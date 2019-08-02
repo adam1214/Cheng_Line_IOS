@@ -22,7 +22,7 @@ class ChatPageViewController: UIViewController {
 //        print((noti.userInfo?["name"])!)
         let str = (noti.userInfo?["name"])! as? String ?? ""
         if str == "TabFriend"{
-            print(str)
+//            print(str)
             if let controller = self.tabBarController?.viewControllers?[0] as? FriendPageViewController{
                 controller.shared = shared
             }
@@ -49,7 +49,6 @@ extension ChatPageViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
     
      // MARK: - Navigation
      
