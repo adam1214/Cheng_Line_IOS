@@ -39,54 +39,55 @@ extension ChatRightMessageTableViewCell {
 // My func
 extension ChatRightMessageTableViewCell {
     func updateUI(_ activity:  @escaping (_ img: UIImage)->()) {
-        msgTimeLabel.text = MsgTimeFormat(date: chatMsgCell.msgTime)
-        msgTextView.text = ""
-        var isHiddenMsg = false
-        imagetemp = nil
-        let arr = chatMsgCell.name.components(separatedBy: " ")
-        var instruction = arr[0]
-        if arr.count != 1 && arr[1] == "showPicture" { instruction = arr[1] }
-        switch instruction {
-        case "showPicture":
-            isHiddenMsg = true
-            msgTextView.isHidden = true
-            bubble.isHidden = true
-            viewImg.isHidden = false
-            imgView.isHidden = false
-            let imgData = Data(base64Encoded: chatMsgCell.msg, options: .ignoreUnknownCharacters)
-            let image = UIImage(data: imgData!)
-            imagetemp = image
-            let imageWidth = image?.size.width
-            let imageHeight = image?.size.height
-            let size = contentView.frame.size
-            let maxValue = size.width - 84
-            var tempimg: UIImage!
-            if imageWidth! > imageHeight! { tempimg = image!.scaleImage(scaleSize: maxValue/imageWidth!) }
-            else { tempimg = image!.scaleImage(scaleSize: maxValue/imageHeight!) }
-            imgView.image = tempimg
-            imgView.layer.cornerRadius = 30
-            self.present = activity
-            let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewClick))
-            imgView.addGestureRecognizer(singleTapGesture)
-            imgView.isUserInteractionEnabled = true
-            break
-        default: // self.cRInfo.targetName friend, typeA and typeB(instruction)
-            
-            isHiddenMsg = false
-            viewImg.isHidden = true
-            imgView.isHidden = true
-            msgTextView.isHidden = false
-            bubble.isHidden = false
-            imgView.image = nil
-            imagetemp = nil
-            
-            break
-        }
-        
-        
-        if !isHiddenMsg { msgTextView.text = chatMsgCell.msg }
-        bubble.image = setBubble()
-        self.backgroundColor = UIColor.clear
+//        msgTimeLabel.text = MsgTimeFormat(date: chatMsgCell.msgTime)
+//        msgTextView.text = ""
+//        var isHiddenMsg = false
+//        imagetemp = nil
+//        let arr = chatMsgCell.name.components(separatedBy: " ")
+//        var instruction = arr[0]
+//        if arr.count != 1 && arr[1] == "showPicture" { instruction = arr[1] }
+//        if
+//        switch instruction {
+//        case "showPicture":
+//            isHiddenMsg = true
+//            msgTextView.isHidden = true
+//            bubble.isHidden = true
+//            viewImg.isHidden = false
+//            imgView.isHidden = false
+//            let imgData = Data(base64Encoded: chatMsgCell.msg, options: .ignoreUnknownCharacters)
+//            let image = UIImage(data: imgData!)
+//            imagetemp = image
+//            let imageWidth = image?.size.width
+//            let imageHeight = image?.size.height
+//            let size = contentView.frame.size
+//            let maxValue = size.width - 84
+//            var tempimg: UIImage!
+//            if imageWidth! > imageHeight! { tempimg = image!.scaleImage(scaleSize: maxValue/imageWidth!) }
+//            else { tempimg = image!.scaleImage(scaleSize: maxValue/imageHeight!) }
+//            imgView.image = tempimg
+//            imgView.layer.cornerRadius = 30
+//            self.present = activity
+//            let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewClick))
+//            imgView.addGestureRecognizer(singleTapGesture)
+//            imgView.isUserInteractionEnabled = true
+//            break
+//        default: // self.cRInfo.targetName friend, typeA and typeB(instruction)
+//
+//            isHiddenMsg = false
+//            viewImg.isHidden = true
+//            imgView.isHidden = true
+//            msgTextView.isHidden = false
+//            bubble.isHidden = false
+//            imgView.image = nil
+//            imagetemp = nil
+//
+//            break
+//        }
+//
+//
+//        if !isHiddenMsg { msgTextView.text = chatMsgCell.msg }
+//        bubble.image = setBubble()
+//        self.backgroundColor = UIColor.clear
     }
     
     func MsgTimeFormat(date:Date) -> String {

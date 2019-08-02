@@ -149,7 +149,11 @@ extension MQTTManager: CocoaMQTTDelegate {
                 let msg = String(message.string!)
                 let initDic:[String: String] = ["init": msg]
                 NotificationCenter.default.post(name: notificationNameMQTT, object: nil, userInfo: initDic)
-
+              case "GetRecord":
+                let msg = String(message.string!)
+                let notificationName = Notification.Name("FetchRecord")
+                let recordDict:[String: String] = ["record": msg]
+                NotificationCenter.default.post(name: notificationName, object: nil, userInfo: recordDict)
               default:
                 if(idf[1].contains("FriendIcon")){
                     let FID = String(idf[1].split(separator: ":")[1])

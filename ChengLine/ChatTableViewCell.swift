@@ -17,7 +17,6 @@ class ChatTableViewCell: UITableViewCell {
     @IBOutlet weak var displayMsg: UILabel!
     @IBOutlet weak var displayDate: UILabel!
     
-    
     var roomInfo: RoomInfo!
 }
 

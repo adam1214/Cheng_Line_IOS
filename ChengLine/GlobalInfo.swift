@@ -111,8 +111,8 @@ struct LoginInfo {
 //}
 
 class TVCDataManager: NSObject {
-    var FTVCData:[TypeInfo]
-    var CRTVCData:[DateCellInfo]
+    var FTVCData:[TypeInfo] // Friend Table View Cell Data
+    var CRTVCData:[DateCellInfo] // ChatRoom Table View Cell Data
     private static var mTVCDataManager: TVCDataManager = {
         return TVCDataManager()
     }()

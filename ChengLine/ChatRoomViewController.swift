@@ -9,17 +9,6 @@
 import UIKit
 import CocoaMQTT
 
-struct ChatRoomInfo {
-    var memberAvatar: UIImage?
-    var memberName: String?
-    var memberID: String?
-    var targetAvatar: UIImage?
-    var targetName: String?
-    var targetID: String?
-    var chatRoomTitle: String?
-//    var type: Int?
-}
-
 // Member attribute
 class ChatRoomViewController: UIViewController {
     @IBOutlet weak var bgView: UIView!
@@ -48,6 +37,43 @@ class ChatRoomViewController: UIViewController {
     var isEditingTextMsg: Bool = false
     var viewHeigh: CGFloat!
     @IBOutlet weak var containerBotton: NSLayoutConstraint!
+    
+    @objc func youGotMessage(noti: Notification){
+//         print("Got notification")
+         let record = (noti.userInfo?["record"])! as? String ?? ""
+         print("record: \(record)")
+         let splitLine = record.split(separator: "\r")
+        for i in 0...splitLine.count-1 {
+            if i == 0{
+                childCRTVC?.setLastPK(pk: Int(String(splitLine[i]))!)
+            }else{
+                let sender = String(String(splitLine[i]).split(separator: "\t")[0])
+                let msg = String(String(splitLine[i]).split(separator: "\t")[1])
+                let time = String(String(splitLine[i]).split(separator: "\t")[2])
+                let data_str = String(String(splitLine[i]).split(separator: "\t")[3])
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                let date = dateFormatter.date(from: time)
+                var data_t: Int
+                var type: Int
+                var chatMsgCellInfo: ChatMsgCellInfo
+                if(sender != shared.mqttManager.clientID){
+                    type = 0
+                }else{
+                    type = 1
+                }
+                if(data_str == "text"){
+                     data_t = 0
+                     chatMsgCellInfo = ChatMsgCellInfo(avatar: nil, ID: sender, name: shared.aliasMap[sender], msg: msg, img: nil, msgTime: date, type: type, data_t: data_t)
+                }else{
+                     data_t = 1
+                     chatMsgCellInfo = ChatMsgCellInfo(avatar: nil, ID: sender, name: shared.aliasMap[sender], msg: msg, img: nil, msgTime: date, type: type, data_t: data_t)
+                }
+                childCRTVC?.addMsg(chatMsgCell: chatMsgCellInfo)
+            }
+        }
+    }
+    
 }
 
 // Override func
@@ -55,6 +81,9 @@ extension ChatRoomViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         prepare()
+        
+        let notificationName = Notification.Name("FetchRecord")
+        NotificationCenter.default.addObserver(self, selector: #selector(youGotMessage(noti:)), name: notificationName, object: nil)
         // Do any additional setup after loading the view.
     }
     

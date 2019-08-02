@@ -25,11 +25,11 @@ class ChatRoomTableViewController: UITableViewController {
     var isFirstLoad: Bool!
     var showMsg: (() -> ())!
     var imageViewClick: ((_ img: UIImage) -> ())!
-    var replyOK: ((_ _uuid: String, _ old_memberName: String) -> ())!
-    var replyModify: ((_ _uuid: String, _ old_memberName: String) -> ())!
-    var replyParticipate: ((_ date: String, _ _uuid: String, _ old_memberName: String) -> ())!
     @objc var endEditing: (() ->())!
     var currentInsInBottom = true
+    var record_cnt: Int!
+    var last_pk: Int!
+    var cap: Int!
 }
 
 // Override func
@@ -38,12 +38,11 @@ extension ChatRoomTableViewController {
         super.viewDidLoad()
         prepare()
         isFirstLoad = true
-        
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.refreshControl?.attributedTitle = NSAttributedString(string: " 中...")
+        self.refreshControl?.attributedTitle = NSAttributedString(string: "更新中...")
 //        if isFirstLoad {
 //            DispatchQueue.main.async {
 //
@@ -120,36 +119,35 @@ extension ChatRoomTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-        return cell
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         // Configure the cell...
-//        print("indexPath.row: \(indexPath.row)")
-//        if indexPath.row == 0 {
-//            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DateCell") as? ChatRoomDataTableViewCell else {
-//                return UITableViewCell()
-//            }
-//            cell.dateCell = tableViewData.CRTVCData[indexPath.section]
-//            cell.updateUI()
-//            return cell
-//        } else  {
-//            let dataIndex = indexPath.row - 1
-//            let ID = tableViewData.CRTVCData[indexPath.section].mChatMsgCells[dataIndex].ID
-//            if ID == self.cRInfo.memberID {
-//                guard let cell = tableView.dequeueReusableCell(withIdentifier: "RightMsgCell") as? ChatRightMessageTableViewCell else {
-//                    return UITableViewCell()
-//                }
-//                cell.chatMsgCell = tableViewData.CRTVCData[indexPath.section].mChatMsgCells[dataIndex]
-//                cell.updateUI(imageViewClick)
-//                return cell
-//            } else {
-//                guard let cell = tableView.dequeueReusableCell(withIdentifier: "LeftMsgCell") as? ChatLeftMessageTableViewCell else {
-//                    return UITableViewCell()
-//                }
-//                cell.chatMsgCell = tableViewData.CRTVCData[indexPath.section].mChatMsgCells[dataIndex]
-//                cell.updateUI(present: imageViewClick, replyOK: replyOK, replyModify: replyModify, replyParticipate: replyParticipate)
-//                return cell
-//            }
-//        }
+        print("indexPath.row: \(indexPath.row)")
+        if indexPath.row == 0 {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DateCell") as? ChatRoomDataTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.dateCell = tableViewData.CRTVCData[indexPath.section]
+            cell.updateUI()
+            return cell
+        } else  {
+            let dataIndex = indexPath.row - 1
+            let ID = tableViewData.CRTVCData[indexPath.section].mChatMsgCells[dataIndex].ID
+            if ID == shared.mqttManager.clientID {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "RightMsgCell") as? ChatRightMessageTableViewCell else {
+                    return UITableViewCell()
+                }
+                cell.chatMsgCell = tableViewData.CRTVCData[indexPath.section].mChatMsgCells[dataIndex]
+                cell.updateUI(imageViewClick)
+                return cell
+            } else {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "LeftMsgCell") as? ChatLeftMessageTableViewCell else {
+                    return UITableViewCell()
+                }
+                cell.chatMsgCell = tableViewData.CRTVCData[indexPath.section].mChatMsgCells[dataIndex]
+                cell.updateUI(imageViewClick)
+                return cell
+            }
+        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -210,6 +208,9 @@ extension ChatRoomTableViewController {
 //        tableView.keyboardDismissMode = .interactive
         mqttManager = shared.mqttManager
         tableViewData = shared.mTVCDataManager
+        self.cap = 12
+        self.record_cnt = 0
+        self.last_pk = 0
         self.isLoadOver = true
         self.indexPaths = [IndexPath]()
         initTableViewData()
@@ -219,14 +220,16 @@ extension ChatRoomTableViewController {
 //        self.messageObserver = MessageObserver(activity: showMsg, id: cRInfo.targetID)
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         
-        
+        record_cnt = record_cnt + 1
+        let msg = roomInfo.code + "\t" + String(record_cnt) + "\t" + String(last_pk)
+        mqttManager.mqtt.publish("IDF/GetRecord/\(mqttManager.clientID!)", withString: msg)
         
     }
     
     @objc func handleRefresh(){
         updata()
         self.tableView.refreshControl?.endRefreshing()
-//        self.tableView.reloadData()
+        self.tableView.reloadData()
     }
     
     func initTableViewData(){
@@ -266,6 +269,7 @@ extension ChatRoomTableViewController {
         }
         // add msg.
         self.tableViewData.CRTVCData[self.tableViewData.CRTVCData.count-1].mChatMsgCells.append(chatMsgCell)
+        self.tableView.reloadData()
     }
     
     func updata() {
@@ -349,67 +353,13 @@ extension ChatRoomTableViewController {
 //            }
 //        }
 //
-//        imageViewClick = {(_ img: UIImage) -> () in
-//            //      cell.isPresent = false
-//            if let controller = self.storyboard?.instantiateViewController(withIdentifier: "ShowImageViewController") as? ShowImageViewController {
-//                controller.image = img
-//                self.present(controller, animated: true, completion: nil)
-//            }
-//        }
-//
-//        replyOK = { (_ _uuid: String, _ old_memberName: String) -> () in
-//            let uuid = UUID().uuidString
-//            let instruction = "replyOK 0"
-//            let msg = "\(uuid);\(self.cRInfo.memberID!);\(instruction);\(NSLocalizedString("OK",comment: ""))"
-//            self.mqttManager.mqtt.publish(self.cRInfo.targetID!, withString: msg)
-//            self.databasemanager.chatRoomTable.upDate(_uuid: _uuid, old_memberName: old_memberName, new_memberName: "\(instruction)")
-//            let CRTVCDatacount = self.tableViewData.CRTVCData.count
-//            for i in 0..<CRTVCDatacount {
-//                let mChatMsgCellscount = self.tableViewData.CRTVCData[i].mChatMsgCells.count
-//                for j in 0..<mChatMsgCellscount {
-//                    if self.tableViewData.CRTVCData[i].mChatMsgCells[j].msgID == _uuid {
-//                        self.tableViewData.CRTVCData[i].mChatMsgCells[j].name = "\(instruction)"
-//                        break;
-//                    }
-//                }
-//            }
-//        }
-//
-//        replyModify = { (_ _uuid: String, _ old_memberName: String) -> () in
-//            let uuid = UUID().uuidString
-//            let instruction = "replyModify 0"
-//            let msg = "\(uuid);\(self.cRInfo.memberID!);\(instruction);\(NSLocalizedString("ModifyMsg",comment: ""))"
-//            self.mqttManager.mqtt.publish(self.cRInfo.targetID!, withString: msg)
-//            self.databasemanager.chatRoomTable.upDate(_uuid: _uuid, old_memberName: old_memberName, new_memberName: "\(instruction)")
-//            let CRTVCDatacount = self.tableViewData.CRTVCData.count
-//            for i in 0..<CRTVCDatacount {
-//                let mChatMsgCellscount = self.tableViewData.CRTVCData[i].mChatMsgCells.count
-//                for j in 0..<mChatMsgCellscount {
-//                    if self.tableViewData.CRTVCData[i].mChatMsgCells[j].msgID == _uuid {
-//                        self.tableViewData.CRTVCData[i].mChatMsgCells[j].name = "\(instruction)"
-//                        break;
-//                    }
-//                }
-//            }
-//        }
-//
-//        replyParticipate = { (_ date: String, _ _uuid: String, _ old_memberName: String) -> () in
-//            let uuid = UUID().uuidString
-//            let instruction = "replyParticipate \(date)"
-//            let msg = "\(uuid);\(self.cRInfo.memberID!);\(instruction);\(NSLocalizedString("Join",comment: ""))"
-//            self.mqttManager.mqtt.publish(self.cRInfo.targetID!, withString: msg)
-//            self.databasemanager.chatRoomTable.upDate(_uuid: _uuid, old_memberName: old_memberName, new_memberName: "\(instruction)")
-//            let CRTVCDatacount = self.tableViewData.CRTVCData.count
-//            for i in 0..<CRTVCDatacount {
-//                let mChatMsgCellscount = self.tableViewData.CRTVCData[i].mChatMsgCells.count
-//                for j in 0..<mChatMsgCellscount {
-//                    if self.tableViewData.CRTVCData[i].mChatMsgCells[j].msgID == _uuid {
-//                        self.tableViewData.CRTVCData[i].mChatMsgCells[j].name = "\(instruction)"
-//                        break;
-//                    }
-//                }
-//            }
-//        }
+        imageViewClick = {(_ img: UIImage) -> () in
+            //      cell.isPresent = false
+            if let controller = self.storyboard?.instantiateViewController(withIdentifier: "ShowImageViewController") as? ShowImageViewController {
+                controller.image = img
+                self.present(controller, animated: true, completion: nil)
+            }
+        }
     }
     
     func exitUI() {
@@ -423,5 +373,9 @@ extension ChatRoomTableViewController {
         messageObserver = nil
         tableViewData = nil
         shared = nil
+    }
+    
+    func setLastPK(pk: Int) {
+        self.last_pk = pk
     }
 }
