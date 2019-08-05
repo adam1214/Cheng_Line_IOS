@@ -195,6 +195,7 @@ class GlobalInfo: NSObject {
     var unReadcout: Int
     var roomlist: [RoomInfo]
     var aliasMap: [String: String]
+    var friendAvatarMap: [String: UIImage]
     
     private static var sharedGlobal: GlobalInfo = {
         let accountInfo = setupAccountInfo()
@@ -208,6 +209,7 @@ class GlobalInfo: NSObject {
         self.loginInfo = loginInfo
         self.roomlist = [RoomInfo]()
         self.aliasMap = [String: String]()
+        self.friendAvatarMap = [String: UIImage]()
 //        self.setting = setting
         mqttManager = MQTTManager.shared()
         databaseManager = DatabaseManager.shared()

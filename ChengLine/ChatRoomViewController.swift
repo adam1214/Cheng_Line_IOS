@@ -43,7 +43,7 @@ class ChatRoomViewController: UIViewController {
          let record = (noti.userInfo?["record"])! as? String ?? ""
          print("record: \(record)")
          let splitLine = record.split(separator: "\r")
-        for i in 0...splitLine.count-1 {
+        for i in (0...splitLine.count-1).reversed() {
             if i == 0{
                 childCRTVC?.setLastPK(pk: Int(String(splitLine[i]))!)
             }else{
@@ -64,10 +64,10 @@ class ChatRoomViewController: UIViewController {
                 }
                 if(data_str == "text"){
                      data_t = 0
-                     chatMsgCellInfo = ChatMsgCellInfo(avatar: nil, ID: sender, name: shared.aliasMap[sender], msg: msg, img: nil, msgTime: date, type: type, data_t: data_t)
+                     chatMsgCellInfo = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: msg, img: nil, msgTime: date, type: type, data_t: data_t)
                 }else{
                      data_t = 1
-                     chatMsgCellInfo = ChatMsgCellInfo(avatar: nil, ID: sender, name: shared.aliasMap[sender], msg: msg, img: nil, msgTime: date, type: type, data_t: data_t)
+                     chatMsgCellInfo = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: msg, img: nil, msgTime: date, type: type, data_t: data_t)
                 }
                 childCRTVC?.addMsg(chatMsgCell: chatMsgCellInfo)
             }

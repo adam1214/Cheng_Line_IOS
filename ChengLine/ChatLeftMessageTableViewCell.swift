@@ -54,24 +54,24 @@ extension ChatLeftMessageTableViewCell {
 // My func
 extension ChatLeftMessageTableViewCell {
     func updateUI(_ present:  @escaping (_ img: UIImage)->()) {
-        avatar.image = chatMsgCell.avatar
+        avatar.image = chatMsgCell.avatar.toCircle()
         msgTimeLabel.text = MsgTimeFormat(date: chatMsgCell.msgTime)
-        msgTextView.text = ""
+        msgTextView.text = chatMsgCell.msg
         imagetemp = nil
         isPresent = false
         var isHiddenMsg = false
-        let arr = chatMsgCell.name.components(separatedBy: " ")
-        var instruction = arr[0]
-        if arr.count != 1 && arr[1] == "showPicture" { instruction = arr[1] }
+        let instruction = chatMsgCell.data_t
         switch instruction {
-        case "showPicture":
+        case 1:
             isHiddenMsg = true
             self.present = present
-            instructionisShowPicture()
+//            instructionisShowPicture()
             break
-        default: // self.cRInfo.targetName friend, typeA, typeB(instruction, replyModify) and typeC(replyParticipate)
+        case 0: // self.cRInfo.targetName friend, typeA, typeB(instruction, replyModify) and typeC(replyParticipate)
             isHiddenMsg = false
             instructionisDefault()
+            break
+        default:
             break
         }
         if !isHiddenMsg { msgTextView.text = chatMsgCell.msg }
@@ -115,16 +115,16 @@ extension ChatLeftMessageTableViewCell {
         bubble.isHidden = true
         viewImg.isHidden = false
         imgView.isHidden = false
-        let imgData = Data(base64Encoded: chatMsgCell.msg, options: .ignoreUnknownCharacters)
-        let image = UIImage(data: imgData!)
+//        let imgData = Data(base64Encoded: chatMsgCell.msg, options: .ignoreUnknownCharacters)
+        let image = UIImage()
         imagetemp = image
-        let imageWidth = image?.size.width
-        let imageHeight = image?.size.height
+        let imageWidth = image.size.width
+        let imageHeight = image.size.height
         let size = contentView.frame.size
         let maxValue = size.width - 84
         var tempimg: UIImage!
-        if imageWidth! > imageHeight! { tempimg = image!.scaleImage(scaleSize: maxValue/imageWidth!) }
-        else { tempimg = image!.scaleImage(scaleSize: maxValue/imageHeight!) }
+        if imageWidth > imageHeight { tempimg = image.scaleImage(scaleSize: maxValue/imageWidth) }
+        else { tempimg = image.scaleImage(scaleSize: maxValue/imageHeight) }
         imgView.image = tempimg
         imgView.layer.cornerRadius = 30
         let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewClick))

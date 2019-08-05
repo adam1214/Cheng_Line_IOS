@@ -165,6 +165,7 @@ extension MQTTManager: CocoaMQTTDelegate {
                         for room in GlobalInfo.shared().roomlist{
                             if FID == room.ID{
                                 room.setIcon(img: UIImage(data:data as Data)!)
+                                GlobalInfo.shared().friendAvatarMap.updateValue(UIImage(data:data as Data)!, forKey: room.ID)
                                 break
                             }
                         }
