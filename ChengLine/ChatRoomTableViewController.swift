@@ -270,6 +270,7 @@ extension ChatRoomTableViewController {
         // add msg.
         self.tableViewData.CRTVCData[self.tableViewData.CRTVCData.count-1].mChatMsgCells.append(chatMsgCell)
         self.tableView.reloadData()
+        self.tableView.scrollToBottom()
     }
     
     func updata() {
@@ -377,5 +378,16 @@ extension ChatRoomTableViewController {
     
     func setLastPK(pk: Int) {
         self.last_pk = pk
+    }
+}
+
+extension UITableView{
+    func scrollToBottom(){
+        DispatchQueue.main.async {
+            let indexPath = IndexPath(
+                row: self.numberOfRows(inSection:  self.numberOfSections - 1) - 1,
+                section: self.numberOfSections - 1)
+            self.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        }
     }
 }
