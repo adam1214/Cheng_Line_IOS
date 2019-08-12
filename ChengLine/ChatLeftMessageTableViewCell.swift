@@ -54,7 +54,11 @@ extension ChatLeftMessageTableViewCell {
 // My func
 extension ChatLeftMessageTableViewCell {
     func updateUI(_ present:  @escaping (_ img: UIImage)->()) {
-        avatar.image = chatMsgCell.avatar.toCircle()
+        if chatMsgCell.avatar == nil{
+            avatar.image = UIImage(named: "friend_default")?.toCircle()
+        }else{
+            avatar.image = chatMsgCell.avatar.toCircle()
+        }
         msgTimeLabel.text = MsgTimeFormat(date: chatMsgCell.msgTime)
         msgTextView.text = chatMsgCell.msg
         imagetemp = nil

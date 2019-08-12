@@ -88,6 +88,8 @@ extension MQTTManager: CocoaMQTTDelegate {
             }else if timing == 1{ //duplicate login
                 subTopicMain()
                 mqtt.publish("IDF/GetUserData/\(clientID!)", withString: "")
+            }else if timing == 2{
+                subTopicMain()
             }
         }
     }
@@ -149,11 +151,17 @@ extension MQTTManager: CocoaMQTTDelegate {
                 let msg = String(message.string!)
                 let initDic:[String: String] = ["init": msg]
                 NotificationCenter.default.post(name: notificationNameMQTT, object: nil, userInfo: initDic)
+                timing = 2
               case "GetRecord":
                 let msg = String(message.string!)
                 let notificationName = Notification.Name("FetchRecord")
                 let recordDict:[String: String] = ["record": msg]
                 NotificationCenter.default.post(name: notificationName, object: nil, userInfo: recordDict)
+              case "RecordImgBack":
+//                let msg = String(message.string!)
+//                let pos = String(msg.split(separator: "/")[3])
+//                print("pos:\(pos)")
+                  print("Hello")
               default:
                 if(idf[1].contains("FriendIcon")){
                     let FID = String(idf[1].split(separator: ":")[1])
@@ -213,10 +221,12 @@ extension MQTTManager: CocoaMQTTDelegate {
     func mqttDidDisconnect(_ mqtt: CocoaMQTT, withError err: Error?) {
 //                print("\(err.description)")
         print("mqttDidDisconnect")
-//        DispatchQueue.main.async {
-//            print("mqttDidDisconnect")
-//            self.mqtt.connect()
-//        }
+        if(timing == 2){
+            DispatchQueue.main.async {
+                print("mqttDidDisconnect")
+                self.mqtt.connect()
+            }
+        }
     }
 }
 

@@ -68,6 +68,8 @@ class ChatRoomViewController: UIViewController {
                 }else{
                      data_t = 1
                      chatMsgCellInfo = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: msg, img: nil, msgTime: date, type: type, data_t: data_t)
+                     //print("index:\(i-1)")
+                     mqttManager.mqtt.publish("IDF/RecordImgBack/\(mqttManager.clientID!)/\(i-1)", withString: msg)
                 }
                 childCRTVC?.addMsg(chatMsgCell: chatMsgCellInfo)
             }
