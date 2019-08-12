@@ -30,6 +30,13 @@ class ChatRoomTableViewController: UITableViewController {
     var record_cnt: Int!
     var last_pk: Int!
     var cap: Int!
+    
+    @objc func youGotMessage(noti: Notification){
+//        print("RecordImgBack")
+        let tuple: tupleDict = (noti.userInfo?["RecordImgBack"] as! tupleDict)
+        print("pos: \(tuple.num)")
+    }
+    
 }
 
 // Override func
@@ -224,6 +231,8 @@ extension ChatRoomTableViewController {
         let msg = roomInfo.code + "\t" + String(record_cnt) + "\t" + String(last_pk)
         mqttManager.mqtt.publish("IDF/GetRecord/\(mqttManager.clientID!)", withString: msg)
         
+        let notificationName = Notification.Name("RecordImgBack")
+        NotificationCenter.default.addObserver(self, selector: #selector(youGotMessage(noti:)), name: notificationName, object: nil)
     }
     
     @objc func handleRefresh(){

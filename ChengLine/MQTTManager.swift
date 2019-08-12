@@ -158,10 +158,13 @@ extension MQTTManager: CocoaMQTTDelegate {
                 let recordDict:[String: String] = ["record": msg]
                 NotificationCenter.default.post(name: notificationName, object: nil, userInfo: recordDict)
               case "RecordImgBack":
-//                let msg = String(message.string!)
-//                let pos = String(msg.split(separator: "/")[3])
-//                print("pos:\(pos)")
-                  print("Hello")
+                  let msg = String(message.topic)
+                  let pos: Int? = Int(String(msg.split(separator: "/")[3]))
+                  let bytes : [UInt8] = message.payload
+                  let data = NSData(bytes: bytes, length: bytes.count)
+                  let iconDict:[String: tupleDict] = ["RecordImgBack": tupleDict(num: pos!, data: data)]
+                  let notificationNameMQTT = Notification.Name("RecordImgBack")
+                  NotificationCenter.default.post(name: notificationNameMQTT, object: nil, userInfo: iconDict)
               default:
                 if(idf[1].contains("FriendIcon")){
                     let FID = String(idf[1].split(separator: ":")[1])
@@ -259,4 +262,9 @@ extension MQTTManager {
             return false
         }
     }
+}
+
+struct tupleDict {
+    var num: Int
+    var data: NSData
 }
