@@ -165,6 +165,20 @@ extension MQTTManager: CocoaMQTTDelegate {
                   let iconDict:[String: tupleDict] = ["RecordImgBack": tupleDict(num: pos!, data: data)]
                   let notificationNameMQTT = Notification.Name("RecordImgBack")
                   NotificationCenter.default.post(name: notificationNameMQTT, object: nil, userInfo: iconDict)
+              case "SendMessage":
+                  let msg = String(message.string!)
+                  print("sendMSG: \(msg)")
+                  let msg_splitLine = msg.split(separator: "\t")
+                  for roomInfo in GlobalInfo.shared().roomlist{
+                      if roomInfo.code == String(msg_splitLine[0]){
+                          roomInfo.rMsg = String(msg_splitLine[2])
+                          roomInfo.rMsgDate = String(msg_splitLine[3])
+                          let tableviewController: ChatTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatTableViewController") as! ChatTableViewController
+                          tableviewController.updateChatList()
+                          break
+                      }
+                  }
+                  break
               default:
                 if(idf[1].contains("FriendIcon")){
                     let FID = String(idf[1].split(separator: ":")[1])

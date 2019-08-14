@@ -74,6 +74,7 @@ extension ChatPageViewController {
 //        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(swiped))
 //        swipeLeft.direction = UISwipeGestureRecognizerDirection.left
 //        self.view.addGestureRecognizer(swipeLeft)
+          
     }
     
     func exitUI() {

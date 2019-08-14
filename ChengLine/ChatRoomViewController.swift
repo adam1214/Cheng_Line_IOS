@@ -169,24 +169,6 @@ extension ChatRoomViewController: UITextViewDelegate {
         viewHeigh = self.view.frame.height
         
         self.curorientation = .portrait
-        
-//        switch self.cRInfo.type {
-//        case 1: //type B
-//            self.viewContainerView.translatesAutoresizingMaskIntoConstraints = false
-//            let viewContainerViewBotton = self.viewContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0)
-//            viewContainerViewBotton.isActive = true
-//            self.textMsgView.isHidden = true
-//            break
-//        case 2: //type C
-//            self.viewContainerView.translatesAutoresizingMaskIntoConstraints = false
-//            let viewContainerViewBotton = self.viewContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0)
-//            viewContainerViewBotton.isActive = true
-//            self.textMsgView.isHidden = true
-//            break
-//        default: //type A //type friend
-//            self.textMsgView.isHidden = false
-//            break
-//        }
         print("RoomName: \(roomInfo.roomName)")
     }
     
@@ -375,18 +357,16 @@ extension ChatRoomViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
-//    @IBAction func sendMsg(_ sender: Any) {
-//        let message = textMsg.text!
-//        if message.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines) != "" {
-//            let uuid = UUID().uuidString
-//            let msg = "\(uuid);\(cRInfo.memberID!);\(cRInfo.memberName!);\(message)"
-//            mqttManager.mqtt.publish(cRInfo.targetID!, withString: msg)
-//            textMsg.text = ""
-//            textMsg.isScrollEnabled = false
-//            self.childCRTVC?.currentInsInBottom = true
-//            self.textViewDidChange(self.textMsg)
-//        }
-//    }
+    @IBAction func sendMsg(_ sender: Any) {
+        let message = textMsg.text!
+        if message.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines) != "" {
+//            print("send:\(message)")
+            let text = message.replacingOccurrences(of: "\t", with: "    ")
+            let msg = roomInfo.code + "\t" + GlobalInfo.shared().mqttManager.clientID + "\t" + text
+            GlobalInfo.shared().mqttManager.mqtt.publish("IDF/SendMessage/\(GlobalInfo.shared().mqttManager.clientID!)", withString: msg)
+            textMsg.text = ""
+        }
+    }
     
     @IBAction func uploadBtnAction(_ sender: UIButton) {
         // 建立一個 UIImagePickerController 的實體
