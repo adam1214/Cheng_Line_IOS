@@ -28,8 +28,6 @@ class HomeController: UIViewController {
               exitUI()
               self.navigationController?.popViewController(animated: true)
               self.navigationController?.pushViewController(controller, animated: true)
-            
-
         }
     }
 }

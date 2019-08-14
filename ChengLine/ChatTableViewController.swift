@@ -26,7 +26,8 @@ extension ChatTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         prepare()
-        
+        updateChatList()
+        tableView.reloadData()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -34,6 +35,12 @@ extension ChatTableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateChatList()
+        tableView.reloadData()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateChatList()
@@ -154,7 +161,9 @@ extension ChatTableViewController {
     
     func updateChatList(){
         GlobalInfo.shared().roomlist.sort(by: {$0.rMsgDate > $1.rMsgDate})
+        chatList.removeAll()
         chatList = GlobalInfo.shared().roomlist
+        tableView.reloadData()
         print("count:\(chatList.count)")
     }
 }

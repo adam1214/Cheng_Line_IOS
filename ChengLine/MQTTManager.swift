@@ -154,7 +154,7 @@ extension MQTTManager: CocoaMQTTDelegate {
                 timing = 2
               case "GetRecord":
                 let msg = String(message.string!)
-                let notificationName = Notification.Name("FetchRecord")
+                let notificationName = Notification.Name("UpdateMSG")
                 let recordDict:[String: String] = ["record": msg]
                 NotificationCenter.default.post(name: notificationName, object: nil, userInfo: recordDict)
               case "RecordImgBack":
@@ -167,7 +167,7 @@ extension MQTTManager: CocoaMQTTDelegate {
                   NotificationCenter.default.post(name: notificationNameMQTT, object: nil, userInfo: iconDict)
               case "SendMessage":
                   let msg = String(message.string!)
-                  print("sendMSG: \(msg)")
+//                  print("sendMSG: \(msg)")
                   let msg_splitLine = msg.split(separator: "\t")
                   for roomInfo in GlobalInfo.shared().roomlist{
                       if roomInfo.code == String(msg_splitLine[0]){
@@ -175,6 +175,11 @@ extension MQTTManager: CocoaMQTTDelegate {
                           roomInfo.rMsgDate = String(msg_splitLine[3])
                           let tableviewController: ChatTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatTableViewController") as! ChatTableViewController
                           tableviewController.updateChatList()
+                          tableviewController.viewDidLoad()
+                          tableviewController.viewWillAppear(true)
+                          tableviewController.viewDidAppear(true)
+                          let msgDict:[String: String] = ["SendMessage": msg]
+                          NotificationCenter.default.post(name: Notification.Name("UpdateMSG"), object: nil, userInfo: msgDict)
                           break
                       }
                   }
