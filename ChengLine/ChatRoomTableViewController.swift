@@ -35,6 +35,18 @@ class ChatRoomTableViewController: UITableViewController {
 //        print("RecordImgBack")
         let tuple: tupleDict = (noti.userInfo?["RecordImgBack"] as! tupleDict)
         print("pos: \(tuple.num)")
+        print("cnt: \(tableViewData.CRTVCData.count)")
+        var index = 0
+        for i in (0...tableViewData.CRTVCData.count - 1).reversed(){
+            for j in (0...tableViewData.CRTVCData[i].mChatMsgCells.count - 1).reversed(){
+                if index == tuple.num{
+                    tableViewData.CRTVCData[i].mChatMsgCells[j].img = UIImage(data: tuple.data as Data)
+                    tableView.reloadData()
+                    return
+                }
+                index = index + 1
+            }
+        }
     }
     
 }
@@ -383,6 +395,7 @@ extension ChatRoomTableViewController {
         messageObserver = nil
         tableViewData = nil
         shared = nil
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("RecordImgBack"), object: nil)
     }
     
     func setLastPK(pk: Int) {

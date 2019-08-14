@@ -46,27 +46,26 @@ extension ChatRightMessageTableViewCell {
         let instruction = chatMsgCell.data_t
         switch instruction {
             case 1:
-//                isHiddenMsg = true
-//                msgTextView.isHidden = true
-//                bubble.isHidden = true
-//                viewImg.isHidden = false
-//                imgView.isHidden = false
-////                let imgData = Data(base64Encoded: chatMsgCell.msg, options: .ignoreUnknownCharacters)
-//                let image = UIImage()
-//                imagetemp = image
-//                let imageWidth = image.size.width
-//                let imageHeight = image.size.height
-//                let size = contentView.frame.size
-//                let maxValue = size.width - 84
-//                var tempimg: UIImage!
-//                if imageWidth > imageHeight { tempimg = image.scaleImage(scaleSize: maxValue/imageWidth) }
-//                else { tempimg = image.scaleImage(scaleSize: maxValue/imageHeight) }
-//                imgView.image = tempimg
-//                imgView.layer.cornerRadius = 30
-//                self.present = activity
-//                let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewClick))
-//                imgView.addGestureRecognizer(singleTapGesture)
-//                imgView.isUserInteractionEnabled = true
+                isHiddenMsg = true
+                msgTextView.isHidden = true
+                bubble.isHidden = true
+                viewImg.isHidden = false
+                imgView.isHidden = false
+                let image = chatMsgCell.img!
+                imagetemp = image
+                let imageWidth = image.size.width
+                let imageHeight = image.size.height
+                let size = contentView.frame.size
+                let maxValue = size.width - 84
+                var tempimg: UIImage!
+                if imageWidth > imageHeight { tempimg = image.scaleImage(scaleSize: maxValue/imageWidth) }
+                else { tempimg = image.scaleImage(scaleSize: maxValue/imageHeight) }
+                imgView.image = tempimg
+                imgView.layer.cornerRadius = 30
+                self.present = activity
+                let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewClick))
+                imgView.addGestureRecognizer(singleTapGesture)
+                imgView.isUserInteractionEnabled = true
                 break
             case 0: // self.cRInfo.targetName friend, typeA and typeB(instruction)
                 isHiddenMsg = false

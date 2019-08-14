@@ -69,7 +69,7 @@ extension ChatLeftMessageTableViewCell {
         case 1:
             isHiddenMsg = true
             self.present = present
-//            instructionisShowPicture()
+            instructionisShowPicture()
             break
         case 0: // self.cRInfo.targetName friend, typeA, typeB(instruction, replyModify) and typeC(replyParticipate)
             isHiddenMsg = false
@@ -119,8 +119,7 @@ extension ChatLeftMessageTableViewCell {
         bubble.isHidden = true
         viewImg.isHidden = false
         imgView.isHidden = false
-//        let imgData = Data(base64Encoded: chatMsgCell.msg, options: .ignoreUnknownCharacters)
-        let image = UIImage()
+        let image = chatMsgCell.img!
         imagetemp = image
         let imageWidth = image.size.width
         let imageHeight = image.size.height
@@ -143,4 +142,5 @@ extension ChatLeftMessageTableViewCell {
         bubble.isHidden = false
         imgView.image = nil
     }
+
 }

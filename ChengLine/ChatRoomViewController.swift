@@ -64,10 +64,10 @@ class ChatRoomViewController: UIViewController {
                 }
                 if(data_str == "text"){
                      data_t = 0
-                     chatMsgCellInfo = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: msg, img: nil, msgTime: date, type: type, data_t: data_t)
+                     chatMsgCellInfo = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: msg, img: UIImage(named: "default_picMSG"), msgTime: date, type: type, data_t: data_t)
                 }else{
                      data_t = 1
-                     chatMsgCellInfo = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: msg, img: nil, msgTime: date, type: type, data_t: data_t)
+                     chatMsgCellInfo = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: msg, img: UIImage(named: "default_picMSG"), msgTime: date, type: type, data_t: data_t)
                      //print("index:\(i-1)")
                      mqttManager.mqtt.publish("IDF/RecordImgBack/\(mqttManager.clientID!)/\(i-1)", withString: msg)
                 }
