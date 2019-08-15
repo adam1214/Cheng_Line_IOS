@@ -173,14 +173,10 @@ extension MQTTManager: CocoaMQTTDelegate {
                       if roomInfo.code == String(msg_splitLine[0]){
                           roomInfo.rMsg = String(msg_splitLine[2])
                           roomInfo.rMsgDate = String(msg_splitLine[3])
-                          let tableviewController: ChatTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatTableViewController") as! ChatTableViewController
-                          tableviewController.updateChatList()
-                          tableviewController.viewDidLoad()
-                          tableviewController.viewWillAppear(true)
-                          tableviewController.viewDidAppear(true)
                           let msgDict:[String: String] = ["SendMessage": msg]
                           NotificationCenter.default.post(name: Notification.Name("UpdateMSG"), object: nil, userInfo: msgDict)
-                          break
+                          NotificationCenter.default.post(name: Notification.Name("ReloadData"), object: nil, userInfo: nil)
+                        break
                       }
                   }
                   break

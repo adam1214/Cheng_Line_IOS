@@ -19,6 +19,12 @@ class ChatTableViewController: UITableViewController {
     var chatList = [RoomInfo]()
     
 //    var tableViewData: [TypeTableViewCell]!
+    
+    @objc func youGotMessage(noti: Notification){
+        print("Got notification")
+//        tableView.reloadData()
+        updateChatList()
+    }
 }
 
 // Override func
@@ -37,8 +43,6 @@ extension ChatTableViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        updateChatList()
-        tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -118,20 +122,16 @@ extension ChatTableViewController {
     }
     */
 
-    /*
     // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
+//    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+//    }
+//
+//     Override to support conditional rearranging of the table view.
+//    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+//         Return false if you do not want the item to be re-orderable.
+//        return true
+//    }
+    
 
     /*
     // MARK: - Navigation
@@ -147,16 +147,8 @@ extension ChatTableViewController {
 // My func
 extension ChatTableViewController {
     func prepare() {
-//        tableViewData = []
-//        if let imgAvatar = appDeleagte.imgAvatar {
-//            self.imgAvatar = imgAvatar
-//        }
-//        if let memberName = appDeleagte.memberName {
-//            self.memberName = memberName
-//        }
-//        if let memberID = appDeleagte.memberID {
-//            self.memberName = memberID
-//        }
+        let notificationName = Notification.Name("ReloadData")
+        NotificationCenter.default.addObserver(self, selector: #selector(youGotMessage(noti:)), name: notificationName, object: nil)
     }
     
     func updateChatList(){
@@ -164,6 +156,6 @@ extension ChatTableViewController {
         chatList.removeAll()
         chatList = GlobalInfo.shared().roomlist
         tableView.reloadData()
-        print("count:\(chatList.count)")
+        print("UPDATE count:\(chatList.count)")
     }
 }
