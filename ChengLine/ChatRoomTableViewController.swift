@@ -42,6 +42,7 @@ class ChatRoomTableViewController: UITableViewController {
                 if index == tuple.num{
                     tableViewData.CRTVCData[i].mChatMsgCells[j].img = UIImage(data: tuple.data as Data)
                     tableView.reloadData()
+                    tableView.scrollToBottom()
                     return
                 }
                 index = index + 1
@@ -406,10 +407,15 @@ extension ChatRoomTableViewController {
 extension UITableView{
     func scrollToBottom(){
         DispatchQueue.main.async {
-            let indexPath = IndexPath(
-                row: self.numberOfRows(inSection:  self.numberOfSections - 1) - 1,
-                section: self.numberOfSections - 1)
-            self.scrollToRow(at: indexPath, at: .bottom, animated: true)
+//            let indexPath = IndexPath(
+//                row: self.numberOfRows(inSection:  self.numberOfSections - 1) - 1,
+//                section: self.numberOfSections - 1)
+//            self.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            let sections = self.numberOfSections
+            let rows = self.numberOfRows(inSection: sections - 1)
+            if (rows > 0){
+                self.scrollToRow(at: NSIndexPath(row: rows - 1, section: sections - 1) as IndexPath, at: .bottom, animated: true)
+            }
         }
     }
 }
