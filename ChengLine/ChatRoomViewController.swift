@@ -18,9 +18,7 @@ class ChatRoomViewController: UIViewController {
     @IBOutlet weak var titleView: UIView!
     @IBOutlet weak var viewContainerView: UIView!
     var shared: GlobalInfo!
-    var accountInfo: AccountInfo!
     var messageObserver: MessageObserver!
-    var mqttManager: MQTTManager!
     var roomInfo: RoomInfo!
     var showMsg: (() -> ())!
     var keyboardObserver: KeyboardObserver!
@@ -40,6 +38,7 @@ class ChatRoomViewController: UIViewController {
     
     @objc func youGotMessage(noti: Notification){
 //         print("Got notification")
+         shared = GlobalInfo.shared()
          if let record = (noti.userInfo?["record"]) as? String? ?? ""{
              print("record: \(record)")
              let splitLine = record.split(separator: "\r")
@@ -69,7 +68,7 @@ class ChatRoomViewController: UIViewController {
                          data_t = 1
                          chatMsgCellInfo = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: msg, img: UIImage(named: "default_picMSG"), msgTime: date, type: type, data_t: data_t)
                          //print("index:\(i-1)")
-                         mqttManager.mqtt.publish("IDF/RecordImgBack/\(mqttManager.clientID!)/\(i-1)", withString: msg)
+                         shared.mqttManager.mqtt.publish("IDF/RecordImgBack/\(shared.mqttManager.clientID!)/\(i-1)", withString: msg)
                     }
                     childCRTVC?.addMsg(chatMsgCell: chatMsgCellInfo)
                 }
@@ -97,9 +96,23 @@ class ChatRoomViewController: UIViewController {
                 chatMsgCellInfo = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: msg, img: UIImage(named: "default_picMSG"), msgTime: date, type: type, data_t: data_t)
                 childCRTVC?.addMsg(chatMsgCell: chatMsgCellInfo)
             }
+         }else if let sendImgDict = (noti.userInfo?["pic"]) as? SendImgDict {
+            let image = UIImage(data: sendImgDict.data as Data)
+            let sender = sendImgDict.sender
+            let time = sendImgDict.date
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            let date = dateFormatter.date(from: time)
+            var type: Int
+            if(sender != shared.mqttManager.clientID){
+                type = 0
+            }else{
+                type = 1
+            }
+            let chatMsgCellInfo = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: "i_am_image", img: image, msgTime: date, type: type, data_t: 1)
+            childCRTVC?.addMsg(chatMsgCell: chatMsgCellInfo)
         }
     }
-    
 }
 
 // Override func
@@ -170,8 +183,7 @@ extension ChatRoomViewController {
 // My func
 extension ChatRoomViewController: UITextViewDelegate {
     func prepare() {
-        accountInfo = shared.accountInfo
-        mqttManager = shared.mqttManager
+        shared = GlobalInfo.shared()
         labTitle.text = roomInfo.roomName
         textMsg.delegate = self
         gap = 20
@@ -359,10 +371,6 @@ extension ChatRoomViewController: UITextViewDelegate {
         setdeviceOrientation = nil
         textMsgViewBotton = nil
         ViewContainerViewTop = nil
-        roomInfo = nil
-        accountInfo = nil
-        mqttManager = nil
-        shared = nil
         showMsg = nil
         setKeyboard = nil
         setdeviceOrientation = nil
@@ -439,35 +447,19 @@ extension ChatRoomViewController {
 
 extension ChatRoomViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
-//        var selectedImageFromPicker: UIImage?
-//
-//        // 取得從 UIImagePickerController 選擇的檔案
-//        if let pickedImage = info[.originalImage] as? UIImage {
-//
-//            selectedImageFromPicker = pickedImage
-//        }
-//
-//        // 可以自動產生一組獨一無二的 ID 號碼，方便等一下上傳圖片的命名
-//        let uniqueString = NSUUID().uuidString
-//
-//        // 當判斷有 selectedImage 時，我們會在 if 判斷式裡將圖片上傳
-//        if let selectedImage = selectedImageFromPicker {
-//
-//            print("\(uniqueString), \(selectedImage)")
-//        }
-//
-//        dismiss(animated: true, completion: nil)
-//        self.dismiss(animated: true, completion: {
-//            var img:UIImage? = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
-//            if picker.allowsEditing {
-//                img = info[UIImagePickerController.InfoKey.editedImage] as? UIImage
-//            }
-//            let uuid = UUID().uuidString
-//            let imgData = img?.pngData()
-//            let message = imgData?.base64EncodedString()
-//            let msg = "\(uuid);\(self.cRInfo.memberID!);\(self.cRInfo.memberName!) showPicture;" + message!
+    
+            self.dismiss(animated: true, completion: {
+            var img:UIImage? = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
+            if picker.allowsEditing {
+                img = info[UIImagePickerController.InfoKey.editedImage] as? UIImage
+            }
+            
+            let sender = GlobalInfo.shared().mqttManager.clientID
+//            let chatMsgCellInfo = ChatMsgCellInfo(avatar: GlobalInfo.shared().friendAvatarMap[sender!], ID: sender, name: GlobalInfo.shared().aliasMap[sender!], msg: "IMG", img: img!, msgTime: Date(), type: 1, data_t: 1)
+//            self.childCRTVC?.addMsg(chatMsgCell: chatMsgCellInfo)
+                let message = CocoaMQTTMessage(topic: "IDF/SendImg/\(sender!)/\(self.roomInfo.code)", payload: [UInt8](img!.jpegData(compressionQuality: 60)!), qos: CocoaMQTTQOS.qos2, retained: false, dup: false)
+                GlobalInfo.shared().mqttManager.mqtt.publish(message)
 //            self.mqttManager.mqtt.publish(self.cRInfo.targetID!, withString: msg)
-//        })
+        })
     }
 }

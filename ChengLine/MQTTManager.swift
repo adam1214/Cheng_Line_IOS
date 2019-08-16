@@ -100,8 +100,8 @@ extension MQTTManager: CocoaMQTTDelegate {
     
     func mqtt(_ mqtt: CocoaMQTT, didPublishMessage message: CocoaMQTTMessage, id: UInt16) {
 //        print("publish message: \(String(describing: message.string?.description)), id: \(id)")
-          print("send topic: \(message.topic)\tsend msg: \(String((message.string!)))")
-//        print("send msg \(String((message.string!)))")
+        print("send topic: \(message.topic)\tsend msg: \(String((message.string ?? "")))")
+//        print("send msg \(String((message.string!)))"
     }
     
     func mqtt(_ mqtt: CocoaMQTT, didPublishAck id: UInt16) {
@@ -162,7 +162,7 @@ extension MQTTManager: CocoaMQTTDelegate {
                   let pos: Int? = Int(String(msg.split(separator: "/")[3]))
                   let bytes : [UInt8] = message.payload
                   let data = NSData(bytes: bytes, length: bytes.count)
-                  let iconDict:[String: tupleDict] = ["RecordImgBack": tupleDict(num: pos!, data: data)]
+                  let iconDict:[String: TupleDict] = ["RecordImgBack": TupleDict(num: pos!, data: data)]
                   let notificationNameMQTT = Notification.Name("RecordImgBack")
                   NotificationCenter.default.post(name: notificationNameMQTT, object: nil, userInfo: iconDict)
               case "SendMessage":
@@ -180,6 +180,21 @@ extension MQTTManager: CocoaMQTTDelegate {
                       }
                   }
                   break
+              case "SendImg":
+                    let code = String(message.topic.split(separator: "/")[4])
+                    for roomInfo in GlobalInfo.shared().roomlist{
+                        if roomInfo.code == code{
+                            roomInfo.rMsg = "a new image"
+                            roomInfo.rMsgDate = String(message.topic.split(separator: "/")[5])
+                            let bytes : [UInt8] = message.payload
+                            let data = NSData(bytes: bytes, length: bytes.count)
+                            let picDict:[String: SendImgDict] = ["pic": SendImgDict(data: data, sender: String(message.topic.split(separator: "/")[3]), date: String(message.topic.split(separator: "/")[5]))]
+                            NotificationCenter.default.post(name: Notification.Name("UpdateMSG"), object: nil, userInfo: picDict)
+                            NotificationCenter.default.post(name: Notification.Name("ReloadData"), object: nil, userInfo: nil)
+                            break
+                        }
+                    }
+                    break
               default:
                 if(idf[1].contains("FriendIcon")){
                     let FID = String(idf[1].split(separator: ":")[1])
@@ -279,7 +294,13 @@ extension MQTTManager {
     }
 }
 
-struct tupleDict {
+struct TupleDict {
     var num: Int
     var data: NSData
+}
+
+struct SendImgDict{
+    var data: NSData
+    var sender: String
+    var date: String
 }

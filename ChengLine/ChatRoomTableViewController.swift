@@ -33,7 +33,7 @@ class ChatRoomTableViewController: UITableViewController {
     
     @objc func youGotMessage(noti: Notification){
 //        print("RecordImgBack")
-        let tuple: tupleDict = (noti.userInfo?["RecordImgBack"] as! tupleDict)
+        let tuple: TupleDict = (noti.userInfo?["RecordImgBack"] as! TupleDict)
         print("pos: \(tuple.num)")
         print("cnt: \(tableViewData.CRTVCData.count)")
         var index = 0
