@@ -455,11 +455,9 @@ extension ChatRoomViewController: UIImagePickerControllerDelegate, UINavigationC
             }
             
             let sender = GlobalInfo.shared().mqttManager.clientID
-//            let chatMsgCellInfo = ChatMsgCellInfo(avatar: GlobalInfo.shared().friendAvatarMap[sender!], ID: sender, name: GlobalInfo.shared().aliasMap[sender!], msg: "IMG", img: img!, msgTime: Date(), type: 1, data_t: 1)
-//            self.childCRTVC?.addMsg(chatMsgCell: chatMsgCellInfo)
-                let message = CocoaMQTTMessage(topic: "IDF/SendImg/\(sender!)/\(self.roomInfo.code)", payload: [UInt8](img!.jpegData(compressionQuality: 60)!), qos: CocoaMQTTQOS.qos2, retained: false, dup: false)
+                let message = CocoaMQTTMessage(topic: "IDF/SendImg/\(sender!)/\(self.roomInfo.code)", payload: [UInt8](img!.jpegData(compressionQuality: 0.2)!), qos: CocoaMQTTQOS.qos2, retained: false, dup: false)
                 GlobalInfo.shared().mqttManager.mqtt.publish(message)
-//            self.mqttManager.mqtt.publish(self.cRInfo.targetID!, withString: msg)
         })
     }
 }
+
