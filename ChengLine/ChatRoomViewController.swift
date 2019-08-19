@@ -8,6 +8,7 @@
 
 import UIKit
 import CocoaMQTT
+import AVFoundation
 
 // Member attribute
 class ChatRoomViewController: UIViewController {
@@ -453,11 +454,43 @@ extension ChatRoomViewController: UIImagePickerControllerDelegate, UINavigationC
             if picker.allowsEditing {
                 img = info[UIImagePickerController.InfoKey.editedImage] as? UIImage
             }
-            
-            let sender = GlobalInfo.shared().mqttManager.clientID
-                let message = CocoaMQTTMessage(topic: "IDF/SendImg/\(sender!)/\(self.roomInfo.code)", payload: [UInt8](img!.jpegData(compressionQuality: 0.2)!), qos: CocoaMQTTQOS.qos2, retained: false, dup: false)
-                GlobalInfo.shared().mqttManager.mqtt.publish(message)
+                
+                DispatchQueue.main.async {
+                    let sender = GlobalInfo.shared().mqttManager.clientID
+                    let message = CocoaMQTTMessage(topic: "IDF/SendImg/\(sender!)/\(self.roomInfo.code)", payload: [UInt8](((img?.resizedToHundred()?.jpegData(compressionQuality: 1))!)), qos: CocoaMQTTQOS.qos2, retained: false, dup: false)
+                    GlobalInfo.shared().mqttManager.mqtt.publish(message)
+//                    print("size: \(img?.resizedToHundred()?.pngData()?.count)")
+                }
         })
     }
 }
 
+
+extension UIImage {
+    
+    func resized(withPercentage percentage: CGFloat) -> UIImage? {
+        let canvasSize = CGSize(width: size.width * percentage, height: size.height * percentage)
+        UIGraphicsBeginImageContextWithOptions(canvasSize, false, scale)
+        defer { UIGraphicsEndImageContext() }
+        draw(in: CGRect(origin: .zero, size: canvasSize))
+        return UIGraphicsGetImageFromCurrentImageContext()
+    }
+    
+    func resizedToHundred() -> UIImage? {
+        guard let imageData = self.pngData() else { return nil }
+        
+        var resizingImage = self
+        var imageSizeKB = Double(imageData.count) / 1000.0 // ! Or devide for 1024 if you need KB but not kB
+        
+        while imageSizeKB > 1000 { // ! Or use 1024 if you need KB but not kB
+            guard let resizedImage = resizingImage.resized(withPercentage: 0.9),
+                let imageData = resizedImage.pngData()
+                else { return nil }
+            
+            resizingImage = resizedImage
+            imageSizeKB = Double(imageData.count) / 1000.0 // ! Or devide for 1024 if you need KB but not kB
+        }
+        
+        return resizingImage
+    }
+}
