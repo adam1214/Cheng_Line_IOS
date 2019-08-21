@@ -74,6 +74,7 @@ class ChatRoomViewController: UIViewController {
                     childCRTVC?.addMsg(chatMsgCell: chatMsgCellInfo)
                 }
              }
+             childCRTVC?.isLoading = false
          }else if let message = (noti.userInfo?["SendMessage"]) as? String? ?? ""{
 //            print("recv: \(message)")
             let code = String(message.split(separator: "\t")[0])

@@ -24,6 +24,7 @@ class ChatRoomTableViewController: UITableViewController {
     var last_pk: Int!
     var cap: Int!
     var isReachingEnd: Bool!
+    var isLoading: Bool!
     
     @objc func youGotMessage(noti: Notification){
 //        print("RecordImgBack")
@@ -187,6 +188,7 @@ extension ChatRoomTableViewController {
         self.cap = 12
         self.record_cnt = 0
         self.last_pk = 0
+        self.isLoading = false
         self.indexPaths = [IndexPath]()
         initTableViewData()
         initClosure()
@@ -204,9 +206,11 @@ extension ChatRoomTableViewController {
     }
     
     @objc func handleRefresh(){
-        updata()
         self.tableView.refreshControl?.endRefreshing()
-        self.tableView.reloadData()
+        if isLoading == false{
+            updata()
+            self.tableView.reloadData()
+        }
     }
     
     func initTableViewData(){
@@ -229,6 +233,11 @@ extension ChatRoomTableViewController {
     }
     
     func updata() {
+        isLoading = true
+        record_cnt = record_cnt + 1
+        let msg: String = roomInfo.code + "\t" + String(record_cnt) + "\t" + String(last_pk)
+        GlobalInfo.shared().mqttManager.mqtt.publish("IDF/GetRecord/\(mqttManager.clientID!)", withString: msg)
+        print("UPDATE")
     }
     
     func initClosure(){
