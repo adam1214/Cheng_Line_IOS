@@ -274,7 +274,6 @@ extension ChatRoomViewController: UITextViewDelegate {
             if isAction {
                 self.setViewContainerViewY()
                 self.setTextMsgViewY(0)
-                self.childCRTVC?.currentInsInBottom = true
                 self.toTableViewLastCell()
             }
         }

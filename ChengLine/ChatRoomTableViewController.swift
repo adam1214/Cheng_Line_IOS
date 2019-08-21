@@ -16,20 +16,14 @@ class ChatRoomTableViewController: UITableViewController {
     var mqttManager: MQTTManager!
     var roomInfo: RoomInfo!
     var tableViewData: TVCDataManager!
-    var messageObserver: MessageObserver!
     var indexPaths: [IndexPath]!
-    var loadMsgbottom: Int!
-    var loadMsgtop: Int!
-    var MsgIndex: Int!
-    var isLoadOver: Bool!
-    var isFirstLoad: Bool!
-    var showMsg: (() -> ())!
     var imageViewClick: ((_ img: UIImage) -> ())!
     @objc var endEditing: (() ->())!
     var currentInsInBottom = true
     var record_cnt: Int!
     var last_pk: Int!
     var cap: Int!
+    var isReachingEnd: Bool!
     
     @objc func youGotMessage(noti: Notification){
 //        print("RecordImgBack")
@@ -42,7 +36,9 @@ class ChatRoomTableViewController: UITableViewController {
                 if index == tuple.num{
                     tableViewData.CRTVCData[i].mChatMsgCells[j].img = UIImage(data: tuple.data as Data)
                     tableView.reloadData()
-                    tableView.scrollToBottom()
+                    if isReachingEnd != true{
+                        tableView.scrollToBottom()
+                    }
                     return
                 }
                 index = index + 1
@@ -57,18 +53,11 @@ extension ChatRoomTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         prepare()
-        isFirstLoad = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.refreshControl?.attributedTitle = NSAttributedString(string: "更新中...")
-//        if isFirstLoad {
-//            DispatchQueue.main.async {
-//
-//            }
-//            isFirstLoad = false
-//        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -98,44 +87,11 @@ extension ChatRoomTableViewController {
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let height = scrollView.bounds.height
-//        let contentOffsetY = scrollView.contentOffset.y
-//        let bottomOffset = scrollView.contentSize.height - contentOffsetY
-//
-//        if contentOffsetY == 0 {
-//            if isLoadOver {
-//                if loadMsgbottom > 0 {
-//                    print("ok")
-//                }
-//            }
-//        }
-//
-//        if bottomOffset <= height {
-//            // 在最底部
-//            print("在最底部")
-//            self.currentInsInBottom = true
-//        } else {
-//            print("不在了")
-//            self.currentInsInBottom = false
-//        }
+        isReachingEnd = scrollView.contentOffset.y >= 0
+            && scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height)
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath){
-//            if /*ID == self.shared.accountInfo.memberID ||*/ self.currentInsInBottom {
-//                self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
-//            }
-        
-        
-        
-        
-//        if currentInsInBottom && tableViewData.CRTVCData.count > 0 {
-//            DispatchQueue.main.async {
-//                let index = IndexPath(row: indexPath.row, section: indexPath.section) // use your index number or Indexpath
-//            print("section: \(indexPath.section)")
-//            print("row: \(indexPath.row)")
-//                self.tableView.scrollToRow(at: indexPath,at: .bottom, animated: false) //here .middle is the scroll position can change it as per your need
-//            }
-//        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -231,7 +187,6 @@ extension ChatRoomTableViewController {
         self.cap = 12
         self.record_cnt = 0
         self.last_pk = 0
-        self.isLoadOver = true
         self.indexPaths = [IndexPath]()
         initTableViewData()
         initClosure()
@@ -255,28 +210,6 @@ extension ChatRoomTableViewController {
     }
     
     func initTableViewData(){
-//        let Arr = self.databasemanager.chatRoomTable.readData()
-//        self.loadMsgtop = Arr.count
-//        self.loadMsgbottom = loadMsgtop - 50
-//        if self.loadMsgbottom <= 0 {
-//            self.loadMsgbottom = 1
-//        }
-//        if self.loadMsgtop <= 1 {
-//            self.isLoadOver = false
-//        }
-//        if self.isLoadOver {
-//            let rowDataArr = Arr[self.loadMsgbottom..<self.loadMsgtop]
-//            for row in rowDataArr {
-//                var avatar: UIImage
-//                if row.memberId == self.cRInfo.targetID { avatar = self.cRInfo.memberAvatar! }
-//                else { avatar = self.cRInfo.targetAvatar! }
-//                let chatMsgCell = ChatMsgCellInfo(msgID: row.uuid, avatar: avatar, ID: row.memberId, name: row.memberName, msg: row.msg, msgTime: row.msgTime)
-//                self.addMsg(chatMsgCell: chatMsgCell)
-//            }
-//            self.loadMsgtop = self.loadMsgbottom
-//            self.loadMsgbottom = self.loadMsgtop - 50
-//            self.MsgIndex = self.tableViewData.CRTVCData[self.tableViewData.CRTVCData.count - 1].mChatMsgCells.count
-//        }
     }
     
     func addMsg(chatMsgCell:ChatMsgCellInfo) {
@@ -296,86 +229,9 @@ extension ChatRoomTableViewController {
     }
     
     func updata() {
-//        if self.loadMsgbottom <= 0 {
-//            self.loadMsgbottom = 1
-//        }
-//        if self.loadMsgtop <= 1 {
-//            self.isLoadOver = false
-//        }
-//        if self.isLoadOver {
-//            let Arr = self.databasemanager.chatRoomTable.readData()
-//            let rowDataArr = Arr[self.loadMsgbottom..<self.loadMsgtop].reversed()
-//            for row in rowDataArr {
-//                let date = self.shared.dateUtil
-//                var avatar: UIImage
-//                if row.memberId == self.cRInfo.targetID { avatar = self.cRInfo.memberAvatar! }
-//                else { avatar = self.cRInfo.targetAvatar! }
-//                let chatMsgCell = ChatMsgCellInfo(msgID: row.uuid, avatar: avatar, ID: row.memberId, name: row.memberName, msg: row.msg, msgTime: row.msgTime)
-//                let nextdate = date.getLocalDate(date: chatMsgCell.msgTime)
-//                if self.tableViewData.CRTVCData[0].date != nextdate {
-//                    self.tableViewData.CRTVCData.insert(DateCellInfo(date: date.getLocalDate(date: chatMsgCell.msgTime)), at: 0)
-//                }
-//                self.tableViewData.CRTVCData[0].mChatMsgCells.insert(chatMsgCell, at:0)
-//            }
-//            self.tableView.reloadData()
-//            self.loadMsgtop = self.loadMsgbottom
-//            self.loadMsgbottom = self.loadMsgtop - 50
-//            self.MsgIndex = self.tableViewData.CRTVCData[self.tableViewData.CRTVCData.count - 1].mChatMsgCells.count
-//        }
-        
     }
     
     func initClosure(){
-//        showMsg = {() -> () in
-//            let date = self.shared.dateUtil
-//            let msgID = self.messageObserver.msgID
-//            let avatar = self.cRInfo.targetAvatar
-//            let ID = self.messageObserver.memberID
-//            let name = self.messageObserver.memberName //cRinfo.targetName
-//            let msg = self.messageObserver.msg
-//            let msgTime = date.getMsgTime()
-//            let chatMsgCell = ChatMsgCellInfo(msgID: msgID, avatar: avatar, ID: ID, name: name, msg: msg, msgTime: msgTime)
-//            self.databasemanager.chatRoomTable.insertData(_uuid: msgID!, _memberId: ID!, _memberName: name!, _memberAvatar: "", _msg: msg!, _msgTime: msgTime)
-//            self.addMsg(chatMsgCell: chatMsgCell)
-//            let CRTVCDatacount = self.tableViewData.CRTVCData.count
-//            let mChatMsgCellscount = self.tableViewData.CRTVCData[CRTVCDatacount-1].mChatMsgCells.count
-//            self.indexPaths.append(IndexPath(row: mChatMsgCellscount, section: CRTVCDatacount-1))
-//            if mChatMsgCellscount == 1 {
-//                self.tableView.reloadData()
-//                self.indexPaths.removeAll()
-//                let indexPath = IndexPath(row: mChatMsgCellscount, section: CRTVCDatacount-1)
-//                if ID == self.shared.accountInfo.memberID || self.currentInsInBottom {
-//                    self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
-//                    self.currentInsInBottom = true
-//                }
-//            }
-//            if #available(iOS 11, *) {
-//                DispatchQueue.main.async {
-//                    if self.indexPaths.count > 0{
-//                        self.tableView.beginUpdates()
-//                        self.tableView.insertRows(at: self.indexPaths, with: .none)
-//                        self.indexPaths.removeAll()
-//                        self.tableView.endUpdates()
-//                        let indexPath = IndexPath(row: mChatMsgCellscount, section: CRTVCDatacount-1)
-//                        if ID == self.shared.accountInfo.memberID || self.currentInsInBottom {
-//                            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
-//                            self.currentInsInBottom = true
-//                        }
-//                    }
-//                }
-//            } else{
-//                self.tableView.beginUpdates()
-//                self.tableView.insertRows(at: self.indexPaths, with: .none)
-//                self.indexPaths.removeAll()
-//                self.tableView.endUpdates()
-//                let indexPath = IndexPath(row: mChatMsgCellscount, section: CRTVCDatacount-1)
-//                if ID == self.shared.accountInfo.memberID || self.currentInsInBottom {
-//                    self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
-//                    self.currentInsInBottom = true
-//                }
-//            }
-//        }
-//
         imageViewClick = {(_ img: UIImage) -> () in
             //      cell.isPresent = false
             if let controller = self.storyboard?.instantiateViewController(withIdentifier: "ShowImageViewController") as? ShowImageViewController {
@@ -390,12 +246,8 @@ extension ChatRoomTableViewController {
             cd.mChatMsgCells.removeAll()
         }
         tableViewData.CRTVCData.removeAll()
-        roomInfo = nil
-        showMsg = nil
         endEditing = nil
-        messageObserver = nil
         tableViewData = nil
-        shared = nil
         NotificationCenter.default.removeObserver(self, name: Notification.Name("RecordImgBack"), object: nil)
     }
     
@@ -407,10 +259,6 @@ extension ChatRoomTableViewController {
 extension UITableView{
     func scrollToBottom(){
         DispatchQueue.main.async {
-//            let indexPath = IndexPath(
-//                row: self.numberOfRows(inSection:  self.numberOfSections - 1) - 1,
-//                section: self.numberOfSections - 1)
-//            self.scrollToRow(at: indexPath, at: .bottom, animated: true)
             let sections = self.numberOfSections
             let rows = self.numberOfRows(inSection: sections - 1)
             if (rows > 0){
