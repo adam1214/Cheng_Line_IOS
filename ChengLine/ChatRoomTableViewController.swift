@@ -36,10 +36,10 @@ class ChatRoomTableViewController: UITableViewController {
             for j in (0...tableViewData.CRTVCData[i].mChatMsgCells.count - 1).reversed(){
                 if index == tuple.num{
                     tableViewData.CRTVCData[i].mChatMsgCells[j].img = UIImage(data: tuple.data as Data)
-                    tableView.reloadData()
-                    if isReachingEnd != true && self.record_cnt == 1{
+                    if self.record_cnt == 1{
                         tableView.scrollToBottom()
                     }
+                    tableView.reloadData()
                     return
                 }
                 index = index + 1
@@ -269,8 +269,8 @@ extension ChatRoomTableViewController {
             cd.mChatMsgCells.removeAll()
         }
         tableViewData.CRTVCData.removeAll()
+        self.record_cnt = 0
         endEditing = nil
-        tableViewData = nil
         NotificationCenter.default.removeObserver(self, name: Notification.Name("RecordImgBack"), object: nil)
     }
     

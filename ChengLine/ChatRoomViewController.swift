@@ -149,8 +149,20 @@ class ChatRoomViewController: UIViewController {
             }else{
                 type = 1
             }
-            let chatMsgCellInfo = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: "i_am_image", img: image, msgTime: date, type: type, data_t: 1)
-            childCRTVC?.addMsg(chatMsgCell: chatMsgCellInfo)
+            let chatMsgCell = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: "i_am_image", img: image, msgTime: date, type: type, data_t: 1)
+            let date_pre = childCRTVC?.shared.dateUtil
+            if childCRTVC?.tableViewData.CRTVCData.count == 0 {
+                childCRTVC?.tableViewData.CRTVCData.append(DateCellInfo(date: (date_pre?.getLocalDate(date: chatMsgCell.msgTime))!))
+            } else {
+                let nextdate = date_pre?.getLocalDate(date: chatMsgCell.msgTime)
+                if childCRTVC?.tableViewData.CRTVCData[childCRTVC!.tableViewData.CRTVCData.count-1].date != nextdate {
+                    childCRTVC?.tableViewData.CRTVCData.append(DateCellInfo(date: (date_pre?.getLocalDate(date: chatMsgCell.msgTime))!))
+                }
+            }
+            // add msg.
+            childCRTVC?.tableViewData.CRTVCData[childCRTVC!.tableViewData.CRTVCData.count-1].mChatMsgCells.append(chatMsgCell)
+            childCRTVC?.tableView.reloadData()
+            childCRTVC?.tableView.scrollToBottom()
         }
     }
 }
@@ -404,7 +416,6 @@ extension ChatRoomViewController: UITextViewDelegate {
         childCRTVC?.tableViewData.CRTVCData.removeAll()
         childCRTVC?.tableView.reloadData()
         childCRTVC?.exitUI()
-        childCRTVC = nil
         messageObserver = nil
         keyboardObserver = nil
         setdeviceOrientation = nil

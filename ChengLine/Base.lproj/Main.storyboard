@@ -903,6 +903,7 @@
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" id="aAK-Ki-4uQ"/>
                                                                             </constraints>
+                                                                            <color key="textColor" red="0.66666666669999997" green="0.22352941179999999" blue="0.22352941179999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES"/>
@@ -1045,6 +1046,7 @@
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" id="GLf-hb-aZD"/>
                                                                             </constraints>
+                                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES"/>
@@ -2109,7 +2111,7 @@
         <image name="icon_add_friend" width="31" height="29.5"/>
         <image name="icon_logout" width="37" height="33.5"/>
         <image name="image" width="567" height="567"/>
-        <image name="send" width="19" height="19"/>
+        <image name="send" width="212.5" height="184.5"/>
         <image name="tab_chatting" width="40" height="40"/>
         <image name="tab_friend" width="40" height="40"/>
     </resources>
