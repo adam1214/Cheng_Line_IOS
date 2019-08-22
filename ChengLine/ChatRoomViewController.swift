@@ -43,38 +43,76 @@ class ChatRoomViewController: UIViewController {
          if let record = (noti.userInfo?["record"]) as? String? ?? ""{
              print("record: \(record)")
              let splitLine = record.split(separator: "\r")
-             for i in (0...splitLine.count-1).reversed() {
-                if i == 0{
-                    childCRTVC?.setLastPK(pk: Int(String(splitLine[i]))!)
-                }else{
-                    let sender = String(String(splitLine[i]).split(separator: "\t")[0])
-                    let msg = String(String(splitLine[i]).split(separator: "\t")[1])
-                    let time = String(String(splitLine[i]).split(separator: "\t")[2])
-                    let data_str = String(String(splitLine[i]).split(separator: "\t")[3])
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                    let date = dateFormatter.date(from: time)
-                    var data_t: Int
-                    var type: Int
-                    var chatMsgCellInfo: ChatMsgCellInfo
-                    if(sender != shared.mqttManager.clientID){
-                        type = 0
+             if(childCRTVC?.record_cnt==1)
+             {
+                 for i in (0...splitLine.count-1).reversed() {
+                    if i == 0{
+                        childCRTVC?.setLastPK(pk: Int(String(splitLine[i]))!)
                     }else{
-                        type = 1
+                        let sender = String(String(splitLine[i]).split(separator: "\t")[0])
+                        let msg = String(String(splitLine[i]).split(separator: "\t")[1])
+                        let time = String(String(splitLine[i]).split(separator: "\t")[2])
+                        let data_str = String(String(splitLine[i]).split(separator: "\t")[3])
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                        let date = dateFormatter.date(from: time)
+                        var data_t: Int
+                        var type: Int
+                        var chatMsgCellInfo: ChatMsgCellInfo
+                        if(sender != shared.mqttManager.clientID){
+                            type = 0
+                        }else{
+                            type = 1
+                        }
+                        if(data_str == "text"){
+                             data_t = 0
+                             chatMsgCellInfo = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: msg, img: UIImage(named: "default_picMSG"), msgTime: date, type: type, data_t: data_t)
+                        }else{
+                             data_t = 1
+                             chatMsgCellInfo = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: msg, img: UIImage(named: "default_picMSG"), msgTime: date, type: type, data_t: data_t)
+                             //print("index:\(i-1)")
+                             shared.mqttManager.mqtt.publish("IDF/RecordImgBack/\(shared.mqttManager.clientID!)/\(i-1)", withString: msg)
+                        }
+                        childCRTVC?.addMsg(chatMsgCell: chatMsgCellInfo)
                     }
-                    if(data_str == "text"){
-                         data_t = 0
-                         chatMsgCellInfo = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: msg, img: UIImage(named: "default_picMSG"), msgTime: date, type: type, data_t: data_t)
+                 }
+            }
+            else
+            {
+                for i in (0...splitLine.count-1) {
+                    if i == 0{
+                        childCRTVC?.setLastPK(pk: Int(String(splitLine[i]))!)
                     }else{
-                         data_t = 1
-                         chatMsgCellInfo = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: msg, img: UIImage(named: "default_picMSG"), msgTime: date, type: type, data_t: data_t)
-                         //print("index:\(i-1)")
-                         shared.mqttManager.mqtt.publish("IDF/RecordImgBack/\(shared.mqttManager.clientID!)/\(i-1)", withString: msg)
+                        let sender = String(String(splitLine[i]).split(separator: "\t")[0])
+                        let msg = String(String(splitLine[i]).split(separator: "\t")[1])
+                        let time = String(String(splitLine[i]).split(separator: "\t")[2])
+                        let data_str = String(String(splitLine[i]).split(separator: "\t")[3])
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                        let date = dateFormatter.date(from: time)
+                        var data_t: Int
+                        var type: Int
+                        var chatMsgCellInfo: ChatMsgCellInfo
+                        if(sender != shared.mqttManager.clientID){
+                            type = 0
+                        }else{
+                            type = 1
+                        }
+                        if(data_str == "text"){
+                            data_t = 0
+                            chatMsgCellInfo = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: msg, img: UIImage(named: "default_picMSG"), msgTime: date, type: type, data_t: data_t)
+                        }else{
+                            data_t = 1
+                            chatMsgCellInfo = ChatMsgCellInfo(avatar: shared.friendAvatarMap[sender], ID: sender, name: shared.aliasMap[sender], msg: msg, img: UIImage(named: "default_picMSG"), msgTime: date, type: type, data_t: data_t)
+                            //print("index:\(i-1)")
+                            shared.mqttManager.mqtt.publish("IDF/RecordImgBack/\(shared.mqttManager.clientID!)/\((i-1) + 12 * (childCRTVC!.record_cnt-1))", withString: msg)
+                        }
+                        childCRTVC?.addMsg(chatMsgCell: chatMsgCellInfo)
                     }
-                    childCRTVC?.addMsg(chatMsgCell: chatMsgCellInfo)
                 }
-             }
-             childCRTVC?.isLoading = false
+            }
+         childCRTVC?.isLoading = false
+
          }else if let message = (noti.userInfo?["SendMessage"]) as? String? ?? ""{
 //            print("recv: \(message)")
             let code = String(message.split(separator: "\t")[0])

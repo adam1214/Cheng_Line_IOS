@@ -27,17 +27,17 @@ class ChatRoomTableViewController: UITableViewController {
     var isLoading: Bool!
     
     @objc func youGotMessage(noti: Notification){
-//        print("RecordImgBack")
+        print("RecordImgBack")
         let tuple: TupleDict = (noti.userInfo?["RecordImgBack"] as! TupleDict)
-        print("pos: \(tuple.num)")
-        print("cnt: \(tableViewData.CRTVCData.count)")
+//        print("pos: \(tuple.num)")
+//        print("cnt: \(tableViewData.CRTVCData.count)")
         var index = 0
         for i in (0...tableViewData.CRTVCData.count - 1).reversed(){
             for j in (0...tableViewData.CRTVCData[i].mChatMsgCells.count - 1).reversed(){
                 if index == tuple.num{
                     tableViewData.CRTVCData[i].mChatMsgCells[j].img = UIImage(data: tuple.data as Data)
                     tableView.reloadData()
-                    if isReachingEnd != true{
+                    if isReachingEnd != true && self.record_cnt == 1{
                         tableView.scrollToBottom()
                     }
                     return
@@ -98,7 +98,7 @@ extension ChatRoomTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         // Configure the cell...
-        print("indexPath.row: \(indexPath.row)")
+//        print("indexPath.row: \(indexPath.row)")
         if indexPath.row == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "DateCell") as? ChatRoomDataTableViewCell else {
                 return UITableViewCell()
@@ -218,18 +218,32 @@ extension ChatRoomTableViewController {
     
     func addMsg(chatMsgCell:ChatMsgCellInfo) {
         let date = self.shared.dateUtil
-        if self.tableViewData.CRTVCData.count == 0 {
-            self.tableViewData.CRTVCData.append(DateCellInfo(date: date.getLocalDate(date: chatMsgCell.msgTime)))
-        } else {
-            let nextdate = date.getLocalDate(date: chatMsgCell.msgTime)
-            if self.tableViewData.CRTVCData[self.tableViewData.CRTVCData.count-1].date != nextdate {
+        if(record_cnt==1)
+        {
+            if self.tableViewData.CRTVCData.count == 0 {
                 self.tableViewData.CRTVCData.append(DateCellInfo(date: date.getLocalDate(date: chatMsgCell.msgTime)))
+            } else {
+                let nextdate = date.getLocalDate(date: chatMsgCell.msgTime)
+                if self.tableViewData.CRTVCData[self.tableViewData.CRTVCData.count-1].date != nextdate {
+                    self.tableViewData.CRTVCData.append(DateCellInfo(date: date.getLocalDate(date: chatMsgCell.msgTime)))
+                }
             }
+            // add msg.
+            self.tableViewData.CRTVCData[self.tableViewData.CRTVCData.count-1].mChatMsgCells.append(chatMsgCell)
+            self.tableView.reloadData()
+            self.tableView.scrollToBottom()
         }
-        // add msg.
-        self.tableViewData.CRTVCData[self.tableViewData.CRTVCData.count-1].mChatMsgCells.append(chatMsgCell)
-        self.tableView.reloadData()
-        self.tableView.scrollToBottom()
+        else
+        {
+            let pre_date = date.getLocalDate(date: chatMsgCell.msgTime)
+            if self.tableViewData.CRTVCData[0].date != pre_date
+            {
+                self.tableViewData.CRTVCData.insert(DateCellInfo(date: date.getLocalDate(date: chatMsgCell.msgTime)), at: 0)
+            }
+            // add msg.
+            self.tableViewData.CRTVCData[0].mChatMsgCells.insert(chatMsgCell,at: 0)
+            self.tableView.reloadData()
+        }
     }
     
     func updata() {
