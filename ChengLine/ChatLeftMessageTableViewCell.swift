@@ -29,6 +29,7 @@ class ChatLeftMessageTableViewCell: UITableViewCell {
     @IBOutlet weak var bubble: UIImageView!
     @IBOutlet weak var viewImg: UIView!
     @IBOutlet weak var imgView: UIImageView!
+    @IBOutlet weak var senderLabel: UILabel!
     var isPresent: Bool!
     var chatMsgCell: ChatMsgCellInfo!
     var present: ((_ img: UIImage)->())!
@@ -60,6 +61,14 @@ extension ChatLeftMessageTableViewCell {
             avatar.image = chatMsgCell.avatar.toCircle()
         }
         msgTimeLabel.text = MsgTimeFormat(date: chatMsgCell.msgTime)
+        if(chatMsgCell.name == nil)
+        {
+            senderLabel.text = chatMsgCell.ID
+        }
+        else
+        {
+            senderLabel.text = chatMsgCell.name
+        }
         msgTextView.text = chatMsgCell.msg
         imagetemp = nil
         isPresent = false
