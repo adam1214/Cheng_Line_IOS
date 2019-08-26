@@ -41,12 +41,8 @@ class ChatRoomViewController: UIViewController {
 //         print("Got notification")
          shared = GlobalInfo.shared()
          if let record = (noti.userInfo?["record"]) as? String? ?? ""{
-             //print("record: \(record)")
+             print("record: \(record)")
              let splitLine = record.split(separator: "\r")
-             if (childCRTVC == nil)
-             {
-                print("RECORD_CNT: \(childCRTVC?.record_cnt)")
-             }
              if(childCRTVC?.record_cnt==1)
              {
                  for i in (0...splitLine.count-1).reversed() {
@@ -200,6 +196,7 @@ extension ChatRoomViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "EmbedChatList" {
             let controller = segue.destination as! ChatRoomTableViewController
+            controller.shared = shared
             controller.roomInfo = roomInfo
             controller.endEditing = { () -> () in
                 self.view.endEditing(true)
@@ -208,7 +205,6 @@ extension ChatRoomViewController {
                 if self.curorientation != .portrait { self.setViewContainerViewY() }
             }
             self.childCRTVC = controller
-            print("Prepare IF stat.")
         }
     }
     
@@ -433,7 +429,6 @@ extension ChatRoomViewController: UITextViewDelegate {
         textMsgMaxHight = nil
         keyboardHeight = nil
         curorientation = nil
-        NotificationCenter.default.removeObserver(self, name: Notification.Name("UpdateMSG"), object: nil)
     }
 }
 

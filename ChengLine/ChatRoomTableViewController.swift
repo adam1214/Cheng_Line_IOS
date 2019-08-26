@@ -183,11 +183,10 @@ extension ChatRoomTableViewController {
     func prepare() {
         // keyboard
 //        tableView.keyboardDismissMode = .interactive
-        shared = GlobalInfo.shared()
         mqttManager = shared.mqttManager
         tableViewData = shared.mTVCDataManager
         self.cap = 12
-        self.record_cnt = 1
+        self.record_cnt = 0
         self.last_pk = 0
         self.isLoading = false
         self.indexPaths = [IndexPath]()
@@ -198,6 +197,7 @@ extension ChatRoomTableViewController {
 //        self.messageObserver = MessageObserver(activity: showMsg, id: cRInfo.targetID)
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         
+        record_cnt = record_cnt + 1
         let msg = roomInfo.code + "\t" + String(record_cnt) + "\t" + String(last_pk)
         mqttManager.mqtt.publish("IDF/GetRecord/\(mqttManager.clientID!)", withString: msg)
         
@@ -269,7 +269,7 @@ extension ChatRoomTableViewController {
             cd.mChatMsgCells.removeAll()
         }
         tableViewData.CRTVCData.removeAll()
-        self.record_cnt = 1
+        self.record_cnt = 0
         endEditing = nil
         NotificationCenter.default.removeObserver(self, name: Notification.Name("RecordImgBack"), object: nil)
     }
