@@ -868,22 +868,9 @@
                                                                 <constraint firstAttribute="trailing" secondItem="Lma-ub-X9u" secondAttribute="trailing" id="tg4-AL-mLN"/>
                                                             </constraints>
                                                         </view>
-                                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yf2-k6-teg">
-                                                            <rect key="frame" x="8" y="8" width="83" height="44"/>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yf2-k6-teg">
+                                                            <rect key="frame" x="5" y="0.0" width="83" height="44"/>
                                                             <subviews>
-                                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lbv-A1-BEm">
-                                                                    <rect key="frame" x="0.0" y="-4" width="83" height="16"/>
-                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                                    <subviews>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sender" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F89-xm-Stg">
-                                                                            <rect key="frame" x="0.0" y="1" width="83" height="15"/>
-                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                                                            <nil key="textColor"/>
-                                                                            <nil key="highlightedColor"/>
-                                                                        </label>
-                                                                    </subviews>
-                                                                </view>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XlB-cx-ZZt">
                                                                     <rect key="frame" x="0.0" y="12" width="83" height="32"/>
                                                                 </imageView>
@@ -986,7 +973,6 @@
                                     <outlet property="imgView" destination="hEA-QL-jd0" id="xsb-zZ-maj"/>
                                     <outlet property="msgTextView" destination="knw-8h-cGn" id="wkd-e8-DCR"/>
                                     <outlet property="msgTimeLabel" destination="Lma-ub-X9u" id="fwc-BS-tTe"/>
-                                    <outlet property="senderLabel" destination="F89-xm-Stg" id="mSa-Uh-bPU"/>
                                     <outlet property="viewImg" destination="OPr-OY-XKE" id="x4m-xP-adg"/>
                                 </connections>
                             </tableViewCell>
