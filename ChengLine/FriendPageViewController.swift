@@ -16,7 +16,7 @@ class FriendPageViewController: UIViewController {
     var childFTVC: FriendTableViewController?
     var unReadNotification: MessageObserver!
     var databaseManager: DatabaseManager!
-    var linphoneManager: LinphoneManager!
+//    var linphoneManager: LinphoneManager!
     var isNotification: (()->())!
     @IBOutlet weak var profileView: UIView! // unused TODO: profile information...
     @IBOutlet weak var imgViewAvatar: UIImageView!

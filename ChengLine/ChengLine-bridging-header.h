@@ -8,8 +8,8 @@
 
 #ifndef LineLA_bridging_header_h
 #define LineLA_bridging_header_h
-#import "linphone/lpconfig.h"
-#import "linphone/linphonecore.h"
-#import "linphone/linphonecore_utils.h"
+//#import "linphone/lpconfig.h"
+//#import "linphone/linphonecore.h"
+//#import "linphone/linphonecore_utils.h"
 
 #endif /* LineLA_bridging_header_h */

@@ -23,7 +23,7 @@ class CallViewController: UIViewController {
     var isCallOn: Bool!
     var profile: ProfileInfo!
     var shared: GlobalInfo!
-    var linphoneManager: LinphoneManager!
+//    var linphoneManager: LinphoneManager!
     var lastController: UIViewController!
     var iterateTimer: Timer?
 }
@@ -52,18 +52,18 @@ extension CallViewController {
 // My func
 extension CallViewController {
     func prepare() {
-        self.linphoneManager = shared.linphoneManager
+//        self.linphoneManager = shared.linphoneManager
         self.imgView.image = self.profile.avatar
         self.nameLabel.text = self.profile.profileName
         self.timeLabel.text = ""
         self.isCallOn = false
         self.videoBtn.isEnabled = false
-        lastController = self.linphoneManager.theLinphone.controller
-        self.linphoneManager.theLinphone.controller = self
+//        lastController = self.linphoneManager.theLinphone.controller
+//        self.linphoneManager.theLinphone.controller = self
         if isCallOut {
             //            self.timeLabel.text =
             self.timeLabel.text = "撥號中..."
-            self.linphoneManager.makeCall(calleeAccount: self.profile.phoneNb)
+//            self.linphoneManager.makeCall(calleeAccount: self.profile.phoneNb)
         } else { // Callin
             self.timeLabel.text = "正在撥電話給你"
         }
@@ -107,13 +107,13 @@ extension CallViewController {
     }
     
     @objc func updateTime(){
-        let timeInterval = Double(linphoneManager.getCallDuration())
-        let date = Date(timeIntervalSince1970: timeInterval)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "mm:ss"
-        DispatchQueue.main.async {
-            self.timeLabel.text = dateFormatter.string(from: date)
-        }
+//        let timeInterval = Double(linphoneManager.getCallDuration())
+//        let date = Date(timeIntervalSince1970: timeInterval)
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "mm:ss"
+//        DispatchQueue.main.async {
+//            self.timeLabel.text = dateFormatter.string(from: date)
+//        }
     }
     
     func setTimer(){
@@ -126,7 +126,7 @@ extension CallViewController {
             self.iterateTimer!.invalidate()
             self.iterateTimer = nil
         }
-        self.linphoneManager.theLinphone.controller = lastController
+//        self.linphoneManager.theLinphone.controller = lastController
         dismiss(animated: false)
     }
 }
@@ -134,11 +134,11 @@ extension CallViewController {
 // IBAction func
 extension CallViewController {
     @IBAction func acceptBtnClick(_ sender: Any) {
-        linphoneManager.acceptCall()
+//        linphoneManager.acceptCall()
     }
     
     @IBAction func rejectBtnClick(_ sender: Any) {
-        linphoneManager.endCall()
+//        linphoneManager.endCall()
         exitUI()
     }
     
@@ -148,7 +148,7 @@ extension CallViewController {
         } else {
             self.muteBtn.backgroundColor = UIColor.groupTableViewBackground
         }
-        linphoneManager.switchMicro()
+//        linphoneManager.switchMicro()
     }
     
     @IBAction func videoBtnClick(_ sender: Any) {
@@ -161,11 +161,11 @@ extension CallViewController {
         } else {
             self.speakerBtn.backgroundColor = UIColor.groupTableViewBackground
         }
-        linphoneManager.switchSpeaker()
+//        linphoneManager.switchSpeaker()
     }
     
     @IBAction func endCallBtnClick(_ sender: Any) {
-        linphoneManager.endCall()
+//        linphoneManager.endCall()
         exitUI()
     }
 }

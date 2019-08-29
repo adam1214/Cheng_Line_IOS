@@ -190,7 +190,7 @@ class GlobalInfo: NSObject {
     var mTVCDataManager: TVCDataManager
     var mqttManager: MQTTManager
     var databaseManager: DatabaseManager
-    var linphoneManager: LinphoneManager
+//    var linphoneManager: LinphoneManager
     var dateUtil: DateUtil
     var unReadcout: Int
     var roomlist: [RoomInfo]
@@ -214,7 +214,7 @@ class GlobalInfo: NSObject {
         mqttManager = MQTTManager.shared()
         databaseManager = DatabaseManager.shared()
         mTVCDataManager = TVCDataManager.shared()
-        linphoneManager = LinphoneManager.shared()
+//        linphoneManager = LinphoneManager.shared()
         dateUtil = DateUtil.shared()
         unReadcout = 0
     }

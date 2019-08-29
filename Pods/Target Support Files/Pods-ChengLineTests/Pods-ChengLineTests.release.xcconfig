@@ -1,7 +1,7 @@
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket" "${PODS_CONFIGURATION_BUILD_DIR}/CocoaMQTT" "${PODS_CONFIGURATION_BUILD_DIR}/SQLite.swift" "${PODS_ROOT}/linphone-sdk/linphone-sdk/apple-darwin/Frameworks"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket" "${PODS_CONFIGURATION_BUILD_DIR}/CocoaMQTT" "${PODS_CONFIGURATION_BUILD_DIR}/SQLite.swift" 
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/CocoaMQTT/CocoaMQTT.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/SQLite.swift/SQLite.framework/Headers"
-OTHER_LDFLAGS = $(inherited) -l"sqlite3" -framework "CFNetwork" -framework "CocoaAsyncSocket" -framework "CocoaMQTT" -framework "SQLite" -framework "Security" -framework "bctoolbox" -framework "belcard" -framework "belr" -framework "lime" -framework "linphone" -framework "linphonetester" -framework "mediastreamer2" -framework "msamr" -framework "mscodec2" -framework "msopenh264" -framework "mssilk" -framework "mswebrtc" -framework "msx264" -framework "ortp"
+OTHER_LDFLAGS = $(inherited) -l"sqlite3" -framework "CFNetwork" -framework "CocoaAsyncSocket" -framework "CocoaMQTT" -framework "SQLite" -framework "Security"
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_PODFILE_DIR_PATH = ${SRCROOT}/.

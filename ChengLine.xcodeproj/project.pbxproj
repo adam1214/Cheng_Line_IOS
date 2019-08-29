@@ -21,10 +21,7 @@
 		AF43289321624D8C008E0940 /* ScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF43289221624D8C008E0940 /* ScannerController.swift */; };
 		AF43289521626F82008E0940 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF43289421626F82008E0940 /* CameraController.swift */; };
 		AF4328972163E935008E0940 /* ObserverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4328962163E935008E0940 /* ObserverController.swift */; };
-		AF48573B224069250016D483 /* linphonerc in Resources */ = {isa = PBXBuildFile; fileRef = AF48573A224069250016D483 /* linphonerc */; };
-		AF48573D224069480016D483 /* linphonerc-factory in Resources */ = {isa = PBXBuildFile; fileRef = AF48573C224069480016D483 /* linphonerc-factory */; };
 		AF58E929224AA91F00280DDC /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF58E928224AA91F00280DDC /* CallViewController.swift */; };
-		AF58E92B224AAD1800280DDC /* LinphoneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF58E92A224AAD1800280DDC /* LinphoneManager.swift */; };
 		AF58E933224AC73600280DDC /* ring.bundle in Resources */ = {isa = PBXBuildFile; fileRef = AF58E932224AC73500280DDC /* ring.bundle */; };
 		AF5B08D021A380BE0092301B /* ChatRoomTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5B08CF21A380BE0092301B /* ChatRoomTableViewController.swift */; };
 		AF5B08D221A382010092301B /* ChatLeftMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5B08D121A382010092301B /* ChatLeftMessageTableViewCell.swift */; };
@@ -92,10 +89,7 @@
 		AF43289221624D8C008E0940 /* ScannerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerController.swift; sourceTree = "<group>"; };
 		AF43289421626F82008E0940 /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		AF4328962163E935008E0940 /* ObserverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObserverController.swift; sourceTree = "<group>"; };
-		AF48573A224069250016D483 /* linphonerc */ = {isa = PBXFileReference; lastKnownFileType = text; path = linphonerc; sourceTree = "<group>"; };
-		AF48573C224069480016D483 /* linphonerc-factory */ = {isa = PBXFileReference; lastKnownFileType = text; path = "linphonerc-factory"; sourceTree = "<group>"; };
 		AF58E928224AA91F00280DDC /* CallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
-		AF58E92A224AAD1800280DDC /* LinphoneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinphoneManager.swift; sourceTree = "<group>"; };
 		AF58E932224AC73500280DDC /* ring.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ring.bundle; sourceTree = "<group>"; };
 		AF5B08CF21A380BE0092301B /* ChatRoomTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomTableViewController.swift; sourceTree = "<group>"; };
 		AF5B08D121A382010092301B /* ChatLeftMessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLeftMessageTableViewCell.swift; sourceTree = "<group>"; };
@@ -239,10 +233,7 @@
 				AFB3D48521C6850B006EDE29 /* UserDefaultsExtension.swift */,
 				AFB3D48721C6CF1A006EDE29 /* GlobalInfo.swift */,
 				AFC15BB52225F67600EE52B3 /* UNUserNotificationCenterExtension.swift */,
-				AF58E92A224AAD1800280DDC /* LinphoneManager.swift */,
 				AFD1F0CD22404A8F001C30D1 /* ChengLine-bridging-header.h */,
-				AF48573A224069250016D483 /* linphonerc */,
-				AF48573C224069480016D483 /* linphonerc-factory */,
 			);
 			path = ChengLine;
 			sourceTree = "<group>";
@@ -405,13 +396,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF48573D224069480016D483 /* linphonerc-factory in Resources */,
 				AFD21F27214646B700D1960B /* Localizable.strings in Resources */,
 				AFD21EF62146321300D1960B /* LaunchScreen.storyboard in Resources */,
 				AF58E933224AC73600280DDC /* ring.bundle in Resources */,
 				AFD21F1D214638B800D1960B /* InfoPlist.strings in Resources */,
 				AFD21EF32146321300D1960B /* Assets.xcassets in Resources */,
-				AF48573B224069250016D483 /* linphonerc in Resources */,
 				AFD21EF1214631FE00D1960B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -522,7 +511,6 @@
 				AFC15BB62225F67600EE52B3 /* UNUserNotificationCenterExtension.swift in Sources */,
 				AF419C9B217CE970009116EC /* ConfirmLoginController.swift in Sources */,
 				5BBBDB1C21F46CCB00A07BA7 /* SQLiteConnect.swift in Sources */,
-				AF58E92B224AAD1800280DDC /* LinphoneManager.swift in Sources */,
 				AFD21EEC214631FE00D1960B /* AppDelegate.swift in Sources */,
 				AFB78BA82191C85B00268AC4 /* TypeTableViewCell.swift in Sources */,
 				AF419CA3217DA224009116EC /* NavRootController.swift in Sources */,
@@ -751,10 +739,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WYQAMSAMYF;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Pods/linphone-sdk/linphone-sdk/apple-darwin/Frameworks",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ChengLine/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -779,10 +764,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WYQAMSAMYF;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Pods/linphone-sdk/linphone-sdk/apple-darwin/Frameworks",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ChengLine/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
